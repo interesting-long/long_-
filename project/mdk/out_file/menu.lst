@@ -1,0 +1,278 @@
+C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
+OBJECT MODULE PLACED IN .\out_file\menu.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\menu.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE) BRO
+                    -WSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;.
+                    -.\user;..\code) DEBUG PRINT(.\out_file\menu.lst) OBJECT(.\out_file\menu.obj) 
+
+stmt  level    source
+
+    1          #include "menu.h"
+    2          #include <stdio.h>
+    3          unsigned char Key;//用于接受键码值
+    4          char Key3_count=0;      //记录按下Key3的次数
+    5          char Start_Show_Row=0;  //从结构体的哪一行开始显示
+    6          float bujin=1;          //步进值
+    7          char Flag=1;            //行数标志位
+    8          char mode=0;            //mode=1为锁定模式
+    9          char i,j;                 //用于循环
+   10          unsigned char Show_image_mode=0;
+   11          //struct Menu *Pin=&Page[0];//灵活指针
+   12          /*
+   13           * 快捷设置子菜单的函数
+   14           * 参数1:需要设置Page[x]的地址;参数2:对应的索引号数组(-1停止)
+   15           * 例子   Menu_SetChildren(&Page[0],Page0_children);  将第一页的2，3，4行的子字节设置为Page[1],Page[2],Pa
+             -ge[3]
+   16           * 备注   确保数组末尾为-1为结束标志位，0跳过设置
+   17          */
+   18          void Menu_SetChildren(struct Menu *parent, unsigned char child_indices[])
+   19          {
+   20   1          // 清空原有子节点
+   21   1          for(i = 0; i < Page_Row_Number; i++) {
+   22   2              parent->children[i] = NULL;
+   23   2          }
+   24   1      
+   25   1          // 设置新的子节点
+   26   1          for(i = 0; child_indices[i] != -1 && i < Page_Row_Number; i++)
+   27   1          {
+   28   2              if(child_indices[i] > 0 && child_indices[i] < Struct_Number)
+   29   2              {
+   30   3                  parent->children[i] = &Page[child_indices[i]];
+   31   3                  parent->children[i]->father = parent;
+   32   3              }
+   33   2      
+   34   2          }
+   35   1      }
+   36          
+   37          void Refesh_arrow()
+   38          {
+   39   1              if(mode==0)
+   40   1              {
+   41   2                      if (Flag <= max_OLED_ROW)
+   42   2                      {
+   43   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "<");
+   44   3                      }
+   45   2                      else
+   46   2                      {
+   47   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), "<");
+   48   3                      }
+   49   2              }
+   50   1              else
+   51   1              {
+   52   2                      if (Flag <= max_OLED_ROW)
+   53   2                      {
+   54   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), ">");
+   55   3                      }
+   56   2                      else
+C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 2   
+
+   57   2                      {
+   58   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), ">");
+   59   3                      }
+   60   2              }
+   61   1      }
+   62          
+   63          void menu_display_content() 
+   64          {
+   65   1              for(i=0;i<max_OLED_ROW;i++)                                  //**显示逻辑**
+   66   1              {
+   67   2                      tft180_show_string(Show_String_x,(ROW_DISTANCE+1)*i,Pin->page[i+Start_Show_Row]);
+   68   2                      if(Num[Pin->index][i+Start_Show_Row]!=-1 && Pin->children[i+Start_Show_Row]==NULL && i+Start_Show_Row!=
+             -0)
+   69   2                      {
+   70   3                              tft180_show_float(Show_Num_x,(ROW_DISTANCE+1)*i,Num[Pin->index][i+Start_Show_Row],num_float_int,num_fl
+             -oat_decimal);
+   71   3                      }
+   72   2              }
+   73   1      }
+   74          
+   75          void handle_key1()
+   76          {
+   77   1              if(mode==0)                                                         //MODE=0时的逻辑
+   78   1              {
+   79   2                      if(Flag<Page_Row_Number)
+   80   2                      {
+   81   3                              Flag++;                                                         //向下滚动逻辑(Key=1)
+   82   3                      }
+   83   2                      if(Flag<=max_OLED_ROW)
+   84   2                      {
+   85   3                              tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag-2)," ");
+   86   3                      }
+   87   2                      else
+   88   2                      {
+   89   3                              if(Flag>max_OLED_ROW ){Start_Show_Row++;}//当Flag大于oled显示的最大行数，向下滚动；
+   90   3                              if(Start_Show_Row>Page_Row_Number-max_OLED_ROW){Start_Show_Row=Page_Row_Number-max_OLED_ROW;}
+   91   3                              if(Flag>Page_Row_Number){Flag=Page_Row_Number;}//防止越界产生乱码
+   92   3                              tft180_clear(RGB565_WHITE);
+   93   3                              menu_display_content(); 
+   94   3                      }
+   95   2                      Refesh_arrow();
+   96   2              }
+   97   1              else if(mode==1)                       //锁定状态下，Key1用于增加步进值   MODE=1时的逻辑
+   98   1              {
+   99   2                      Num[Pin->index][Flag-1]+=bujin;
+  100   2                      menu_display_content();
+  101   2                      Refesh_arrow();
+  102   2              }
+  103   1      }
+  104          
+  105          void handle_key2()
+  106          {
+  107   1              if(mode==0)                                                         //MODE=0时的逻辑
+  108   1              {
+  109   2      
+  110   2              }
+  111   1              else if(mode==1)                    //修改步进值{0.01->10}      改变MODE=1时的逻辑
+  112   1              {
+  113   2                      if(bujin<=0.01)
+  114   2                      {
+  115   3                              bujin=100;
+  116   3                      }
+  117   2                      bujin/=10.0;
+  118   2                      if(Flag<max_OLED_ROW)
+  119   2                      {
+  120   3                              switch((int)(bujin*100))
+C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 3   
+
+  121   3                              {
+  122   4                              case 1000:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"10  ");break;
+  123   4                              case 100:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"1.0 ");break;
+  124   4                              case 10:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"0.1 ");break;
+  125   4                              case 1:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"0.01");break;
+  126   4                              }
+  127   3                      }
+  128   2                      else
+  129   2                      {
+  130   3                              switch((int)(bujin*100))
+  131   3                              {
+  132   4                              case 1000:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"10  ");break;
+  133   4                              case 100:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"1.0 ");break;
+  134   4                              case 10:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"0.1 ");break;
+  135   4                              case 1:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"0.01");break;
+  136   4                              }
+  137   3                      }
+  138   2              }
+  139   1      }
+  140          
+  141          void handle_key3()
+  142          {
+  143   1          Key3_count++;
+  144   1          
+  145   1          // 直接在按键处理函数中处理模式切换
+  146   1          switch(Key3_count)
+  147   1          {
+  148   2                      case 1:{Key3_handle1();break;}  //当按下键码值为 3 一次的模式切换（调参模式）
+  149   2                      case 2:{Key3_handle2();break;}  //当按下键码值为 3 两次的模式切换（翻动模式）
+  150   2              default: break;
+  151   2          }
+  152   1      }
+  153          void handle_key4()
+  154          {
+  155   1              if(mode==1)                         //锁定状态下，Key4用于减步进值      MODE=1时的逻辑
+  156   1              {
+  157   2                      Num[Pin->index][Flag-1]-=bujin;
+  158   2                      menu_display_content(); 
+  159   2              }
+  160   1              else if(mode==0)                                                 //MODE=0时的逻辑
+  161   1              {
+  162   2                      if(Flag>1)
+  163   2                      {
+  164   3                              Flag--;
+  165   3                      }
+  166   2                      if(Flag<max_OLED_ROW)                                          //向上滚动逻辑
+  167   2                      {
+  168   3                              if(Flag<0)
+  169   3                              {Flag=0;}
+  170   3                              tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag)," ");
+  171   3                      }
+  172   2                      else
+  173   2                      {
+  174   3                              if(Start_Show_Row>0){Start_Show_Row--;}
+  175   3                              tft180_clear(RGB565_WHITE);
+  176   3                              menu_display_content(); 
+  177   3                      }
+  178   2                      Refesh_arrow();
+  179   2              }
+  180   1      }
+  181          void Key3_handle1()
+  182          {
+  183   1              mode=1;
+  184   1              Refesh_arrow();
+  185   1      }
+  186          void Key3_handle2()
+C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 4   
+
+  187          {
+  188   1              eeprom_save_Num();
+  189   1              if((Pin->children[Flag-1])!=NULL)//进入子字节——————进入操作
+  190   1              {
+  191   2                      Pin=Pin->children[Flag-1];
+  192   2                      Flag=1;
+  193   2                      Start_Show_Row=0;
+  194   2              }
+  195   1              else if(Pin->father!=NULL && Flag==1)//第一行进入父字节——————退出操作
+  196   1              {
+  197   2                      Pin=Pin->father;
+  198   2                      Flag=1;
+  199   2                      Start_Show_Row=0;
+  200   2              }
+  201   1              Key3_count=0;mode=0;tft180_clear(RGB565_WHITE);                 //按两下如果没有子菜单，刷新显示
+  202   1              Refesh_arrow();
+  203   1              menu_display_content();
+  204   1      }
+  205          /* 函数：按键控制菜单函数
+  206           * 参数1：键码值
+  207           * 返回值：无
+  208           * 例子：menu_handle_key（Key）；
+  209           */
+  210          void menu_handle_key(unsigned char Flag_Key)
+  211          {
+  212   1      
+  213   1              switch(Flag_Key)
+  214   1              {
+  215   2                      case 1:{handle_key1();break;}  //按下键码值为 1 按键的行为
+  216   2                      case 2:{handle_key2();break;}  //按下键码值为 2 按键的行为
+  217   2                      case 3:{handle_key3();break;}  //按下键码值为 3 按键的行为
+  218   2                      case 4:{handle_key4();break;}  //按下键码值为 4 按键的行为
+  219   2              }
+  220   1      }
+  221          /*菜单初始化
+  222          设置子菜单索引
+  223          设置一开始显示的画面
+  224          */
+  225          void menu_Init()
+  226          {
+  227   1              Menu_SetChildren(&Page[0],Page0_children);//设定子字节
+  228   1              Refesh_arrow();
+  229   1              menu_display_content();
+  230   1              
+  231   1              
+  232   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1755     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =        12     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        65     ------
+End of Module Information.
+
+C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 5   
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

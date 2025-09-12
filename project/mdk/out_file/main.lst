@@ -1,0 +1,67 @@
+C251 COMPILER V5.60.0,  main                                                               12/09/25  17:12:15  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\out_file\main.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE) BRO
+                    -WSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;.
+                    -.\user;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
+
+stmt  level    source
+
+    1          #include "zf_common_headfile.h"
+    2          int T;
+    3          float test=1.00;
+    4          void pit_handler (void);
+    5          void main()
+    6          {
+    7   1          clock_init(SYSTEM_CLOCK_40M);                               // 务必保留
+    8   1              debug_init();                                                           // 务必保留
+    9   1              /****************************************************/
+   10   1              tim0_irq_handler = pit_handler;// 设置定时器1中断回调函数
+   11   1              init_all();
+   12   1          while(1)
+   13   1              {
+   14   2                      if(Key)
+   15   2                      {
+   16   3                              EA=0;
+   17   3                              menu_handle_key(Key);
+   18   3                              Key=0;
+   19   3                              EA=1;
+   20   3                      }
+   21   2          }
+   22   1      }
+   23          void pit_handler(void)
+   24          {
+   25   1              tft180_show_int16(40,0*16,ADC_1);
+   26   1              tft180_show_int16(40,1*16,ADC_2);
+   27   1              tft180_show_int16(40,2*16,ADC_3);
+   28   1              tft180_show_int16(40,3*16,ADC_4);
+   29   1              ADC_SampleAndFilter();
+   30   1              Key_scaner();
+   31   1      }
+   32          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       229     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =         6     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        11     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

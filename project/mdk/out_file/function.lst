@@ -1,0 +1,147 @@
+C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE function
+OBJECT MODULE PLACED IN .\out_file\function.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\function.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE)
+                    - BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driv
+                    -er;..\user;..\code) DEBUG PRINT(.\out_file\function.lst) OBJECT(.\out_file\function.obj) 
+
+stmt  level    source
+
+    1          #include "function.h"
+    2          
+    3          
+    4          /*º¯Êý£º³£¼ûµÄPID¼ÆËã
+    5           * ²ÎÊý1£º½á¹¹Ìå±äÁ¿µÄµØÖ·
+    6           * ²ÎÊý2£ºµ±Ç°Öµ
+    7           * ²ÎÊý3£ºÄ¿±êÖµ
+    8           * Àý×Ó£ºNormal_PID(&servo_pid,MID_W-mid,0);//½«servoµÄpid²ÎÊýÉèÖÃÎªÒÔÖÐÏß¼ÓÈ¨ÖµºÍÖÐÏßÖµÖ®²îÉèÖÃÎªÄ¿±êÖµ£
+             -º0
+    9           */
+   10          float Normal_PID(PID *PID,float NowData,float Point)
+   11          {
+   12   1      
+   13   1          PID->LastError=PID->Error;
+   14   1          PID->Error = Point - NowData;
+   15   1          PID->Out_D=PID->Error- PID->LastError;              //DÏî
+   16   1          PID->Out_I+=PID->Error;                             //IÏî
+   17   1          PID->Out_P=PID->Error;                              //PÏî
+   18   1          return (PID->Kp * PID->Out_P + PID->Ki*PID->Out_I + PID->Kd * PID->Out_D);
+   19   1      }
+   20          /* º¯Êý£º¹éÒ»»¯º¯Êý
+   21           * ²ÎÊý1£ºÎÞ
+   22           * ·µ»ØÖµ£ºÎÞ
+   23           * Àý×Ó/×÷ÓÃ£º½«¶ÁÈ¡µÄADCÖµÁ¿»¯Îª¾àÀë
+   24           */
+   25          float unification(void) 
+   26          {
+   27   1          float error_val;
+   28   1          float left_1;
+   29   1          float left_2;
+   30   1          float right_2;
+   31   1          float right_1;
+   32   1          
+   33   1          left_1  = (float)filtered_adc[0];
+   34   1          left_2  = (float)filtered_adc[1];
+   35   1          right_2 = (float)filtered_adc[2];
+   36   1          right_1 = (float)filtered_adc[3];
+   37   1          
+   38   1          error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / (left_2 + right_2);
+   39   1          
+   40   1          return error_val;
+   41   1      }
+   42          /*¿ìËÙ¿ª·½º¯Êý*/
+   43          float fast_sqrt(float number) 
+   44          {
+   45   1          unsigned long i;
+   46   1          float x = number;
+   47   1          
+   48   1          if (number <= 0.0f) return 0.0f;
+   49   1          
+   50   1          memcpy(&i, &x, 4);
+   51   1          
+   52   1          i = 532267893U + (i >> 1);
+   53   1          
+   54   1          memcpy(&x, &i, 4);
+   55   1      
+   56   1          x = 0.5f * (x + number / x);
+C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 2   
+
+   57   1          return x;
+   58   1      }
+   59          /*µç»ú³õÊ¼»¯*/
+   60          void Motor_Init(void)
+   61          {
+   62   1          pwm_init(Servo_Pwm,50,Servo_Mide);
+   63   1          pwm_init(MotorL_pwm2, 17000, 0);
+   64   1          pwm_init(MotorL_pwm1, 17000, 0);
+   65   1          pwm_init(MotorR_pwm2, 17000, 0);
+   66   1          pwm_init(MotorR_pwm1, 17000, 0);
+   67   1      }
+   68          
+   69          void Servo_Init()
+   70          {
+   71   1          system_delay_init();
+   72   1          pwm_init(Servo_Pwm,50,Servo_Mide+65);
+   73   1      }
+   74          void CAR_STOP()
+   75          {
+   76   1              MotorL_SetSpeed(0);
+   77   1              MotorR_SetSpeed(0);
+   78   1              Ser_Servo_Duty(Servo_Mide);
+   79   1      }
+   80          void CAR_Init()
+   81          {
+   82   1              Ser_Servo_Duty(Servo_Mide);
+   83   1      }
+   84          //Í£³µ¼ì²â
+   85          void Protect()
+   86          {
+   87   1          if((ADC_1+ADC_2+ADC_3+ADC_4)<10)
+   88   1              {
+   89   2                      while(CAR_Mode==GO)
+   90   2                      {
+   91   3                              CAR_STOP();
+   92   3                      }
+   93   2              }
+   94   1      }
+   95          /*×Ô¶¨Òå³õÊ¼»¯º¯Êý¿â*/
+   96          void init_all()
+   97          {
+   98   1              Motor_Init();
+   99   1              Servo_Init();
+  100   1              iap_init();
+  101   1              ADC_GetInit();
+  102   1              tft180_init();
+  103   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
+  104   1      //      eeprom_read_Num();
+  105   1              menu_Init();
+  106   1              pit_ms_init(TIM0_PIT, 5);
+  107   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       810     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------         24
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 3   
+
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

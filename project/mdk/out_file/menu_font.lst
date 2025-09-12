@@ -1,0 +1,78 @@
+C251 COMPILER V5.60.0,  menu_font                                                          12/09/25  16:41:15  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
+OBJECT MODULE PLACED IN .\out_file\menu_font.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\menu_font.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE
+                    -) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_dri
+                    -ver;..\user;..\code) DEBUG PRINT(.\out_file\menu_font.lst) OBJECT(.\out_file\menu_font.obj) 
+
+stmt  level    source
+
+    1          #include "menu_font.h"
+    2          float Num[Num_Col][Page_Row_Number]={
+    3                  {-1 ,1 ,2 ,3 ,4  ,-1 ,-1 ,-1 ,-1 },
+    4                  {-1 ,20,20,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+    5                  {-1 ,1 ,2 ,50,50 ,0.8,-1 ,-1 ,-1 },
+    6                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+    7                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+    8                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+    9                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 }};//数据存储的数组
+   10          
+   11          unsigned char Page0_children[Page_Row_Number+1]={0,1, 2,3,4};//子字节菜单,第二三四五行转到Page[1],Page[2]
+             -，Page[3]，Page[4]，
+   12          unsigned char Page1_children[Page_Row_Number+1]={0, 5, 6};//子字节菜单,第二三行转到Page[5],Page[6]
+   13          
+   14          
+   15          /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
+   16           *结构体第二行是   显示的数据
+   17           *结构体第三行是   父指针用(函数自动配置）
+   18           *结构体第四行是   子指针数组(位置对应行数)用函数配置
+   19           */
+   20          struct Menu Page[Struct_Number]={
+   21              {   2,
+   22                      {"back","PID","PWM","Time","di_a","Prot","duqu",""}},
+   23              {   0,
+   24                      {"back","Max_K","Max_K","Min_K","Min_K","ser_y","","",""}},
+   25              {   1,
+   26                      {"back","R_PWM","L_PWM","","","","","",""}},
+   27              {   3,
+   28                      {"back","M_Te","sp_e","Slowe","long","lvv_","Kai","",""}},
+   29              {   4,
+   30                      {"back","diyu","dikp","sper","s_add","","","",""}},
+   31              {   5,
+   32                      {"back","2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+   33              {   6,
+   34                      {"back","e2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+   35          };
+   36          
+   37          struct Menu *Pin=&Page[0];//灵活指针
+   38          
+   39          //ADC采样参数                                                           
+   40          float ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0;                       //ADC采样值
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =      1083     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+C251 COMPILER V5.60.0,  menu_font                                                          12/09/25  16:41:15  PAGE 2   
+
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =      1128     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

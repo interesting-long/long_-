@@ -1,0 +1,255 @@
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  12/09/25  16:41:13  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_ble6a20
+OBJECT MODULE PLACED IN .\out_file\zf_device_ble6a20.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\..\libraries\zf_device\zf_device_ble6a20.c LARGE NOALIAS FLOAT64 WARNI
+                    -NGLEVEL(3) OPTIMIZE(3,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_dev
+                    -ice;..\..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\zf_device_ble6a20.lst) OBJECT(.\out_file\zf_device
+                    -_ble6a20.obj) 
+
+stmt  level    source
+
+    1          /********************************************************************************************************
+             -*************
+    2          * AI8051U Opensourec Library 即（AI8051U 开源库）是一个基于官方 SDK 接口的第三方开源库
+    3          * Copyright (c) 2022 SEEKFREE 逐飞科技
+    4          *
+    5          * 本文件是STC 开源库的一部分
+    6          *
+    7          * AI8051U 开源库 是免费软件
+    8          * 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
+    9          * 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+   10          *
+   11          * 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
+   12          * 甚至没有隐含的适销性或适合特定用途的保证
+   13          * 更多细节请参见 GPL
+   14          *
+   15          * 您应该在收到本开源库的同时收到一份 GPL 的副本
+   16          * 如果没有，请参阅<https://www.gnu.org/licenses/>
+   17          *
+   18          * 额外注明：
+   19          * 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
+   20          * 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
+   21          * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
+   22          * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+   23          *
+   24          * 文件名称          
+   25          * 公司名称          成都逐飞科技有限公司
+   26          * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
+   27          * 开发环境          MDK FOR C251
+   28          * 适用平台          AI8051U
+   29          * 店铺链接          https://seekfree.taobao.com/
+   30          *
+   31          * 修改记录
+   32          * 日期              作者           备注
+   33          * 2024-08-01        大W            first version
+   34          *********************************************************************************************************
+             -***********/
+   35          /********************************************************************************************************
+             -*************
+   36          * 接线定义：
+   37          *                   ------------------------------------
+   38          *                   模块管脚            单片机管脚
+   39          *                   RX                  查看 zf_device_wireless_ble6a20.h 中 BLE6A20_RX_PIN  宏定义
+   40          *                   TX                  查看 zf_device_wireless_ble6a20.h 中 BLE6A20_TX_PIN  宏定义
+   41          *                   RTS                 查看 zf_device_wireless_ble6a20.h 中 BLE6A20_RTS_PIN 宏定义
+   42          *                   VCC                 3.3V电源
+   43          *                   GND                 电源地
+   44          *                   其余引脚悬空
+   45          *                   ------------------------------------
+   46          *********************************************************************************************************
+             -************/
+   47          
+   48          #include "zf_device_ble6a20.h"
+   49          #include "zf_common_clock.h"
+   50          #include "zf_common_debug.h"
+   51          #include "zf_common_fifo.h"
+   52          #include "zf_driver_delay.h"
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  12/09/25  16:41:13  PAGE 2   
+
+   53          #include "zf_driver_gpio.h"
+   54          #include "zf_driver_uart.h"
+   55          #include "zf_device_type.h"
+   56          
+   57          #pragma warning disable = 183
+   58          #pragma warning disable = 177
+   59          
+   60          static  fifo_struct                                     ble6a20_fifo;
+   61          static  uint8                                           ble6a20_buffer[BLE6A20_BUFFER_SIZE];
+   62          
+   63          //-------------------------------------------------------------------------------------------------------
+             -------------
+   64          // 函数简介     蓝牙转串口模块 发送数据
+   65          // 参数说明     data            8bit 数据
+   66          // 返回参数     uint32          剩余发送长度 0-发送完毕 1-未发送完成
+   67          // 使用示例     ble6a20_send_byte(data);
+   68          // 备注信息
+   69          //-------------------------------------------------------------------------------------------------------
+             -------------
+   70          uint32 ble6a20_send_byte (const uint8 dat)
+   71          {
+   72   1          uint16 time_cnt = BLE6A20_TIMEOUT_COUNT;
+   73   1          
+   74   1          while (time_cnt && gpio_get_level(BLE6A20_RTS_PIN)) 
+   75   1              {
+   76   2              system_delay_ms(1);
+   77   2              time_cnt--;
+   78   2          }
+   79   1          
+   80   1          if (time_cnt) 
+   81   1              {
+   82   2              uart_write_byte(BLE6A20_INDEX, dat);
+   83   2          }
+   84   1          
+   85   1          return time_cnt == 0;
+   86   1      }
+   87          
+   88          //-------------------------------------------------------------------------------------------------------
+             -------------
+   89          // 函数简介     蓝牙转串口模块 发送数据块
+   90          // 参数说明     *buff           发送缓冲区
+   91          // 参数说明     len             发送数据长度
+   92          // 返回参数     uint32          剩余发送长度
+   93          // 使用示例     ble6a20_send_buffer(buff, 64);
+   94          // 备注信息
+   95          //-------------------------------------------------------------------------------------------------------
+             -------------
+   96          uint32 ble6a20_send_buffer (const uint8 *buff, uint32 len)
+   97          {
+   98   1          #define PKT_SIZE 64
+   99   1          #define DELAY_MS 1
+  100   1          
+  101   1          uint16 time_cnt = 0;
+  102   1              uint16 send_len = 0;
+  103   1          zf_assert(NULL != buff);  // 确保缓冲区非空
+  104   1          
+  105   1          while(len && time_cnt < BLE6A20_TIMEOUT_COUNT)
+  106   1          {
+  107   2              if(!gpio_get_level(BLE6A20_RTS_PIN))    // RTS低电平，可发送
+  108   2              {
+  109   3                  send_len = len < PKT_SIZE ? len : PKT_SIZE;
+  110   3                  uart_write_buffer(BLE6A20_INDEX, buff, send_len);
+  111   3                  buff += send_len;
+  112   3                  len -= send_len;
+  113   3                  time_cnt = 0;        // 重置超时计数
+  114   3              }
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  12/09/25  16:41:13  PAGE 3   
+
+  115   2                      else    // RTS高电平，模块忙
+  116   2                      {
+  117   3                              system_delay_ms(DELAY_MS);
+  118   3                              time_cnt++;
+  119   3                      }
+  120   2          }
+  121   1          
+  122   1          return len;
+  123   1      }
+  124          
+  125          //-------------------------------------------------------------------------------------------------------
+             -------------
+  126          // 函数简介     蓝牙转串口模块 发送字符串
+  127          // 参数说明     *str            要发送的字符串地址
+  128          // 返回参数     uint32          剩余发送长度
+  129          // 使用示例     ble6a20_send_string("Believe in yourself.");
+  130          // 备注信息
+  131          //-------------------------------------------------------------------------------------------------------
+             -------------
+  132          uint32 ble6a20_send_string (const char *str)
+  133          {
+  134   1          uint32 len = strlen(str);
+  135   1          zf_assert(NULL != str);
+  136   1              
+  137   1          return  ble6a20_send_buffer(str, len);
+  138   1      }
+  139          
+  140          
+  141          //-------------------------------------------------------------------------------------------------------
+             -------------
+  142          // 函数简介     蓝牙转串口模块 读取缓冲
+  143          // 参数说明     *buff           接收缓冲区
+  144          // 参数说明     len             读取数据长度
+  145          // 返回参数     uint32          实际读取数据长度
+  146          // 使用示例     ble6a20_read_buffer(buff, 32);
+  147          // 备注信息
+  148          //-------------------------------------------------------------------------------------------------------
+             -------------
+  149          uint32 ble6a20_read_buffer (uint8 *buff, uint32 len)
+  150          {
+  151   1          uint32 data_len = len;
+  152   1          zf_assert(NULL != buff);
+  153   1          fifo_read_buffer(&ble6a20_fifo, buff, &data_len, FIFO_READ_AND_CLEAN);
+  154   1          return data_len;
+  155   1      }
+  156          
+  157          //-------------------------------------------------------------------------------------------------------
+             -------------
+  158          // 函数简介     蓝牙转串口模块 串口中断回调函数
+  159          // 参数说明     void
+  160          // 返回参数     void
+  161          // 使用示例     ble6a20_callback();
+  162          // 备注信息     该函数在 ISR 文件 串口中断程序被调用
+  163          //              由串口中断服务函数调用 wireless_module_uart_handler() 函数
+  164          //              再由 wireless_module_uart_handler() 函数调用本函数
+  165          //-------------------------------------------------------------------------------------------------------
+             -------------
+  166          void ble6a20_callback (uint8 uart_dat)
+  167          {
+  168   1      //    uart_query_byte(BLE6A20_INDEX, &ble6a20_data);
+  169   1          fifo_write_buffer(&ble6a20_fifo, &uart_dat, 1);
+  170   1      }
+  171          
+  172          //-------------------------------------------------------------------------------------------------------
+             -------------
+  173          // 函数简介     蓝牙转串口模块 初始化
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  12/09/25  16:41:13  PAGE 4   
+
+  174          // 参数说明     void
+  175          // 返回参数     void
+  176          // 使用示例     ble6a20_init();
+  177          // 备注信息
+  178          //-------------------------------------------------------------------------------------------------------
+             -------------
+  179          uint8 ble6a20_init (void)
+  180          {
+  181   1          uint8 return_state = 0;
+  182   1          
+  183   1          // 等待模块初始化
+  184   1          system_delay_ms(50);
+  185   1          
+  186   1          set_wireless_type(BLE6A20, BLE6A20_INDEX, ble6a20_callback);
+  187   1          
+  188   1          fifo_init(&ble6a20_fifo, FIFO_DATA_8BIT, ble6a20_buffer, BLE6A20_BUFFER_SIZE);
+  189   1          gpio_init(BLE6A20_RTS_PIN, GPIO, GPIO_HIGH, GPIO_NO_PULL);
+  190   1          
+  191   1          // 本函数使用的波特率为115200 为蓝牙转串口模块的默认波特率 如需其他波特率请自行配置模块并修改串口的波
+             -特率
+  192   1          uart_init (BLE6A20_INDEX, BLE6A20_BUAD_RATE, BLE6A20_RX_PIN, BLE6A20_TX_PIN);   // 初始化串口
+  193   1          uart_rx_interrupt(BLE6A20_INDEX, 1);
+  194   1          
+  195   1          return return_state;
+  196   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       605     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =        87         17
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        46     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
