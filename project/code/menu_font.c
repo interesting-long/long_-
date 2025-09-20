@@ -18,20 +18,20 @@ unsigned char Page1_children[Page_Row_Number+1]={0, 5, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×
  *½á¹¹ÌåµÚËÄÐÐÊÇ   ×ÓÖ¸ÕëÊý×é(Î»ÖÃ¶ÔÓ¦ÐÐÊý)ÓÃº¯ÊýÅäÖÃ
  */
 struct Menu Page[Struct_Number]={
-    {   2,
-            {"back","PID","PWM","Time","di_a","Prot","duqu",""}},
     {   0,
-            {"back","Max_K","Max_K","Min_K","Min_K","ser_y","","",""}},
+            {"back","PID","PWM","Time","Test","","",""}},
     {   1,
-            {"back","R_PWM","L_PWM","","","","","",""}},
+            {"back","KP","KD","KP1","KD1","KP2","KD2","KP3","KD3"}},
+    {   2,
+            {"back","R_PWM","L_PWM","PRO","RPWM1","LPWM2","RPWM2","LPWM2","RPWM3","LPWM3"}},
     {   3,
-            {"back","M_Te","sp_e","Slowe","long","lvv_","Kai","",""}},
+            {"back","M_Te","sp_e","","","","","",""}},
     {   4,
-            {"back","diyu","dikp","sper","s_add","","","",""}},
+            {"back","L_M","R_M","Servo","GOP1","GOP2","GOP3","",""}},
     {   5,
-            {"back","2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+            {"back","","","","","","","",""}},
     {   6,
-            {"back","e2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+            {"back","","","","","","","",""}},
 };
 
 struct Menu *Pin=&Page[0];//Áé»îÖ¸Õë

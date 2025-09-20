@@ -819,6 +819,31 @@
               <FileType>5</FileType>
               <FilePath>..\code\menu_font.h</FilePath>
             </File>
+            <File>
+              <FileName>Device_Test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Device_Test.c</FilePath>
+            </File>
+            <File>
+              <FileName>Device_Test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\Device_Test.h</FilePath>
+            </File>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\oled.h</FilePath>
+            </File>
+            <File>
+              <FileName>oledfont.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\oledfont.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

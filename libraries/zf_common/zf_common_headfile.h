@@ -102,5 +102,6 @@
 #include "Key.h"
 #include "menu.h"
 #include "menu_font.h"
-
+#include "test.h"
+#include "Device_Test.h"
 #endif

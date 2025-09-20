@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Key                                                                12/09/25  16:41:15  PAGE 1   
+C251 COMPILER V5.60.0,  Key                                                                19/09/25  23:30:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Key
@@ -14,116 +14,135 @@ stmt  level    source
     3          int Press_time;
     4          int Trigg_time;
     5          unsigned char keynumber;
-    6          unsigned char State;
-    7          unsigned char Key_count;
-    8          unsigned Time_dou;
-    9          
-   10          unsigned char CAR_Mode=STOP;
+    6          unsigned char last_keynumber;
+    7          unsigned char State;
+    8          unsigned char Key_count;
+    9          unsigned Time_dou;
+   10          
    11          
-   12          unsigned char Key_Number(void)
-   13          {
-   14   1          unsigned char KeyNumber=0;
-   15   1      
-   16   1          if(gpio_get_level(IO_P46)==0){KeyNumber=1;}//左
-   17   1          if(gpio_get_level(IO_P45)==0){KeyNumber=2;}//右
-   18   1          if(gpio_get_level(IO_P37)==0){KeyNumber=3;}//中
-   19   1          if(gpio_get_level(IO_P36)==0){KeyNumber=4;}//上
-   20   1          return KeyNumber;
-   21   1      }
-   22          
-   23          void Key_scaner(void)
+   12          
+   13          unsigned char Key_Number(void)
+   14          {
+   15   1          unsigned char KeyNumber=0;
+   16   1      
+   17   1          if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
+   18   1          if(gpio_get_level(IO_P07)==0){KeyNumber=2;}//右
+   19   1          if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
+   20   1          if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
+   21   1          return KeyNumber;
+   22   1      }
+   23          void Turn_mode(void)
    24          {
-   25   1              keynumber=Key_Number();
-   26   1              switch(State)
-   27   1              {
-   28   2                      case State_Release:
-   29   2                      {
-   30   3                              if(keynumber!=0)
-   31   3                              {
-   32   4                                      State=State_Press_dou;
-   33   4                                      Key_count=0;
-   34   4                              }
-   35   3                              break;
+   25   1              if((void *)Pin==(void *)&Page[4])
+   26   1              {
+   27   2                      switch(Flag)
+   28   2                      {
+   29   3                              case 2:CAR_Mode=(CAR_Mode==TEST_LM) ? STOP : TEST_LM;break;
+   30   3                              case 3:CAR_Mode=(CAR_Mode==TEST_RM) ? STOP : TEST_RM;break;
+   31   3                              case 4:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
+   32   3                              case 5:CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;break;
+   33   3                              case 6:CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;break;
+   34   3                              case 7:CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;break;
+   35   3                              default :break;
    36   3                      }
-   37   2                      case State_Press_dou:
-   38   2                      {
-   39   3                              if(keynumber==0)
-   40   3                              {
-   41   4                                      State=State_Release;
-   42   4                              }
-   43   3                              else
-   44   3                              {
-   45   4                                      Key_count++;
-   46   4                                      if(Key_count>=Time_dou)
-   47   4                                      {
-   48   5                                              State=State_Press;
-   49   5                                              Key=keynumber;
-   50   5                                      }
-   51   4                              }
-   52   3                              break;
-   53   3                      }
-   54   2                      case State_Press:
-   55   2                      {
-   56   3                              if(keynumber==0)
-   57   3                              {
-C251 COMPILER V5.60.0,  Key                                                                12/09/25  16:41:15  PAGE 2   
+   37   2              }
+   38   1              else
+   39   1              {
+   40   2                      CAR_Mode=(CAR_Mode==STOP) ? GO : STOP;
+   41   2              }
+   42   1                      Turn_mode_Init();
+   43   1      }
+   44          void Key_scaner(void)
+   45          {
+   46   1              keynumber=Key_Number();
+   47   1              switch(State)
+   48   1              {
+   49   2                      case State_Release:
+   50   2                      {
+   51   3                              if(keynumber!=0)
+   52   3                              {
+   53   4                                      State=State_Press_dou;
+   54   4                                      Key_count=0;
+   55   4                              }
+   56   3                              break;
+   57   3                      }
+C251 COMPILER V5.60.0,  Key                                                                19/09/25  23:30:00  PAGE 2   
 
-   58   4                                      State=State_Release_dou;
-   59   4                                      Key_count=0;
-   60   4                                      Press_time=0;
-   61   4                              }
-   62   3                              else
-   63   3                              {
-   64   4                                      Press_time++;
-   65   4                                      if(Press_time>Flag_press_time)
-   66   4                                      {
-   67   5                                              Trigg_time++;
-   68   5                                              if(keynumber==3)//长按触发的操作
-   69   5                                              {
-   70   6                                                      if(CAR_Mode==STOP)
-   71   6                                                      {
-   72   7                                                              CAR_Mode=GO;
-   73   7                                                      }
-   74   6                                                      else
-   75   6                                                      {
-   76   7                                                              CAR_Mode=STOP;
-   77   7                                                      }
-   78   6                                                      Press_time=0;
-   79   6                                              }
-   80   5                                              else if(Trigg_time>Flag_trigg_time)
-   81   5                                              {
-   82   6                                                      Trigg_time=0;
-   83   6                                                      Key=keynumber;
-   84   6                                                      //多次触发的操作
-   85   6                                              }
-   86   5                                      }
-   87   4                              }
-   88   3                              break;
-   89   3                      }
-   90   2                      case State_Release_dou:
-   91   2                      {
-   92   3                              if(keynumber==0)
-   93   3                              {
-   94   4                                      Key_count++;
-   95   4                                      if(Key_count>=Time_dou)
-   96   4                                      {
-   97   5                                              State=State_Release;
-   98   5                                              Key=0;  // 松开时清零
-   99   5                                      }
-  100   4                              }
-  101   3                              else
-  102   3                              {
-  103   4                                      State=State_Press;
+   58   2                      case State_Press_dou:
+   59   2                      {
+   60   3                              if(keynumber==0)
+   61   3                              {
+   62   4                                      State=State_Release;
+   63   4                              }
+   64   3                              else
+   65   3                              {
+   66   4                                      Key_count++;
+   67   4                                      if(Key_count>=Time_dou)
+   68   4                                      {
+   69   5                                              State=State_Press;
+   70   5                                              last_keynumber=keynumber;
+   71   5      //                                      Key=keynumber;
+   72   5                                      }
+   73   4                              }
+   74   3                              break;
+   75   3                      }
+   76   2                      case State_Press:
+   77   2                      {
+   78   3                              if(keynumber==0)
+   79   3                              {
+   80   4      //                              Key=last_keynumber;
+   81   4                                      State=State_Release_dou;
+   82   4                                      Key_count=0;
+   83   4                                      Press_time=0;
+   84   4                              }
+   85   3                              else
+   86   3                              {
+   87   4                                      Press_time++;
+   88   4                                      if(Press_time>Flag_press_time)
+   89   4                                      {
+   90   5                                              Trigg_time++;
+   91   5                                              if(keynumber==3)//长按触发的操作
+   92   5                                              {
+   93   6                                                      Turn_mode();
+   94   6                                                      Press_time=0;
+   95   6                                                      last_keynumber=0;
+   96   6                                              }
+   97   5                                              else if(Trigg_time>Flag_trigg_time)
+   98   5                                              {
+   99   6                                                      Trigg_time=0;
+  100   6                                                      Key=keynumber;
+  101   6                                                      //多次触发的操作
+  102   6                                              }
+  103   5                                      }
   104   4                              }
   105   3                              break;
   106   3                      }
-  107   2              }
-  108   1      }
+  107   2                      case State_Release_dou:
+  108   2                      {
+  109   3                              if(keynumber==0)
+  110   3                              {
+  111   4                                      Key_count++;
+  112   4                                      if(Key_count>=Time_dou)
+  113   4                                      {
+  114   5                                              State=State_Release;
+  115   5                                              Key=last_keynumber;  // 松开时清零
+  116   5                                      }
+  117   4                              }
+  118   3                              else
+  119   3                              {
+  120   4                                      State=State_Press;
+  121   4                              }
+  122   3                              break;
+  123   3                      }
+C251 COMPILER V5.60.0,  Key                                                                19/09/25  23:30:00  PAGE 3   
+
+  124   2              }
+  125   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       346     ------
+  code size            =       509     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -135,12 +154,10 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  Key                                                                12/09/25  16:41:15  PAGE 3   
-
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         6     ------
+  hconst size          =    ------     ------
 End of Module Information.
 
 

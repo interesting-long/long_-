@@ -1,6 +1,6 @@
 #include "function.h"
-
-
+int Set_T;
+PID servo_pid;
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
  * 参数2：当前值
@@ -66,10 +66,12 @@ void Motor_Init(void)
     pwm_init(MotorR_pwm1, 17000, 0);
 }
 
+
 void Servo_Init()
 {
+	
     system_delay_init();
-    pwm_init(Servo_Pwm,50,Servo_Mide+65);
+    pwm_init(Servo_Pwm,50,Servo_Mide);
 }
 void CAR_STOP()
 {
@@ -77,19 +79,14 @@ void CAR_STOP()
 	MotorR_SetSpeed(0);
 	Ser_Servo_Duty(Servo_Mide);
 }
-void CAR_Init()
-{
-	Ser_Servo_Duty(Servo_Mide);
-}
+
 //停车检测
 void Protect()
 {
-    if((ADC_1+ADC_2+ADC_3+ADC_4)<10)
+    if((ADC_1+ADC_2+ADC_3+ADC_4)<PRO)
 	{
-		while(CAR_Mode==GO)
-		{
-			CAR_STOP();
-		}
+		CAR_Mode=STOP;
+		Turn_mode_Init();
 	}
 }
 /*自定义初始化函数库*/
@@ -101,7 +98,109 @@ void init_all()
 	ADC_GetInit();
 	tft180_init();
 	tft180_set_color(RGB565_RED,RGB565_WHITE);
-//	eeprom_read_Num();
+	eeprom_read_Num();
 	menu_Init();
 	pit_ms_init(TIM0_PIT, 5);
+//	pit_ms_init(TIM1_PIT, 20);
+}
+
+//切换模式的初始函数
+void Turn_mode_Init(void)
+{
+	CAR_STOP();
+	Set_T=0;
+	switch(CAR_Mode)
+	{
+		case STOP:
+		{
+			CAR_STOP();
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for STOP");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			Refesh_arrow();
+			menu_display_content();
+		}break;
+		case GO:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for GO");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			
+			Motor_Update();
+			PID_Update();
+			
+		}break;
+		case GO_Pararm1:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for GOP1");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			
+			Motor_Update();
+			PID_Update();
+			
+		}break;
+		case GO_Pararm2:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for GOP2");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			
+			Motor_Update();
+			PID_Update();
+			
+		}break;
+		case GO_Pararm3:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for GOP3");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			
+			Motor_Update();
+			PID_Update();
+			
+		}break;
+		case TEST_LM:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for Left_motor");
+			system_delay_ms(1000);
+		}break;
+		case TEST_RM:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for Right_motor");
+			system_delay_ms(1000);
+		}break;
+		case TEST_SERVO:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for Servo");
+			system_delay_ms(1000);
+		}break;
+	}
+	
+}
+
+void Show_pararm()
+{
+	tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+	tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+	tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+	tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+	tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
+	tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
+}
+void SET_Time()
+{
+	if(CAR_Mode!=STOP && Set_T>Time)
+	{
+		CAR_Mode=STOP;
+		Turn_mode_Init();
+	}
 }

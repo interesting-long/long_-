@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               19/09/25  23:30:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    54   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), ">");
    55   3                      }
    56   2                      else
-C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               19/09/25  23:30:00  PAGE 2   
 
    57   2                      {
    58   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), ">");
@@ -134,7 +134,7 @@ stmt  level    source
   118   2                      if(Flag<max_OLED_ROW)
   119   2                      {
   120   3                              switch((int)(bujin*100))
-C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               19/09/25  23:30:00  PAGE 3   
 
   121   3                              {
   122   4                              case 1000:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"10  ");break;
@@ -202,7 +202,7 @@ stmt  level    source
   184   1              Refesh_arrow();
   185   1      }
   186          void Key3_handle2()
-C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 4   
+C251 COMPILER V5.60.0,  menu                                                               19/09/25  23:30:00  PAGE 4   
 
   187          {
   188   1              eeprom_save_Num();
@@ -272,7 +272,7 @@ Module Information          Static   Overlayable
   hconst size          =        65     ------
 End of Module Information.
 
-C251 COMPILER V5.60.0,  menu                                                               12/09/25  16:41:15  PAGE 5   
+C251 COMPILER V5.60.0,  menu                                                               19/09/25  23:30:00  PAGE 5   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -14,10 +14,6 @@ typedef enum
 #define Flag_press_time 50
 #define Flag_trigg_time 20
 
-/*****枚举****/
-#define GO 1
-#define STOP 2
-
 extern unsigned char State;
 extern unsigned char keynumber;
 extern unsigned char Key_count;
@@ -26,5 +22,5 @@ extern unsigned char CAR_Mode;
 void Key_scaner(void);
 /*内部调用函数*/
 unsigned char Key_Number(void);
-
+void Turn_mode(void);
 #endif

@@ -1,7 +1,6 @@
 #include "control.h"
 
-PID servo_pid;
-
+unsigned char CAR_Mode=STOP;
 void Ser_Servo_Duty(int value)
 {
     pwm_set_duty(Servo_Pwm,value);
@@ -14,18 +13,21 @@ void Ser_Servo_Duty(int value)
  * 例子：Servo_turn_pid(变量,-80,80);
  * 将变量的值与0进行对比，输出信号控制舵机,而舵机的限幅是正负80
  */
-void Servo_turn_pid(float point,int min,int max)
+void Servo_turn_pid(float Current,int min,int max)
 {
-    float servo_value;
-    int temp;
+  float servo_value;
+  float temp;
+	max=Servo_max;
+	min=Servo_min;
 	if(min>max)
 	{
 		temp=max;
 		max=min;
 		min=temp;
 	}
-    servo_value=Normal_PID(&servo_pid,point,0.0);
+    servo_value=Normal_PID(&servo_pid,100*Current,0);
     temp=func_limit_ab(servo_value,min,max);
+	
 	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
 }
 /*
@@ -75,6 +77,59 @@ void MotorR_SetSpeed(int pwm)
  */
 void Motor_Update()
 {  
-	MotorR_SetSpeed(100*MorR_Max);
-	MotorL_SetSpeed(100*MorL_Max);
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			MotorR_SetSpeed(100*ML);
+			MotorL_SetSpeed(100*MR);
+		}break;
+		case GO_Pararm1:
+		{
+			MotorR_SetSpeed(100*ML1);
+			MotorL_SetSpeed(100*MR1);
+		}break;
+		case GO_Pararm2:
+		{
+			MotorR_SetSpeed(100*ML2);
+			MotorL_SetSpeed(100*MR2);
+		}break;
+		case GO_Pararm3:
+		{
+			MotorR_SetSpeed(100*ML3);
+			MotorL_SetSpeed(100*MR3);
+		}break;
+	}
+	
+}
+void PID_Update()
+{  
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			servo_pid.Kp = KP;
+			servo_pid.Ki = 0;
+			servo_pid.Kd = KD;
+		}break;
+		case GO_Pararm1:
+		{
+			servo_pid.Kp = KP1;
+			servo_pid.Ki = 0;
+			servo_pid.Kd = KD1;
+		}break;
+		case GO_Pararm2:
+		{
+			servo_pid.Kp = KP2;
+			servo_pid.Ki = 0;
+			servo_pid.Kd = KD2;
+		}break;
+		case GO_Pararm3:
+		{
+			servo_pid.Kp = KP3;
+			servo_pid.Ki = 0;
+			servo_pid.Kd = KD3;
+		}break;
+	}
+	
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           20/09/25  16:53:41  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -10,8 +10,8 @@ COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\function.c LARGE NOALIAS 
 stmt  level    source
 
     1          #include "function.h"
-    2          
-    3          
+    2          int Set_T;
+    3          PID servo_pid;
     4          /*函数：常见的PID计算
     5           * 参数1：结构体变量的地址
     6           * 参数2：当前值
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          memcpy(&x, &i, 4);
    55   1      
    56   1          x = 0.5f * (x + number / x);
-C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           20/09/25  16:53:41  PAGE 2   
 
    57   1          return x;
    58   1      }
@@ -80,67 +80,168 @@ stmt  level    source
    66   1          pwm_init(MotorR_pwm1, 17000, 0);
    67   1      }
    68          
-   69          void Servo_Init()
-   70          {
-   71   1          system_delay_init();
-   72   1          pwm_init(Servo_Pwm,50,Servo_Mide+65);
-   73   1      }
-   74          void CAR_STOP()
-   75          {
-   76   1              MotorL_SetSpeed(0);
-   77   1              MotorR_SetSpeed(0);
-   78   1              Ser_Servo_Duty(Servo_Mide);
-   79   1      }
-   80          void CAR_Init()
-   81          {
-   82   1              Ser_Servo_Duty(Servo_Mide);
-   83   1      }
-   84          //停车检测
-   85          void Protect()
-   86          {
-   87   1          if((ADC_1+ADC_2+ADC_3+ADC_4)<10)
-   88   1              {
-   89   2                      while(CAR_Mode==GO)
-   90   2                      {
-   91   3                              CAR_STOP();
-   92   3                      }
-   93   2              }
-   94   1      }
-   95          /*自定义初始化函数库*/
-   96          void init_all()
-   97          {
-   98   1              Motor_Init();
-   99   1              Servo_Init();
-  100   1              iap_init();
-  101   1              ADC_GetInit();
-  102   1              tft180_init();
-  103   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
-  104   1      //      eeprom_read_Num();
-  105   1              menu_Init();
-  106   1              pit_ms_init(TIM0_PIT, 5);
-  107   1      }
+   69          
+   70          void Servo_Init()
+   71          {
+   72   1              
+   73   1          system_delay_init();
+   74   1          pwm_init(Servo_Pwm,50,Servo_Mide);
+   75   1      }
+   76          void CAR_STOP()
+   77          {
+   78   1              MotorL_SetSpeed(0);
+   79   1              MotorR_SetSpeed(0);
+   80   1              Ser_Servo_Duty(Servo_Mide);
+   81   1      }
+   82          
+   83          //停车检测
+   84          void Protect()
+   85          {
+   86   1          if((ADC_1+ADC_2+ADC_3+ADC_4)<PRO)
+   87   1              {
+   88   2                      CAR_Mode=STOP;
+   89   2                      Turn_mode_Init();
+   90   2              }
+   91   1      }
+   92          /*自定义初始化函数库*/
+   93          void init_all()
+   94          {
+   95   1              Motor_Init();
+   96   1              Servo_Init();
+   97   1              iap_init();
+   98   1              ADC_GetInit();
+   99   1              tft180_init();
+  100   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
+  101   1              eeprom_read_Num();
+  102   1              menu_Init();
+  103   1              pit_ms_init(TIM0_PIT, 5);
+  104   1      //      pit_ms_init(TIM1_PIT, 20);
+  105   1      }
+  106          
+  107          //切换模式的初始函数
+  108          void Turn_mode_Init(void)
+  109          {
+  110   1              CAR_STOP();
+  111   1              Set_T=0;
+  112   1              switch(CAR_Mode)
+  113   1              {
+  114   2                      case STOP:
+  115   2                      {
+  116   3                              CAR_STOP();
+  117   3                              tft180_clear(RGB565_WHITE);
+  118   3                              tft180_show_string(0,3*16,"Test for STOP");
+  119   3                              system_delay_ms(1000);
+  120   3                              tft180_clear(RGB565_WHITE);
+  121   3                              Refesh_arrow();
+  122   3                              menu_display_content();
+C251 COMPILER V5.60.0,  function                                                           20/09/25  16:53:41  PAGE 3   
+
+  123   3                      }break;
+  124   2                      case GO:
+  125   2                      {
+  126   3                              tft180_clear(RGB565_WHITE);
+  127   3                              tft180_show_string(0,3*16,"Test for GO");
+  128   3                              system_delay_ms(1000);
+  129   3                              tft180_clear(RGB565_WHITE);
+  130   3                              
+  131   3                              Motor_Update();
+  132   3                              PID_Update();
+  133   3                              
+  134   3                      }break;
+  135   2                      case GO_Pararm1:
+  136   2                      {
+  137   3                              tft180_clear(RGB565_WHITE);
+  138   3                              tft180_show_string(0,3*16,"Test for GOP1");
+  139   3                              system_delay_ms(1000);
+  140   3                              tft180_clear(RGB565_WHITE);
+  141   3                              
+  142   3                              Motor_Update();
+  143   3                              PID_Update();
+  144   3                              
+  145   3                      }break;
+  146   2                      case GO_Pararm2:
+  147   2                      {
+  148   3                              tft180_clear(RGB565_WHITE);
+  149   3                              tft180_show_string(0,3*16,"Test for GOP2");
+  150   3                              system_delay_ms(1000);
+  151   3                              tft180_clear(RGB565_WHITE);
+  152   3                              
+  153   3                              Motor_Update();
+  154   3                              PID_Update();
+  155   3                              
+  156   3                      }break;
+  157   2                      case GO_Pararm3:
+  158   2                      {
+  159   3                              tft180_clear(RGB565_WHITE);
+  160   3                              tft180_show_string(0,3*16,"Test for GOP3");
+  161   3                              system_delay_ms(1000);
+  162   3                              tft180_clear(RGB565_WHITE);
+  163   3                              
+  164   3                              Motor_Update();
+  165   3                              PID_Update();
+  166   3                              
+  167   3                      }break;
+  168   2                      case TEST_LM:
+  169   2                      {
+  170   3                              tft180_clear(RGB565_WHITE);
+  171   3                              tft180_show_string(0,3*16,"Test for Left_motor");
+  172   3                              system_delay_ms(1000);
+  173   3                      }break;
+  174   2                      case TEST_RM:
+  175   2                      {
+  176   3                              tft180_clear(RGB565_WHITE);
+  177   3                              tft180_show_string(0,3*16,"Test for Right_motor");
+  178   3                              system_delay_ms(1000);
+  179   3                      }break;
+  180   2                      case TEST_SERVO:
+  181   2                      {
+  182   3                              tft180_clear(RGB565_WHITE);
+  183   3                              tft180_show_string(0,3*16,"Test for Servo");
+  184   3                              system_delay_ms(1000);
+  185   3                      }break;
+  186   2              }
+  187   1              
+  188   1      }
+C251 COMPILER V5.60.0,  function                                                           20/09/25  16:53:41  PAGE 4   
+
+  189          
+  190          void Show_pararm()
+  191          {
+  192   1              tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+  193   1              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+  194   1              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+  195   1              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+  196   1              tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
+  197   1              tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
+  198   1      }
+  199          void SET_Time()
+  200          {
+  201   1              if(CAR_Mode!=STOP && Set_T>Time)
+  202   1              {
+  203   2                      CAR_Mode=STOP;
+  204   2                      Turn_mode_Init();
+  205   2              }
+  206   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       810     ------
+  code size            =      1563     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =    ------         24
+  xdata size           =        46         24
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  function                                                           12/09/25  16:41:15  PAGE 3   
-
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =    ------     ------
+  hconst size          =       156     ------
 End of Module Information.
 
 

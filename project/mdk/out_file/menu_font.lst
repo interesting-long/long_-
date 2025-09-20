@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          12/09/25  16:41:15  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          19/09/25  23:30:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -30,20 +30,20 @@ stmt  level    source
    18           *结构体第四行是   子指针数组(位置对应行数)用函数配置
    19           */
    20          struct Menu Page[Struct_Number]={
-   21              {   2,
-   22                      {"back","PID","PWM","Time","di_a","Prot","duqu",""}},
-   23              {   0,
-   24                      {"back","Max_K","Max_K","Min_K","Min_K","ser_y","","",""}},
-   25              {   1,
-   26                      {"back","R_PWM","L_PWM","","","","","",""}},
+   21              {   0,
+   22                      {"back","PID","PWM","Time","Test","","",""}},
+   23              {   1,
+   24                      {"back","KP","KD","KP1","KD1","KP2","KD2","KP3","KD3"}},
+   25              {   2,
+   26                      {"back","R_PWM","L_PWM","PRO","RPWM1","LPWM2","RPWM2","LPWM2","RPWM3","LPWM3"}},
    27              {   3,
-   28                      {"back","M_Te","sp_e","Slowe","long","lvv_","Kai","",""}},
+   28                      {"back","M_Te","sp_e","","","","","",""}},
    29              {   4,
-   30                      {"back","diyu","dikp","sper","s_add","","","",""}},
+   30                      {"back","L_M","R_M","Servo","GOP1","GOP2","GOP3","",""}},
    31              {   5,
-   32                      {"back","2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+   32                      {"back","","","","","","","",""}},
    33              {   6,
-   34                      {"back","e2-5","hallo","hallo","hallo","hallo","hallo","hallo","hallo"}},
+   34                      {"back","","","","","","","",""}},
    35          };
    36          
    37          struct Menu *Pin=&Page[0];//灵活指针
@@ -59,7 +59,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      1083     ------
+  xdata size           =      1197     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -67,11 +67,11 @@ Module Information          Static   Overlayable
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          12/09/25  16:41:15  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          19/09/25  23:30:00  PAGE 2   
 
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      1128     ------
+  hconst size          =      1242     ------
 End of Module Information.
 
 

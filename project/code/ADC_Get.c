@@ -3,22 +3,22 @@
 unsigned int raw_adc_data[4][5]={0};        // 原始数据数组
 unsigned int filtered_adc[4]={0};           // 滤波后的ADC值数组
 
-//电感ADC通道和定时器初始化
+//电感ADC通道和定时器初始化//
 void ADC_GetInit(void)
 {   
-    adc_init(ADC_CH0_P10,ADC_10BIT);
-    adc_init(ADC_CH9_P01,ADC_10BIT);
-    adc_init(ADC_CH13_P05,ADC_10BIT);
-    adc_init(ADC_CH14_P06,ADC_10BIT);
+    adc_init(ADC1_PIN,ADC_10BIT);
+    adc_init(ADC2_PIN,ADC_10BIT);
+    adc_init(ADC3_PIN,ADC_10BIT);
+    adc_init(ADC4_PIN,ADC_10BIT);
 }
 
 //ADC采样+滤波
 unsigned int adc_filter(unsigned int *samples, unsigned char count)
 {
-    unsigned int temp[5];
-    unsigned char i,j;
-    unsigned int swap;
+    unsigned char i;
     unsigned long sum = 0;
+		unsigned int max=samples[0];
+		unsigned int min=samples[0];
     
     if (count < 3) 
     {
@@ -32,29 +32,13 @@ unsigned int adc_filter(unsigned int *samples, unsigned char count)
     
     for (i = 0; i < count; i++) 
     {
-        temp[i] = samples[i];
-    }
-
-    for (i = 0; i < count - 1; i++) 
-    {
-        for (j = 0; j < count - i - 1; j++) 
-        {
-            if (temp[j] > temp[j + 1]) 
-            {
-                swap = temp[j];
-                temp[j] = temp[j + 1];
-                temp[j + 1] = swap;
-            }
-        }
-    }
+			max=(samples[i] > max ) ? samples[i]:max;
+			min=(samples[i] < min ) ? samples[i]:min;
+			sum += samples[i];
+		}
+     
     
-    sum = 0;
-    for (i = 1; i < count - 1; i++) 
-    {
-        sum += temp[i];
-    }
-    
-    return (unsigned int)(sum / (count - 2));
+    return (unsigned int)((sum - max - min) / (count - 2));
 }
 
 // ADC采样 和 滤波处理 函数
@@ -66,10 +50,10 @@ void ADC_SampleAndFilter(void)
     // 采集5次数据
     for (sample_index = 0; sample_index < 5; sample_index++) 
     {
-        raw_adc_data[0][sample_index] = adc_convert(ADC_CH14_P06);
-        raw_adc_data[1][sample_index] = adc_convert(ADC_CH13_P05);
-        raw_adc_data[2][sample_index] = adc_convert(ADC_CH9_P01);
-        raw_adc_data[3][sample_index] = adc_convert(ADC_CH0_P10);
+        raw_adc_data[0][sample_index] = adc_convert(ADC1_PIN);
+        raw_adc_data[1][sample_index] = adc_convert(ADC2_PIN);
+        raw_adc_data[2][sample_index] = adc_convert(ADC3_PIN);
+        raw_adc_data[3][sample_index] = adc_convert(ADC4_PIN);
     }
     
     // 滤波处理

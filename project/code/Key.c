@@ -3,23 +3,44 @@
 int Press_time;
 int Trigg_time;
 unsigned char keynumber;
+unsigned char last_keynumber;
 unsigned char State;
 unsigned char Key_count;
 unsigned Time_dou;
 
-unsigned char CAR_Mode=STOP;
+
 
 unsigned char Key_Number(void)
 {
     unsigned char KeyNumber=0;
 
-    if(gpio_get_level(IO_P46)==0){KeyNumber=1;}//左
-    if(gpio_get_level(IO_P45)==0){KeyNumber=2;}//右
-    if(gpio_get_level(IO_P37)==0){KeyNumber=3;}//中
-    if(gpio_get_level(IO_P36)==0){KeyNumber=4;}//上
+    if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
+    if(gpio_get_level(IO_P07)==0){KeyNumber=2;}//右
+    if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
+    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
     return KeyNumber;
 }
-
+void Turn_mode(void)
+{
+	if((void *)Pin==(void *)&Page[4])
+	{
+		switch(Flag)
+		{
+			case 2:CAR_Mode=(CAR_Mode==TEST_LM) ? STOP : TEST_LM;break;
+			case 3:CAR_Mode=(CAR_Mode==TEST_RM) ? STOP : TEST_RM;break;
+			case 4:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
+			case 5:CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;break;
+			case 6:CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;break;
+			case 7:CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;break;
+			default :break;
+		}
+	}
+	else
+	{
+		CAR_Mode=(CAR_Mode==STOP) ? GO : STOP;
+	}
+		Turn_mode_Init();
+}
 void Key_scaner(void)
 {
 	keynumber=Key_Number();
@@ -46,7 +67,8 @@ void Key_scaner(void)
 				if(Key_count>=Time_dou)
 				{
 					State=State_Press;
-					Key=keynumber;
+					last_keynumber=keynumber;
+//					Key=keynumber;
 				}
 			}
 			break;
@@ -55,6 +77,7 @@ void Key_scaner(void)
 		{
 			if(keynumber==0)
 			{
+//				Key=last_keynumber;
 				State=State_Release_dou;
 				Key_count=0;
 				Press_time=0;
@@ -67,15 +90,9 @@ void Key_scaner(void)
 					Trigg_time++;
 					if(keynumber==3)//长按触发的操作
 					{
-						if(CAR_Mode==STOP)
-						{
-							CAR_Mode=GO;
-						}
-						else
-						{
-							CAR_Mode=STOP;
-						}
+						Turn_mode();
 						Press_time=0;
+						last_keynumber=0;
 					}
 					else if(Trigg_time>Flag_trigg_time)
 					{
@@ -95,7 +112,7 @@ void Key_scaner(void)
 				if(Key_count>=Time_dou)
 				{
 					State=State_Release;
-					Key=0;  // 松开时清零
+					Key=last_keynumber;  // 松开时清零
 				}
 			}
 			else

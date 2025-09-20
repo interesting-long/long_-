@@ -1,32 +1,96 @@
 #include "zf_common_headfile.h"
 int T;
-float test=1.00;
-void pit_handler (void);
+int T3;
+void pit_handler0 (void);
+//void pit_handler1 (void);
 void main()
 {
-    clock_init(SYSTEM_CLOCK_40M);				// 务必保留
+	clock_init(SYSTEM_CLOCK_40M);				// 务必保留
 	debug_init();								// 务必保留
 	/****************************************************/
-	tim0_irq_handler = pit_handler;// 设置定时器1中断回调函数
+	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
+//	tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
 	init_all();
+	
     while(1)
 	{
-		if(Key)
+//		tft180_show_int16(5*8,6*16,Set_T);
+//		tft180_show_int16(5*8,7*16,T3);
+		switch(CAR_Mode)
 		{
-			EA=0;
-			menu_handle_key(Key);
-			Key=0;
-			EA=1;
+			case STOP:if(Key)
+			{
+				EA=0;
+				menu_handle_key(Key);
+				Key=0;
+				EA=1;
+			}break;
+			case GO:
+			{
+				EA=0;
+				Servo_turn_pid(unification(),-80,80);
+				SET_Time();
+				Protect();
+				EA=1;
+			}break;
+			/****测试程序*****/
+			case TEST_LM: LM_Test();break;
+			case TEST_RM: RM_Test();break;
+			case TEST_SERVO: Serve_Test();break;
+			case GO_Pararm1: 
+			{
+				EA=0;
+				Servo_turn_pid(unification(),-80,80);
+				SET_Time();
+				Protect();
+				EA=1;
+			}break;
+			case GO_Pararm2: 
+			{
+				EA=0;
+				Servo_turn_pid(unification(),-80,80);
+				SET_Time();
+				Protect();
+				EA=1;
+			}break;
+			case GO_Pararm3: 
+			{
+				EA=0;
+				Servo_turn_pid(unification(),-80,80);
+				SET_Time();
+				Protect();
+				EA=1;
+			}break;
 		}
-    }
+		
+   }
 }
-void pit_handler(void)
+void pit_handler0(void)
 {
-	tft180_show_int16(40,0*16,ADC_1);
-	tft180_show_int16(40,1*16,ADC_2);
-	tft180_show_int16(40,2*16,ADC_3);
-	tft180_show_int16(40,3*16,ADC_4);
+	T++;
+	T3++;
 	ADC_SampleAndFilter();
 	Key_scaner();
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			if(T>20)
+			{
+				T=0;
+				Show_pararm();
+			}
+			if(T3>200)
+			{
+				T3=0;
+				Set_T++;
+			}
+		}break;
+	}
+	
 }
 
+//void pit_handler1(void)
+//{
+//	Servo_turn_pid(unification(),-80,80);
+//}

@@ -44,7 +44,9 @@
 ".\out_file\function.obj",
 ".\out_file\Key.obj",
 ".\out_file\menu.obj",
-".\out_file\menu_font.obj" 
+".\out_file\menu_font.obj",
+".\out_file\Device_Test.obj",
+".\out_file\oled.obj" 
 TO ".\out_file\SEEKFREE" 
 PRINT(".\out_file\SEEKFREE.map") CASE DISABLEWARNING (57,16) 
 REMOVEUNUSED 

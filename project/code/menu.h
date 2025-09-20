@@ -2,7 +2,7 @@
 #define __MENU_H__
 
 #include "zf_common_headfile.h"
-
+extern char Flag;            //行数标志位
 extern unsigned char Key;
 extern unsigned char Show_image_mode;
 /******外部部调用函数*********/

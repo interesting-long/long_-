@@ -1,0 +1,40 @@
+C251 COMPILER V5.60.0,  WERT                                                               13/09/25  20:10:56  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE WERT
+OBJECT MODULE PLACED IN .\out_file\WERT.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\WERT.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE) BRO
+                    -WSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;.
+                    -.\user;..\code) DEBUG PRINT(.\out_file\WERT.lst) OBJECT(.\out_file\WERT.obj) 
+
+stmt  level    source
+
+    1          #include "WERT.h"
+    2          void test(void)
+    3          {
+    4   1              
+    5   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =         1     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

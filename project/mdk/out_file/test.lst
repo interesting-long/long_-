@@ -1,0 +1,43 @@
+C251 COMPILER V5.60.0,  test                                                               13/09/25  20:11:59  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE test
+OBJECT MODULE PLACED IN .\out_file\test.obj
+COMPILER INVOKED BY: D:\keil\C251\BIN\C251.EXE ..\code\test.c LARGE NOALIAS FLOAT64 WARNINGLEVEL(3) OPTIMIZE(3,SIZE) BRO
+                    -WSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;.
+                    -.\user;..\code) DEBUG PRINT(.\out_file\test.lst) OBJECT(.\out_file\test.obj) 
+
+stmt  level    source
+
+    1          #include "test.h"
+    2          
+    3          void Serve_Test(void)
+    4          {
+    5   1              unsigned char i;
+    6   1              unsigned char j;
+    7   1              for(j=0;j<3;j++)
+    8   1              {
+    9   2                      for(i=0;i<200;i++)
+   10   2                      {
+   11   3                              Ser_Servo_Duty(Servo_Mide+Servo_min+(Servo_max-Servo_min)/200*i);
+*** ERROR C25 IN LINE 11 OF ..\code\test.c: syntax error near '70'
+*** ERROR C25 IN LINE 11 OF ..\code\test.c: syntax error near ')'
+   12   3                              system_delay_ms(5);
+*** ERROR C25 IN LINE 12 OF ..\code\test.c: syntax error near '5'
+*** ERROR C53 IN LINE 12 OF ..\code\test.c: redefinition of 'system_delay_ms': different return types
+   13   3                      }
+*** ERROR C25 IN LINE 13 OF ..\code\test.c: syntax error near '}'
+   14   3                      for(i=200;i>0;i--)
+*** ERROR C25 IN LINE 14 OF ..\code\test.c: syntax error near '='
+*** ERROR C25 IN LINE 14 OF ..\code\test.c: syntax error near '>'
+*** ERROR C25 IN LINE 14 OF ..\code\test.c: syntax error near '--'
+   15   3                      {
+   16   3                              Ser_Servo_Duty(Servo_Mide+Servo_min+(Servo_max-Servo_min)/200*i);
+*** ERROR C25 IN LINE 16 OF ..\code\test.c: syntax error near '805'
+*** ERROR C25 IN LINE 16 OF ..\code\test.c: syntax error near '/'
+*** ERROR C25 IN LINE 16 OF ..\code\test.c: syntax error near ')'
+   17   3                              system_delay_ms(5);
+*** ERROR C25 IN LINE 17 OF ..\code\test.c: syntax error near '5'
+*** ERROR C7 IN LINE 17 OF ..\code\test.c: compilation aborted
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  13 ERROR(S)

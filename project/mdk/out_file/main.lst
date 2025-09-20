@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               12/09/25  17:12:15  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               20/09/25  16:53:41  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -11,46 +11,112 @@ stmt  level    source
 
     1          #include "zf_common_headfile.h"
     2          int T;
-    3          float test=1.00;
-    4          void pit_handler (void);
-    5          void main()
-    6          {
-    7   1          clock_init(SYSTEM_CLOCK_40M);                               // 务必保留
-    8   1              debug_init();                                                           // 务必保留
-    9   1              /****************************************************/
-   10   1              tim0_irq_handler = pit_handler;// 设置定时器1中断回调函数
-   11   1              init_all();
-   12   1          while(1)
-   13   1              {
-   14   2                      if(Key)
-   15   2                      {
-   16   3                              EA=0;
-   17   3                              menu_handle_key(Key);
-   18   3                              Key=0;
-   19   3                              EA=1;
-   20   3                      }
-   21   2          }
-   22   1      }
-   23          void pit_handler(void)
-   24          {
-   25   1              tft180_show_int16(40,0*16,ADC_1);
-   26   1              tft180_show_int16(40,1*16,ADC_2);
-   27   1              tft180_show_int16(40,2*16,ADC_3);
-   28   1              tft180_show_int16(40,3*16,ADC_4);
-   29   1              ADC_SampleAndFilter();
-   30   1              Key_scaner();
-   31   1      }
-   32          
+    3          int T3;
+    4          void pit_handler0 (void);
+    5          //void pit_handler1 (void);
+    6          void main()
+    7          {
+    8   1              clock_init(SYSTEM_CLOCK_40M);                           // 务必保留
+    9   1              debug_init();                                                           // 务必保留
+   10   1              /****************************************************/
+   11   1              tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
+   12   1      //      tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
+   13   1              init_all();
+   14   1              
+   15   1          while(1)
+   16   1              {
+   17   2      //              tft180_show_int16(5*8,6*16,Set_T);
+   18   2      //              tft180_show_int16(5*8,7*16,T3);
+   19   2                      switch(CAR_Mode)
+   20   2                      {
+   21   3                              case STOP:if(Key)
+   22   3                              {
+   23   4                                      EA=0;
+   24   4                                      menu_handle_key(Key);
+   25   4                                      Key=0;
+   26   4                                      EA=1;
+   27   4                              }break;
+   28   3                              case GO:
+   29   3                              {
+   30   4                                      EA=0;
+   31   4                                      Servo_turn_pid(unification(),-80,80);
+   32   4                                      SET_Time();
+   33   4                                      Protect();
+   34   4                                      EA=1;
+   35   4                              }break;
+   36   3                              /****测试程序*****/
+   37   3                              case TEST_LM: LM_Test();break;
+   38   3                              case TEST_RM: RM_Test();break;
+   39   3                              case TEST_SERVO: Serve_Test();break;
+   40   3                              case GO_Pararm1: 
+   41   3                              {
+   42   4                                      EA=0;
+   43   4                                      Servo_turn_pid(unification(),-80,80);
+   44   4                                      SET_Time();
+   45   4                                      Protect();
+   46   4                                      EA=1;
+   47   4                              }break;
+   48   3                              case GO_Pararm2: 
+   49   3                              {
+   50   4                                      EA=0;
+   51   4                                      Servo_turn_pid(unification(),-80,80);
+   52   4                                      SET_Time();
+   53   4                                      Protect();
+   54   4                                      EA=1;
+   55   4                              }break;
+   56   3                              case GO_Pararm3: 
+   57   3                              {
+C251 COMPILER V5.60.0,  main                                                               20/09/25  16:53:41  PAGE 2   
+
+   58   4                                      EA=0;
+   59   4                                      Servo_turn_pid(unification(),-80,80);
+   60   4                                      SET_Time();
+   61   4                                      Protect();
+   62   4                                      EA=1;
+   63   4                              }break;
+   64   3                      }
+   65   2                      
+   66   2         }
+   67   1      }
+   68          void pit_handler0(void)
+   69          {
+   70   1              T++;
+   71   1              T3++;
+   72   1              ADC_SampleAndFilter();
+   73   1              Key_scaner();
+   74   1              switch(CAR_Mode)
+   75   1              {
+   76   2                      case GO:
+   77   2                      {
+   78   3                              if(T>20)
+   79   3                              {
+   80   4                                      T=0;
+   81   4                                      Show_pararm();
+   82   4                              }
+   83   3                              if(T3>200)
+   84   3                              {
+   85   4                                      T3=0;
+   86   4                                      Set_T++;
+   87   4                              }
+   88   3                      }break;
+   89   2              }
+   90   1              
+   91   1      }
+   92          
+   93          //void pit_handler1(void)
+   94          //{
+   95          //      Servo_turn_pid(unification(),-80,80);
+   96          //}
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       229     ------
+  code size            =       341     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         6     ------
+  xdata size           =         4     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -60,7 +126,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        11     ------
+  hconst size          =         2     ------
 End of Module Information.
 
 
