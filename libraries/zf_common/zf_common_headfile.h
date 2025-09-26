@@ -104,4 +104,6 @@
 #include "menu_font.h"
 #include "test.h"
 #include "Device_Test.h"
+#include "Strategy.h"
+
 #endif

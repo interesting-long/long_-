@@ -2,7 +2,7 @@
 
 unsigned int raw_adc_data[4][5]={0};        // 原始数据数组
 unsigned int filtered_adc[4]={0};           // 滤波后的ADC值数组
-
+unsigned int ADC_Num[7]={0};
 //电感ADC通道和定时器初始化//
 void ADC_GetInit(void)
 {   
@@ -10,6 +10,10 @@ void ADC_GetInit(void)
     adc_init(ADC2_PIN,ADC_10BIT);
     adc_init(ADC3_PIN,ADC_10BIT);
     adc_init(ADC4_PIN,ADC_10BIT);
+	
+//	adc_init(ADC5_PIN,ADC_10BIT);
+//    adc_init(ADC6_PIN,ADC_10BIT);
+//    adc_init(ADC8_PIN,ADC_10BIT);
 }
 
 //ADC采样+滤波
@@ -17,27 +21,23 @@ unsigned int adc_filter(unsigned int *samples, unsigned char count)
 {
     unsigned char i;
     unsigned long sum = 0;
-		unsigned int max=samples[0];
-		unsigned int min=samples[0];
+	unsigned int max=samples[0];
+	unsigned int min=samples[0];
     
     if (count < 3) 
     {
-        sum = 0;
         for (i = 0; i < count; i++) 
         {
             sum += samples[i];
         }
         return (unsigned int)(sum / count);
     }
-    
     for (i = 0; i < count; i++) 
     {
-			max=(samples[i] > max ) ? samples[i]:max;
-			min=(samples[i] < min ) ? samples[i]:min;
-			sum += samples[i];
-		}
-     
-    
+		max=(samples[i] > max ) ? samples[i]:max;
+		min=(samples[i] < min ) ? samples[i]:min;
+		sum += samples[i];
+	}
     return (unsigned int)((sum - max - min) / (count - 2));
 }
 
@@ -68,7 +68,20 @@ void ADC_SampleAndFilter(void)
 	ADC_4 = (float)(filtered_adc[3]*1.0f);
 }
 
-
+//void ADC_ALL_GET()
+//{
+//	unsigned char i;
+//	for(i= 0;i<7;i++)
+//	{
+//		ADC_1=adc_convert(ADC1_PIN);
+//		ADC_2=adc_convert(ADC2_PIN);
+//		ADC_3=adc_convert(ADC3_PIN);
+//		ADC_4=adc_convert(ADC4_PIN);
+//		ADC_5=adc_convert(ADC5_PIN);
+//		ADC_6=adc_convert(ADC6_PIN);
+//		ADC_8=adc_convert(ADC8_PIN);
+//	}
+//}
 //电池电压检测
 bit Battery_Init=0;
 unsigned int battery_get(void)

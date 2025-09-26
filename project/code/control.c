@@ -13,21 +13,12 @@ void Ser_Servo_Duty(int value)
  * 例子：Servo_turn_pid(变量,-80,80);
  * 将变量的值与0进行对比，输出信号控制舵机,而舵机的限幅是正负80
  */
-void Servo_turn_pid(float Current,int min,int max)
+void Servo_turn_pid(float Current)
 {
   float servo_value;
   float temp;
-	max=Servo_max;
-	min=Servo_min;
-	if(min>max)
-	{
-		temp=max;
-		max=min;
-		min=temp;
-	}
     servo_value=Normal_PID(&servo_pid,100*Current,0);
-    temp=func_limit_ab(servo_value,min,max);
-	
+    temp=func_limit_ab(servo_value,-90,90);
 	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
 }
 /*

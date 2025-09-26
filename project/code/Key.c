@@ -14,30 +14,58 @@ unsigned char Key_Number(void)
 {
     unsigned char KeyNumber=0;
 
-    if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
-    if(gpio_get_level(IO_P07)==0){KeyNumber=2;}//右
-    if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
-    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
+//    if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
+//    if(gpio_get_level(IO_P07)==0){KeyNumber=2;}//右
+//    if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
+//    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
+	
+	if(gpio_get_level(IO_P45)==0){KeyNumber=1;}//右
+    if(gpio_get_level(IO_P26)==0){KeyNumber=2;}//上
+    if(gpio_get_level(IO_P46)==0){KeyNumber=3;}//下
+    if(gpio_get_level(IO_P07)==0){KeyNumber=4;}//左
     return KeyNumber;
 }
 void Turn_mode(void)
 {
-	if((void *)Pin==(void *)&Page[4])
+	if((void *)Pin==(void *)&Page[0])
 	{
 		switch(Flag)
 		{
-			case 2:CAR_Mode=(CAR_Mode==TEST_LM) ? STOP : TEST_LM;break;
-			case 3:CAR_Mode=(CAR_Mode==TEST_RM) ? STOP : TEST_RM;break;
-			case 4:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
-			case 5:CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;break;
-			case 6:CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;break;
-			case 7:CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;break;
+			case 2:CAR_Mode=(CAR_Mode==GO) ? STOP : GO;break;
+			case 3:CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;break;
+			case 4:CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;break;
+			case 5:CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;break;
+			case 8:CAR_Mode=(CAR_Mode==ADC_Show) ? STOP : ADC_Show;break;
 			default :break;
 		}
 	}
-	else
+	else if((void *)Pin==(void *)&Page[5])
 	{
-		CAR_Mode=(CAR_Mode==STOP) ? GO : STOP;
+		switch(Flag)
+		{
+			case 3:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
+			default :break;
+		}
+	}
+	else if((void *)Pin==(void *)&Page[6])
+	{
+		CAR_Mode=(CAR_Mode==TEST_PWM) ? STOP : TEST_PWM;
+	}
+	else if((void *)Pin==(void *)&Page[1])
+	{
+		CAR_Mode=(CAR_Mode==GO) ? STOP : GO;
+	}
+	else if((void *)Pin==(void *)&Page[2])
+	{
+		CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;
+	}
+	else if((void *)Pin==(void *)&Page[3])
+	{
+		CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;
+	}
+	else if((void *)Pin==(void *)&Page[4])
+	{
+		CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;
 	}
 		Turn_mode_Init();
 }

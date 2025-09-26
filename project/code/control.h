@@ -1,3 +1,7 @@
+// Header:
+// File Name: 
+// Author:
+// Date:
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 
@@ -17,16 +21,16 @@ typedef enum
 	STOP,
 	GO,
 	TEST_SERVO,
-	TEST_LM,
-	TEST_RM,
+	TEST_PWM,
 	GO_Pararm1,
 	GO_Pararm2,
-	GO_Pararm3
+	GO_Pararm3,
+	ADC_Show
 }MODE;
 extern unsigned char CAR_Mode;
 
 /*外部调用函数*/
-void Servo_turn_pid(float Current,int min,int max);
+void Servo_turn_pid(float Current);
 void Motor_Update();
 void PID_Update();
 void Ser_Servo_Duty(int value);

@@ -844,6 +844,16 @@
               <FileType>5</FileType>
               <FilePath>..\code\oledfont.h</FilePath>
             </File>
+            <File>
+              <FileName>Strategy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Strategy.c</FilePath>
+            </File>
+            <File>
+              <FileName>Strategy.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\Strategy.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -6,10 +6,11 @@ float Num[Num_Col][Page_Row_Number]={
         {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
         {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
         {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+		{-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
         {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 }};//Êý¾Ý´æ´¢µÄÊý×é
 
-unsigned char Page0_children[Page_Row_Number+1]={0,1, 2,3,4};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýËÄÎåÐÐ×ªµ½Page[1],Page[2]£¬Page[3]£¬Page[4]£¬
-unsigned char Page1_children[Page_Row_Number+1]={0, 5, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×ªµ½Page[5],Page[6]
+unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýËÄÎåÐÐ×ªµ½Page[1],Page[2]£¬Page[3]£¬Page[4]£¬
+unsigned char Page5_children[Page_Row_Number+1]={0, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×ªµ½Page[5],Page[6]
 
 
 /*½á¹¹ÌåµÚÒ»ÐÐÊÇ   ÐòÁÐºÅ¡ª¡ª¡ª¡ªÓÃÓÚ¿ØÖÆÏÔÊ¾Êý¾ÝµÄÂß¼­(ÐòÁÐºÅÊÇ¶àÉÙ£¬¾ÍÏÔÊ¾ÄÄÒ»Êý×éµÄÊý¾Ý)
@@ -19,22 +20,24 @@ unsigned char Page1_children[Page_Row_Number+1]={0, 5, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×
  */
 struct Menu Page[Struct_Number]={
     {   0,
-            {"back","PID","PWM","Time","Test","","",""}},
+            {"back","GOP","GOP1","GOP2","GOP3","yuzhi","Time","ADC","Test"}},
     {   1,
-            {"back","KP","KD","KP1","KD1","KP2","KD2","KP3","KD3"}},
+            {"back","KP","KD","R_PWM","L_PWM","","","",""}},
     {   2,
-            {"back","R_PWM","L_PWM","PRO","RPWM1","LPWM2","RPWM2","LPWM2","RPWM3","LPWM3"}},
+            {"back","KP1","KD1","R_PWM1","L_PWM1","","","","",""}},
     {   3,
-            {"back","M_Te","sp_e","","","","","",""}},
+            {"back","KP2","KD2","R_PWM2","L_PWM2","","","",""}},
     {   4,
-            {"back","L_M","R_M","Servo","GOP1","GOP2","GOP3","",""}},
+            {"back","KP3","KD3","R_PWM3","L_PWM3","","","",""}},
     {   5,
-            {"back","","","","","","","",""}},
+            {"back","PWM","Servo","","","","","",""}},
     {   6,
-            {"back","","","","","","","",""}},
+            {"back","LPWM","RPWM","","","","","",""}},
+	{   7,
+            {"back","Pro","Lose","","","","","",""}},
 };
 
 struct Menu *Pin=&Page[0];//Áé»îÖ¸Õë
 
 //ADC²ÉÑù²ÎÊý	                                   			
-float ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0;  			//ADC²ÉÑùÖµ
+float ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;  			//ADC²ÉÑùÖµ

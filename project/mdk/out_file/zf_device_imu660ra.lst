@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 1   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_imu660ra
@@ -66,7 +66,7 @@ stmt  level    source
    47          *
    48          *                   // 软件 IIC 引脚
    49          *                   SCL/SPC           查看 zf_device_imu660ra.h 中 IMU660RA_SCL_PIN 宏定义
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 2   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 2   
 
    50          *                   SDA/DSI           查看 zf_device_imu660ra.h 中 IMU660RA_SDA_PIN 宏定义
    51          *                   VCC               3.3V电源
@@ -134,7 +134,7 @@ stmt  level    source
                
                        //------------------------------------------------------------------------------------------------------
              --------------
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 3   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 3   
 
                        // 函数简介     IMU660RA 读寄存器
                        // 参数说明     reg             寄存器地址
@@ -202,7 +202,7 @@ stmt  level    source
   164   2                              IMU660RA_SCK (0);
   165   2                              IMU660RA_MOSI(byte&0x80);
   166   2                              byte <<= 1;
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 4   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 4   
 
   167   2                              IMU660RA_SCK (1);
   168   2                              byte |= IMU660RA_MISO;
@@ -270,7 +270,7 @@ stmt  level    source
   224          
   225                  //------------------------------------------------------------------------------------------------------
              --------------
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 5   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 5   
 
   226                  // 函数简介     IMU660RA 写寄存器
   227                  // 参数说明     reg             寄存器地址
@@ -338,7 +338,7 @@ stmt  level    source
   280                  static void imu660ra_read_registers(uint8 reg, uint8 *dat, uint32 len)
   281                  {
   282   1                      uint16 i = 0;
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 6   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 6   
 
   283   1                      uint8 temp_data[8];
   284   1                      IMU660RA_CS(0);
@@ -406,7 +406,7 @@ stmt  level    source
              -，直接查看对应的变量即可
   338          // 备注信息     使用 SPI 的采集时间为69us
   339          //            使用 IIC 的采集时间为126us        采集加速度计的时间与采集陀螺仪的�
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 7   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 7   
 
              -��间一致的原因是都只是读取寄存器数据
   340          //-------------------------------------------------------------------------------------------------------
@@ -474,7 +474,7 @@ stmt  level    source
              -RA_SDA_PIN);        // 配置 IMU660RA 的 IIC 端口
                #endif
   392   1      
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 8   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 8   
 
   393   1          
   394   1          do
@@ -542,7 +542,7 @@ stmt  level    source
   445   4                  }
   446   3                  break;
   447   3                  
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 9   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 9   
 
   448   3                  case IMU660RA_ACC_SAMPLE_SGN_4G:
   449   3                  {
@@ -610,7 +610,7 @@ stmt  level    source
   506   4                      imu660ra_write_register(IMU660RA_GYR_RANGE, 0x02);
   507   4                      imu660ra_transition_factor[1] = 65.6;
   508   4                  }
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 13/09/25  20:04:16  PAGE 10  
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 26/09/25  17:50:07  PAGE 10  
 
   509   3                  break;
   510   3                  

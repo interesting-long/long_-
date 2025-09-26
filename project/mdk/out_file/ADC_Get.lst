@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  ADC_Get                                                            19/09/25  23:29:59  PAGE 1   
+C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE ADC_Get
@@ -13,7 +13,7 @@ stmt  level    source
     2          
     3          unsigned int raw_adc_data[4][5]={0};        // 原始数据数组
     4          unsigned int filtered_adc[4]={0};           // 滤波后的ADC值数组
-    5          
+    5          unsigned int ADC_Num[7]={0};
     6          //电感ADC通道和定时器初始化//
     7          void ADC_GetInit(void)
     8          {   
@@ -21,34 +21,34 @@ stmt  level    source
    10   1          adc_init(ADC2_PIN,ADC_10BIT);
    11   1          adc_init(ADC3_PIN,ADC_10BIT);
    12   1          adc_init(ADC4_PIN,ADC_10BIT);
-   13   1      }
-   14          
-   15          //ADC采样+滤波
-   16          unsigned int adc_filter(unsigned int *samples, unsigned char count)
-   17          {
-   18   1          unsigned char i;
-   19   1          unsigned long sum = 0;
-   20   1                      unsigned int max=samples[0];
-   21   1                      unsigned int min=samples[0];
-   22   1          
-   23   1          if (count < 3) 
-   24   1          {
-   25   2              sum = 0;
-   26   2              for (i = 0; i < count; i++) 
-   27   2              {
-   28   3                  sum += samples[i];
-   29   3              }
-   30   2              return (unsigned int)(sum / count);
-   31   2          }
-   32   1          
-   33   1          for (i = 0; i < count; i++) 
-   34   1          {
-   35   2                              max=(samples[i] > max ) ? samples[i]:max;
-   36   2                              min=(samples[i] < min ) ? samples[i]:min;
-   37   2                              sum += samples[i];
-   38   2                      }
-   39   1           
-   40   1          
+   13   1              
+   14   1      //      adc_init(ADC5_PIN,ADC_10BIT);
+   15   1      //    adc_init(ADC6_PIN,ADC_10BIT);
+   16   1      //    adc_init(ADC8_PIN,ADC_10BIT);
+   17   1      }
+   18          
+   19          //ADC采样+滤波
+   20          unsigned int adc_filter(unsigned int *samples, unsigned char count)
+   21          {
+   22   1          unsigned char i;
+   23   1          unsigned long sum = 0;
+   24   1              unsigned int max=samples[0];
+   25   1              unsigned int min=samples[0];
+   26   1          
+   27   1          if (count < 3) 
+   28   1          {
+   29   2              for (i = 0; i < count; i++) 
+   30   2              {
+   31   3                  sum += samples[i];
+   32   3              }
+   33   2              return (unsigned int)(sum / count);
+   34   2          }
+   35   1          for (i = 0; i < count; i++) 
+   36   1          {
+   37   2                      max=(samples[i] > max ) ? samples[i]:max;
+   38   2                      min=(samples[i] < min ) ? samples[i]:min;
+   39   2                      sum += samples[i];
+   40   2              }
    41   1          return (unsigned int)((sum - max - min) / (count - 2));
    42   1      }
    43          
@@ -66,7 +66,7 @@ stmt  level    source
    55   2              raw_adc_data[2][sample_index] = adc_convert(ADC3_PIN);
    56   2              raw_adc_data[3][sample_index] = adc_convert(ADC4_PIN);
    57   2          }
-C251 COMPILER V5.60.0,  ADC_Get                                                            19/09/25  23:29:59  PAGE 2   
+C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 2   
 
    58   1          
    59   1          // 滤波处理
@@ -81,47 +81,62 @@ stmt  level    source
    68   1              ADC_4 = (float)(filtered_adc[3]*1.0f);
    69   1      }
    70          
-   71          
-   72          //电池电压检测
-   73          bit Battery_Init=0;
-   74          unsigned int battery_get(void)
-   75          {
-   76   1          unsigned int BGV = (VREFH_ARR << 8) + VREFL_ARR;
-   77   1          unsigned int battery_adc = 0;
-   78   1          unsigned int ref_adc;
-   79   1          unsigned int battery_v;
-   80   1          unsigned char i;
-   81   1          
-   82   1          //通过全局变量标志位避免重复初始化
-   83   1          if(Battery_Init==0)
-   84   1          {
-   85   2              adc_init(ADC_CH15_POWR,ADC_10BIT);
-   86   2              adc_init(ADC_CH5_P15,ADC_10BIT);
-   87   2              Battery_Init=1;
-   88   2          }
-   89   1          //采集三次取平均
-   90   1          for (i = 0; i < 3; i++) 
-   91   1          {
-   92   2              battery_adc += adc_convert(ADC_CH5_P15);
-   93   2          }
-   94   1          battery_adc /= 3;                    
-   95   1          
-   96   1          ref_adc = adc_convert(ADC_CH15_POWR);
-   97   1          
-   98   1          battery_v = (unsigned int)((unsigned long)BGV * battery_adc / ref_adc);
-   99   1          
-  100   1          return battery_v*4;
-  101   1      }
+   71          //void ADC_ALL_GET()
+   72          //{
+   73          //      unsigned char i;
+   74          //      for(i= 0;i<7;i++)
+   75          //      {
+   76          //              ADC_1=adc_convert(ADC1_PIN);
+   77          //              ADC_2=adc_convert(ADC2_PIN);
+   78          //              ADC_3=adc_convert(ADC3_PIN);
+   79          //              ADC_4=adc_convert(ADC4_PIN);
+   80          //              ADC_5=adc_convert(ADC5_PIN);
+   81          //              ADC_6=adc_convert(ADC6_PIN);
+   82          //              ADC_8=adc_convert(ADC8_PIN);
+   83          //      }
+   84          //}
+   85          //电池电压检测
+   86          bit Battery_Init=0;
+   87          unsigned int battery_get(void)
+   88          {
+   89   1          unsigned int BGV = (VREFH_ARR << 8) + VREFL_ARR;
+   90   1          unsigned int battery_adc = 0;
+   91   1          unsigned int ref_adc;
+   92   1          unsigned int battery_v;
+   93   1          unsigned char i;
+   94   1          
+   95   1          //通过全局变量标志位避免重复初始化
+   96   1          if(Battery_Init==0)
+   97   1          {
+   98   2              adc_init(ADC_CH15_POWR,ADC_10BIT);
+   99   2              adc_init(ADC_CH5_P15,ADC_10BIT);
+  100   2              Battery_Init=1;
+  101   2          }
+  102   1          //采集三次取平均
+  103   1          for (i = 0; i < 3; i++) 
+  104   1          {
+  105   2              battery_adc += adc_convert(ADC_CH5_P15);
+  106   2          }
+  107   1          battery_adc /= 3;                    
+  108   1          
+  109   1          ref_adc = adc_convert(ADC_CH15_POWR);
+  110   1          
+  111   1          battery_v = (unsigned int)((unsigned long)BGV * battery_adc / ref_adc);
+  112   1          
+  113   1          return battery_v*4;
+  114   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       595     ------
+  code size            =       593     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        48          2
+  xdata size           =        62          2
+C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 3   
+
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =         1     ------
@@ -131,7 +146,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        58     ------
+  hconst size          =        77     ------
 End of Module Information.
 
 

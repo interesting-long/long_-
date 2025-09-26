@@ -5,6 +5,5 @@
 /***外部调用函数****/
 void Serve_Test(void);
 
-void LM_Test(void);
-void RM_Test(void);
+void PWM_Test(void);
 #endif

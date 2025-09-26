@@ -86,7 +86,7 @@ typedef enum
     TFT180_CROSSWISE_180                = 3,                                    // 横屏模式  旋转180
 }tft180_dir_enum;
 
-#define TFT180_DEFAULT_DISPLAY_DIR      TFT180_CROSSWISE_180                          // 默认的显示方向
+#define TFT180_DEFAULT_DISPLAY_DIR      TFT180_CROSSWISE                          // 默认的显示方向
 #define TFT180_DEFAULT_PENCOLOR         RGB565_RED                              // 默认的画笔颜色
 #define TFT180_DEFAULT_BGCOLOR          RGB565_WHITE                            // 默认的背景颜色
 

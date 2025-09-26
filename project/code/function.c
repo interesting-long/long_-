@@ -1,5 +1,6 @@
 #include "function.h"
 int Set_T;
+int PRO_Set_Time;
 PID servo_pid;
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
@@ -69,7 +70,6 @@ void Motor_Init(void)
 
 void Servo_Init()
 {
-	
     system_delay_init();
     pwm_init(Servo_Pwm,50,Servo_Mide);
 }
@@ -85,8 +85,17 @@ void Protect()
 {
     if((ADC_1+ADC_2+ADC_3+ADC_4)<PRO)
 	{
-		CAR_Mode=STOP;
-		Turn_mode_Init();
+		PRO_Set_Time++;
+		if(PRO_Set_Time>200)
+		{
+			PRO_Set_Time=0;
+			CAR_Mode=STOP;
+			Turn_mode_Init();
+		}
+	}
+	else
+	{
+		PRO_Set_Time=0;
 	}
 }
 /*自定义初始化函数库*/
@@ -100,8 +109,8 @@ void init_all()
 	tft180_set_color(RGB565_RED,RGB565_WHITE);
 	eeprom_read_Num();
 	menu_Init();
-	pit_ms_init(TIM0_PIT, 5);
-//	pit_ms_init(TIM1_PIT, 20);
+	pit_ms_init(TIM0_PIT, 20);
+	pit_ms_init(TIM1_PIT, 10);
 }
 
 //切换模式的初始函数
@@ -165,16 +174,10 @@ void Turn_mode_Init(void)
 			PID_Update();
 			
 		}break;
-		case TEST_LM:
+		case TEST_PWM:
 		{
 			tft180_clear(RGB565_WHITE);
-			tft180_show_string(0,3*16,"Test for Left_motor");
-			system_delay_ms(1000);
-		}break;
-		case TEST_RM:
-		{
-			tft180_clear(RGB565_WHITE);
-			tft180_show_string(0,3*16,"Test for Right_motor");
+			tft180_show_string(0,3*16,"Test for PWM_TEST");
 			system_delay_ms(1000);
 		}break;
 		case TEST_SERVO:
@@ -183,18 +186,69 @@ void Turn_mode_Init(void)
 			tft180_show_string(0,3*16,"Test for Servo");
 			system_delay_ms(1000);
 		}break;
+		case ADC_Show:
+		{
+			tft180_clear(RGB565_WHITE);
+			tft180_show_string(0,3*16,"Test for ADC_Show");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+		}break;
 	}
 	
 }
 
 void Show_pararm()
 {
-	tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
-	tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
-	tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
-	tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
-	tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
-	tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
+	switch(CAR_Mode)
+	{
+		case STOP:break;
+		case TEST_PWM:
+		{
+			tft180_show_string(0,4*16,"LPW:");  tft180_show_float(4*8,4*16,Test_LPWM,2,2);
+			tft180_show_string(0,5*16,"RPW:");  tft180_show_float(4*8,5*16,Test_RPWM,2,2);
+		}break;
+		case GO:
+		{
+			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,100*abs(uni-last_uni),2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
+			tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
+			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+		}break;
+		case TEST_SERVO:break;
+		case GO_Pararm1:
+		{
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,4*16,"KP1:");  tft180_show_float(4*8,4*16,KP1,2,2);
+			tft180_show_string(0,5*16,"KD1:");  tft180_show_float(4*8,5*16,KD1,2,2);
+			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+		}break;
+		case GO_Pararm2:
+		{
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,4*16,"KP2:");  tft180_show_float(4*8,4*16,KP2,2,2);
+			tft180_show_string(0,5*16,"KD2:");  tft180_show_float(4*8,5*16,KD2,2,2);
+			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+		}break;
+		case GO_Pararm3:
+		{
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,4*16,"KP3:");  tft180_show_float(4*8,4*16,KP3,2,2);
+			tft180_show_string(0,5*16,"KD3:");  tft180_show_float(4*8,5*16,KD3,2,2);
+			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+		}break;
+		case ADC_Show:
+		{
+			tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+			tft180_show_string(0,4*16,"ADC5:");tft180_show_int16(5*8,4*16,ADC_5);
+			tft180_show_string(0,5*16,"ADC6:");tft180_show_int16(5*8,5*16,ADC_6);
+			tft180_show_string(0,6*16,"ADC8:");tft180_show_int16(5*8,6*16,ADC_8);
+		}break;
+	}
+
 }
 void SET_Time()
 {

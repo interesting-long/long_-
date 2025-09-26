@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  eeprom                                                             19/09/25  23:30:00  PAGE 1   
+C251 COMPILER V5.60.0,  eeprom                                                             26/09/25  17:50:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE eeprom
@@ -21,7 +21,7 @@ stmt  level    source
     8          void eeprom_save_Num(void)
     9          {
    10   1          unsigned char temp[512] = {0};
-   11   1          uint32 sector_start = SECTOR_0_ADDR;
+   11   1          uint32 sector_start = SECTOR_1_ADDR;
    12   1          bit flag;
    13   1          
    14   1          // 验证数组大小
@@ -61,12 +61,12 @@ stmt  level    source
    46          void eeprom_read_Num(void)
    47          {
    48   1          unsigned char temp[512] = {0};
-   49   1          uint32 sector_start = SECTOR_0_ADDR;
+   49   1          uint32 sector_start = SECTOR_1_ADDR;
    50   1          bit flag;
    51   1          
    52   1          // 保存中断状态并关闭中断
    53   1          flag = EA;
-C251 COMPILER V5.60.0,  eeprom                                                             19/09/25  23:30:00  PAGE 2   
+C251 COMPILER V5.60.0,  eeprom                                                             26/09/25  17:50:09  PAGE 2   
 
    54   1          EA = 0;
    55   1          
@@ -134,7 +134,7 @@ stmt  level    source
   113   1          unsigned char *float_ptr = (unsigned char *)&value;
   114   1          bit flag;
   115   1          
-C251 COMPILER V5.60.0,  eeprom                                                             19/09/25  23:30:00  PAGE 3   
+C251 COMPILER V5.60.0,  eeprom                                                             26/09/25  17:50:09  PAGE 3   
 
   116   1          // 保存中断状态并关闭中断
   117   1          flag = EA;
@@ -152,7 +152,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       475     ------
+  code size            =       479     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

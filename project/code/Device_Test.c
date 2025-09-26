@@ -7,34 +7,23 @@ void Serve_Test(void)
 
 	for(j=0;j<3;j++)
 	{
-		for(a=0;a<160;a++)
+		for(a=0;a<180;a++)
 		{
-			Ser_Servo_Duty(725+a);
+			Ser_Servo_Duty(754+a);
 			system_delay_ms(20);
+			if(CAR_Mode!=TEST_SERVO){return;}
 		}
-		for(a=0;a<160;a++)
+		for(a=0;a<180;a++)
 		{
-			Ser_Servo_Duty(885-a);
+			Ser_Servo_Duty(934-a);
 			system_delay_ms(20);
+			if(CAR_Mode!=TEST_SERVO){return;}
 		}
 	}
 }
 
-void LM_Test(void)
+void PWM_Test(void)
 {
-	MotorL_SetSpeed(20);
-	system_delay_ms(500);
-	MotorL_SetSpeed(40);
-	system_delay_ms(500);
-	MotorL_SetSpeed(50);
-	system_delay_ms(500);
-}
-void RM_Test(void)
-{
-	MotorR_SetSpeed(20);
-	system_delay_ms(500);
-	MotorR_SetSpeed(40);
-	system_delay_ms(500);
-	MotorR_SetSpeed(50);
-	system_delay_ms(500);
+	MotorL_SetSpeed(Test_LPWM*100);
+	MotorR_SetSpeed(Test_RPWM*100);
 }

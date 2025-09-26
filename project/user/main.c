@@ -1,65 +1,67 @@
 #include "zf_common_headfile.h"
 int T;
 int T3;
+int T4;
+unsigned char pit_Flag;
 void pit_handler0 (void);
-//void pit_handler1 (void);
+void pit_handler1 (void);
 void main()
 {
 	clock_init(SYSTEM_CLOCK_40M);				// 务必保留
 	debug_init();								// 务必保留
 	/****************************************************/
 	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
-//	tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
+	tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
 	init_all();
 	
     while(1)
 	{
-//		tft180_show_int16(5*8,6*16,Set_T);
-//		tft180_show_int16(5*8,7*16,T3);
+		if(pit_Flag==1)
+		{
+			if(CAR_Mode==GO || CAR_Mode==GO_Pararm1 || CAR_Mode==GO_Pararm2 || CAR_Mode==GO_Pararm3 || CAR_Mode==ADC_Show)
+			{
+				ADC_SampleAndFilter();
+				Servo_turn_pid(unification());
+			}
+			pit_Flag=0;
+		}
 		switch(CAR_Mode)
 		{
-			case STOP:if(Key)
+			case STOP:
 			{
 				EA=0;
-				menu_handle_key(Key);
-				Key=0;
+				if(Key)
+				{
+					menu_handle_key(Key);
+					Key=0;
+				}
 				EA=1;
 			}break;
 			case GO:
 			{
-				EA=0;
-				Servo_turn_pid(unification(),-80,80);
 				SET_Time();
 				Protect();
-				EA=1;
+//				LineLossProtection();
 			}break;
-			/****测试程序*****/
-			case TEST_LM: LM_Test();break;
-			case TEST_RM: RM_Test();break;
+			case TEST_PWM: PWM_Test();break;
 			case TEST_SERVO: Serve_Test();break;
 			case GO_Pararm1: 
 			{
-				EA=0;
-				Servo_turn_pid(unification(),-80,80);
 				SET_Time();
 				Protect();
-				EA=1;
+//				LineLossProtection();
 			}break;
 			case GO_Pararm2: 
 			{
-				EA=0;
-				Servo_turn_pid(unification(),-80,80);
 				SET_Time();
 				Protect();
-				EA=1;
+//				LineLossProtection();
 			}break;
 			case GO_Pararm3: 
 			{
-				EA=0;
-				Servo_turn_pid(unification(),-80,80);
 				SET_Time();
 				Protect();
-				EA=1;
+//				LineLossProtection();
 			}break;
 		}
 		
@@ -67,30 +69,25 @@ void main()
 }
 void pit_handler0(void)
 {
-	T++;
-	T3++;
-	ADC_SampleAndFilter();
-	Key_scaner();
-	switch(CAR_Mode)
-	{
-		case GO:
-		{
-			if(T>20)
-			{
-				T=0;
-				Show_pararm();
-			}
-			if(T3>200)
-			{
-				T3=0;
-				Set_T++;
-			}
-		}break;
-	}
-	
+	pit_Flag=1;
 }
 
-//void pit_handler1(void)
-//{
-//	Servo_turn_pid(unification(),-80,80);
-//}
+void pit_handler1(void)
+{
+	T++;
+	T3++;
+	if(CAR_Mode==STOP || CAR_Mode==ADC_Show)
+	{
+		Key_scaner();
+	}
+	if(T>50)
+	{
+		T=0;
+		Show_pararm();
+	}
+	if(T3>100)
+	{
+		T3=0;
+		Set_T++;
+	}
+}

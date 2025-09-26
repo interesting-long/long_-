@@ -8,6 +8,7 @@ char Flag=1;            //行数标志位
 char mode=0;            //mode=1为锁定模式
 char i,j;                 //用于循环
 unsigned char Show_image_mode=0;
+unsigned char Save_Flag=0;
 //struct Menu *Pin=&Page[0];//灵活指针
 /*
  * 快捷设置子菜单的函数
@@ -97,6 +98,7 @@ void handle_key1()
 	else if(mode==1)                       //锁定状态下，Key1用于增加步进值   MODE=1时的逻辑
 	{
 		Num[Pin->index][Flag-1]+=bujin;
+		Save_Flag=1;
 		menu_display_content();
 		Refesh_arrow();
 	}
@@ -155,6 +157,7 @@ void handle_key4()
 	if(mode==1)                         //锁定状态下，Key4用于减步进值      MODE=1时的逻辑
 	{
 		Num[Pin->index][Flag-1]-=bujin;
+		Save_Flag=1;
 		menu_display_content(); 
 	}
 	else if(mode==0)                                                 //MODE=0时的逻辑
@@ -185,7 +188,11 @@ void Key3_handle1()
 }
 void Key3_handle2()
 {
-	eeprom_save_Num();
+	if(Save_Flag)
+	{
+		eeprom_save_Num();
+		Save_Flag=0;
+	}
 	if((Pin->children[Flag-1])!=NULL)//进入子字节——————进入操作
 	{
 		Pin=Pin->children[Flag-1];
@@ -225,6 +232,7 @@ void menu_handle_key(unsigned char Flag_Key)
 void menu_Init()
 {
 	Menu_SetChildren(&Page[0],Page0_children);//设定子字节
+	Menu_SetChildren(&Page[5],Page5_children);//设定子字节
 	Refesh_arrow();
 	menu_display_content();
 	

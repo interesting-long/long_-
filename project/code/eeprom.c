@@ -8,7 +8,7 @@
 void eeprom_save_Num(void)
 {
     unsigned char temp[512] = {0};
-    uint32 sector_start = SECTOR_0_ADDR;
+    uint32 sector_start = SECTOR_1_ADDR;
     bit flag;
     
     // 验证数组大小
@@ -46,7 +46,7 @@ void eeprom_save_Num(void)
 void eeprom_read_Num(void)
 {
     unsigned char temp[512] = {0};
-    uint32 sector_start = SECTOR_0_ADDR;
+    uint32 sector_start = SECTOR_1_ADDR;
     bit flag;
     
     // 保存中断状态并关闭中断
