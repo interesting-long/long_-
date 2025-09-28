@@ -1,13 +1,13 @@
 #include "Key.h"
 
-int Press_time;
-int Trigg_time;
-unsigned char keynumber;
-unsigned char last_keynumber;
-unsigned char State;
-unsigned char Key_count;
-unsigned Time_dou;
-
+int Press_time=0;
+int Trigg_time=0;
+unsigned char keynumber=0;
+unsigned char last_keynumber=0;
+unsigned char State=0;
+unsigned char Key_count=0;
+unsigned Time_dou=0;
+unsigned char Init_Flag=0;
 
 
 unsigned char Key_Number(void)
@@ -67,7 +67,7 @@ void Turn_mode(void)
 	{
 		CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;
 	}
-		Turn_mode_Init();
+//		Turn_mode_Init();
 }
 void Key_scaner(void)
 {
@@ -119,6 +119,7 @@ void Key_scaner(void)
 					if(keynumber==3)//长按触发的操作
 					{
 						Turn_mode();
+						Init_Flag=1;
 						Press_time=0;
 						last_keynumber=0;
 					}

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           26/09/25  17:50:09  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           28/09/25  22:11:42  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -12,7 +12,7 @@ stmt  level    source
     1          #include "Strategy.h"
     2          float uni=0;
     3          float last_uni=0;
-    4          int loss_Time;
+    4          int loss_Time=0;
     5          void LineLossProtection()
     6          {
     7   1          uni = unification();
@@ -54,7 +54,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        18     ------
+  hconst size          =        25     ------
 End of Module Information.
 
 

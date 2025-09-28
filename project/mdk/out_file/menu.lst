@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               26/09/25  17:50:09  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               28/09/25  22:11:41  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    54   2                      {
    55   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), ">");
    56   3                      }
-C251 COMPILER V5.60.0,  menu                                                               26/09/25  17:50:09  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               28/09/25  22:11:41  PAGE 2   
 
    57   2                      else
    58   2                      {
@@ -134,7 +134,7 @@ stmt  level    source
   118   3                      }
   119   2                      bujin/=10.0;
   120   2                      if(Flag<max_OLED_ROW)
-C251 COMPILER V5.60.0,  menu                                                               26/09/25  17:50:09  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               28/09/25  22:11:41  PAGE 3   
 
   121   2                      {
   122   3                              switch((int)(bujin*100))
@@ -202,7 +202,7 @@ stmt  level    source
   184          void Key3_handle1()
   185          {
   186   1              mode=1;
-C251 COMPILER V5.60.0,  menu                                                               26/09/25  17:50:09  PAGE 4   
+C251 COMPILER V5.60.0,  menu                                                               28/09/25  22:11:41  PAGE 4   
 
   187   1              Refesh_arrow();
   188   1      }
@@ -271,7 +271,7 @@ Module Information          Static   Overlayable
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
-C251 COMPILER V5.60.0,  menu                                                               26/09/25  17:50:09  PAGE 5   
+C251 COMPILER V5.60.0,  menu                                                               28/09/25  22:11:41  PAGE 5   
 
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

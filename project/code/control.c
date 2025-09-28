@@ -13,14 +13,19 @@ void Ser_Servo_Duty(int value)
  * 例子：Servo_turn_pid(变量,-80,80);
  * 将变量的值与0进行对比，输出信号控制舵机,而舵机的限幅是正负80
  */
-void Servo_turn_pid(float Current)
+float Servo_turn_pid(float Current)
 {
-  float servo_value;
-  float temp;
-    servo_value=Normal_PID(&servo_pid,100*Current,0);
-    temp=func_limit_ab(servo_value,-90,90);
-	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
+	float servo_value;
+	float temp=0;
+	servo_value=Normal_PID(&servo_pid,Current,0.0);
+	temp=func_limit_ab(servo_value,-90,90);
+	
+//	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
+	return temp;
+	
 }
+
+
 /*
  * 函数功能：左路电机PWM设置
  * 函数名称：MotorL_SetSpeed(unsigned char);

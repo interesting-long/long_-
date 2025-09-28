@@ -11,13 +11,14 @@ typedef enum
 	State_Release_dou
 } Key_State;
 
-#define Flag_press_time 50
+#define Flag_press_time 80
 #define Flag_trigg_time 20
 
 extern unsigned char State;
 extern unsigned char keynumber;
 extern unsigned char Key_count;
 extern unsigned char CAR_Mode;
+extern unsigned char Init_Flag;
 /*外部调用函数*/
 void Key_scaner(void);
 /*内部调用函数*/

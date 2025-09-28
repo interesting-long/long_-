@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 1   
+C251 COMPILER V5.60.0,  ADC_Get                                                            28/09/25  22:11:41  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE ADC_Get
@@ -66,7 +66,7 @@ stmt  level    source
    55   2              raw_adc_data[2][sample_index] = adc_convert(ADC3_PIN);
    56   2              raw_adc_data[3][sample_index] = adc_convert(ADC4_PIN);
    57   2          }
-C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 2   
+C251 COMPILER V5.60.0,  ADC_Get                                                            28/09/25  22:11:41  PAGE 2   
 
    58   1          
    59   1          // ÂË²¨´¦Àí
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =        62          2
-C251 COMPILER V5.60.0,  ADC_Get                                                            26/09/25  17:50:08  PAGE 3   
+C251 COMPILER V5.60.0,  ADC_Get                                                            28/09/25  22:11:41  PAGE 3   
 
   xdata-const size     =    ------     ------
   edata size           =    ------     ------

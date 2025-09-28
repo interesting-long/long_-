@@ -29,11 +29,12 @@ typedef enum
 }MODE;
 extern unsigned char CAR_Mode;
 
+float pid_control_tyre(float error);
 /*外部调用函数*/
-void Servo_turn_pid(float Current);
+float Servo_turn_pid(float Current);
 void Motor_Update();
 void PID_Update();
-void Ser_Servo_Duty(int value);
+//void Ser_Servo_Duty(int value);
 /*内部调用函数*/
 void MotorL_SetSpeed(int pwm);
 void MotorR_SetSpeed(int pwm);

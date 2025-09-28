@@ -1,7 +1,12 @@
 #include "function.h"
-int Set_T;
-int PRO_Set_Time;
+int Set_T=0;
+int T3=0;
+int PRO_Set_Time=0;
 PID servo_pid;
+float dajiao=0;
+unsigned char Sevo_Flag=0;
+unsigned char Init_Fg=0;
+unsigned char Show_Fg=0;
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
  * 参数2：当前值
@@ -25,20 +30,26 @@ float Normal_PID(PID *PID,float NowData,float Point)
  */
 float unification(void) 
 {
+	
     float error_val;
     float left_1;
     float left_2;
     float right_2;
     float right_1;
-    
+
     left_1  = (float)filtered_adc[0];
     left_2  = (float)filtered_adc[1];
     right_2 = (float)filtered_adc[2];
     right_1 = (float)filtered_adc[3];
-    
-    error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / (left_2 + right_2);
-    
-    return error_val;
+    if(left_2 + right_2<=2)
+	{
+		return 0;
+	}
+	else
+	{
+		error_val = (left_1 - right_1) / ((left_2 + right_2)*fast_sqrt(left_2 + right_2));
+		return error_val;
+	}
 }
 /*快速开方函数*/
 float fast_sqrt(float number) 
@@ -70,7 +81,6 @@ void Motor_Init(void)
 
 void Servo_Init()
 {
-    system_delay_init();
     pwm_init(Servo_Pwm,50,Servo_Mide);
 }
 void CAR_STOP()
@@ -109,92 +119,110 @@ void init_all()
 	tft180_set_color(RGB565_RED,RGB565_WHITE);
 	eeprom_read_Num();
 	menu_Init();
+	PT1H = 0;
+    PT0H = 1;
 	pit_ms_init(TIM0_PIT, 20);
-	pit_ms_init(TIM1_PIT, 10);
+	pit_ms_init(TIM1_PIT, 5);
+    
 }
 
 //切换模式的初始函数
 void Turn_mode_Init(void)
 {
-	CAR_STOP();
+	EA=0;
 	Set_T=0;
 	switch(CAR_Mode)
 	{
 		case STOP:
 		{
 			CAR_STOP();
+			Show_Fg=0;
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for STOP");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
 			Refesh_arrow();
 			menu_display_content();
-		}break;
+			break;
+		}
 		case GO:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GO");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
 			
+			
 			Motor_Update();
 			PID_Update();
-			
-		}break;
+			break;
+		}
 		case GO_Pararm1:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP1");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
 			
 			Motor_Update();
 			PID_Update();
-			
-		}break;
+			break;
+		}
 		case GO_Pararm2:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP2");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
 			
 			Motor_Update();
 			PID_Update();
-			
-		}break;
+			break;
+		}
 		case GO_Pararm3:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP3");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
 			
 			Motor_Update();
 			PID_Update();
-			
-		}break;
+			break;
+		}
 		case TEST_PWM:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for PWM_TEST");
 			system_delay_ms(1000);
-		}break;
+			
+			break;
+		}
 		case TEST_SERVO:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for Servo");
 			system_delay_ms(1000);
-		}break;
+			break;
+		}
 		case ADC_Show:
 		{
 			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for ADC_Show");
 			system_delay_ms(1000);
 			tft180_clear(RGB565_WHITE);
-		}break;
+			break;
+		}
 	}
-	
+	EA=1;
 }
 
 void Show_pararm()
@@ -209,7 +237,7 @@ void Show_pararm()
 		}break;
 		case GO:
 		{
-			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,100*abs(uni-last_uni),2,2);
+			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
 			tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
 			tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
@@ -218,6 +246,7 @@ void Show_pararm()
 		case TEST_SERVO:break;
 		case GO_Pararm1:
 		{
+			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
 			tft180_show_string(0,4*16,"KP1:");  tft180_show_float(4*8,4*16,KP1,2,2);
 			tft180_show_string(0,5*16,"KD1:");  tft180_show_float(4*8,5*16,KD1,2,2);
@@ -225,6 +254,7 @@ void Show_pararm()
 		}break;
 		case GO_Pararm2:
 		{
+			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
 			tft180_show_string(0,4*16,"KP2:");  tft180_show_float(4*8,4*16,KP2,2,2);
 			tft180_show_string(0,5*16,"KD2:");  tft180_show_float(4*8,5*16,KD2,2,2);
@@ -256,5 +286,21 @@ void SET_Time()
 	{
 		CAR_Mode=STOP;
 		Turn_mode_Init();
+	}
+}
+
+void GO_Function(void)
+{
+	if(Init_Flag==1)
+	{
+//		EA=0;
+		Turn_mode_Init();
+		Init_Flag=0;
+//		EA=1;
+	}
+	else
+	{
+		SET_Time();
+		Protect();
 	}
 }
