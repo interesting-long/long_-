@@ -22,8 +22,8 @@
 #define Page_Col_Number 8      //一行当中字符串的最大长度
 #define ROW_DISTANCE     16      //行间距
 
-#define Show_arrow_x  52        //开始显示箭头<的x坐标
-#define Show_bujin_x  75        //开始显示步进值的x
+#define Show_arrow_x  60        //开始显示箭头<的x坐标
+#define Show_bujin_x  110        //开始显示步进值的x
 #define Show_Num_x  102          //开始显示数据的x值
 #define Show_String_x  0        //开始显示字符串的x
 

@@ -114,10 +114,10 @@ void pit_handler1(void)
 	T++;
 	
 	ADC_SampleAndFilter();
-	uni=unification();
-	dajiao=Servo_turn_pid(100*uni);
+	uni=100*unification();
+	dajiao=Servo_turn_pid(uni);
 	Key_scaner();
-	if(T>=10)
+	if(T>=50)
 	{
 		T=0;
 		Show_pararm();

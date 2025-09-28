@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               28/09/25  23:26:11  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                              {
    56   4                                      GO_Function();
    57   4                                      break;
-C251 COMPILER V5.60.0,  main                                                               28/09/25  23:26:11  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 2   
 
    58   4                              }
    59   3                              case TEST_PWM: 
@@ -127,14 +127,14 @@ stmt  level    source
   114   1              T++;
   115   1              
   116   1              ADC_SampleAndFilter();
-  117   1              uni=unification();
-  118   1              dajiao=Servo_turn_pid(100*uni);
+  117   1              uni=100*unification();
+  118   1              dajiao=Servo_turn_pid(uni);
   119   1              Key_scaner();
-  120   1              if(T>=10)
+  120   1              if(T>=50)
   121   1              {
   122   2                      T=0;
   123   2                      Show_pararm();
-C251 COMPILER V5.60.0,  main                                                               28/09/25  23:26:11  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 3   
 
   124   2              }
   125   1      }

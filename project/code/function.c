@@ -144,6 +144,7 @@ void Turn_mode_Init(void)
 			tft180_clear(RGB565_WHITE);
 			Refesh_arrow();
 			menu_display_content();
+			Show_bujin();
 			break;
 		}
 		case GO:
@@ -232,39 +233,39 @@ void Show_pararm()
 		case STOP:break;
 		case TEST_PWM:
 		{
-			tft180_show_string(0,4*16,"LPW:");  tft180_show_float(4*8,4*16,Test_LPWM,2,2);
-			tft180_show_string(0,5*16,"RPW:");  tft180_show_float(4*8,5*16,Test_RPWM,2,2);
+			tft180_show_string(0,4*16,"LPW:");  tft180_show_float(5*8,4*16,Test_LPWM,2,2);
+			tft180_show_string(0,5*16,"RPW:");  tft180_show_float(5*8,5*16,Test_RPWM,2,2);
 		}break;
 		case GO:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
-			tft180_show_string(0,4*16,"KP:");  tft180_show_float(3*8,4*16,KP,2,2);
-			tft180_show_string(0,5*16,"KD:");  tft180_show_float(3*8,5*16,KD,2,2);
-			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
+			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
+			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
 		}break;
 		case TEST_SERVO:break;
 		case GO_Pararm1:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
-			tft180_show_string(0,4*16,"KP1:");  tft180_show_float(4*8,4*16,KP1,2,2);
-			tft180_show_string(0,5*16,"KD1:");  tft180_show_float(4*8,5*16,KD1,2,2);
+			tft180_show_string(0,4*16,"KP1:");  tft180_show_float(5*8,4*16,KP1,2,2);
+			tft180_show_string(0,5*16,"KD1:");  tft180_show_float(5*8,5*16,KD1,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
 		}break;
 		case GO_Pararm2:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
-			tft180_show_string(0,4*16,"KP2:");  tft180_show_float(4*8,4*16,KP2,2,2);
-			tft180_show_string(0,5*16,"KD2:");  tft180_show_float(4*8,5*16,KD2,2,2);
+			tft180_show_string(0,4*16,"KP2:");  tft180_show_float(5*8,4*16,KP2,2,2);
+			tft180_show_string(0,5*16,"KD2:");  tft180_show_float(5*8,5*16,KD2,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
 		}break;
 		case GO_Pararm3:
 		{
 			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
-			tft180_show_string(0,4*16,"KP3:");  tft180_show_float(4*8,4*16,KP3,2,2);
-			tft180_show_string(0,5*16,"KD3:");  tft180_show_float(4*8,5*16,KD3,2,2);
+			tft180_show_string(0,4*16,"KP3:");  tft180_show_float(5*8,4*16,KP3,2,2);
+			tft180_show_string(0,5*16,"KD3:");  tft180_show_float(5*8,5*16,KD3,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
 		}break;
 		case ADC_Show:

@@ -41,22 +41,22 @@ void Refesh_arrow()
 	{
 		if (Flag <= max_OLED_ROW)
 		{
-			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "<");
+			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "<--");
 		}
 		else
 		{
-			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), "<");
+			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), "<--");
 		}
 	}
 	else
 	{
 		if (Flag <= max_OLED_ROW)
 		{
-			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), ">");
+			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "-->");
 		}
 		else
 		{
-			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), ">");
+			tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(max_OLED_ROW-1), "-->");
 		}
 	}
 }
@@ -72,7 +72,16 @@ void menu_display_content()
 		}
 	}
 }
-
+void Show_bujin()
+{
+		switch((int)(bujin*100))
+		{
+		case 1000:tft180_show_string(Show_bujin_x,0,"<10>  ");break;
+		case 100:tft180_show_string(Show_bujin_x,0,"<1.0> ");break;
+		case 10:tft180_show_string(Show_bujin_x,0,"<0.1> ");break;
+		case 1:tft180_show_string(Show_bujin_x,0,"<0.01>");break;
+		}
+}
 void handle_key1()
 {
 	if(mode==0)                                                         //MODE=0时的逻辑
@@ -83,7 +92,7 @@ void handle_key1()
 		}
 		if(Flag<=max_OLED_ROW)
 		{
-			tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag-2)," ");
+			tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag-2),"   ");
 		}
 		else
 		{
@@ -97,7 +106,7 @@ void handle_key1()
 	}
 	else if(mode==1)                       //锁定状态下，Key1用于增加步进值   MODE=1时的逻辑
 	{
-		Num[Pin->index][Flag-1]+=bujin;
+		Num[Pin->index][Flag-1]-=bujin;
 		Save_Flag=1;
 		menu_display_content();
 		Refesh_arrow();
@@ -106,57 +115,29 @@ void handle_key1()
 
 void handle_key2()
 {
-	if(mode==0)                                                         //MODE=0时的逻辑
+	bujin*=10.0;
+	if(bujin>10)
 	{
-
+		bujin=10;
 	}
-	else if(mode==1)                    //修改步进值{0.01->10}      改变MODE=1时的逻辑
-	{
-		if(bujin<=0.01)
-		{
-			bujin=100;
-		}
-		bujin/=10.0;
-		if(Flag<max_OLED_ROW)
-		{
-			switch((int)(bujin*100))
-			{
-			case 1000:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"10  ");break;
-			case 100:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"1.0 ");break;
-			case 10:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"0.1 ");break;
-			case 1:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(Flag-1),"0.01");break;
-			}
-		}
-		else
-		{
-			switch((int)(bujin*100))
-			{
-			case 1000:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"10  ");break;
-			case 100:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"1.0 ");break;
-			case 10:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"0.1 ");break;
-			case 1:tft180_show_string(Show_bujin_x,(ROW_DISTANCE+1)*(max_OLED_ROW-1),"0.01");break;
-			}
-		}
-	}
+	Show_bujin();
+	
 }
 
 void handle_key3()
 {
-    Key3_count++;
-    
-    // 直接在按键处理函数中处理模式切换
-    switch(Key3_count)
-    {
-		case 1:{Key3_handle1();break;}	//当按下键码值为 3 一次的模式切换（调参模式）
-		case 2:{Key3_handle2();break;}	//当按下键码值为 3 两次的模式切换（翻动模式）
-        default: break;
-    }
+	bujin/=10.0;
+	if(bujin<0.01)
+	{
+		bujin=0.01;
+	}
+	Show_bujin();
 }
 void handle_key4()
 {
 	if(mode==1)                         //锁定状态下，Key4用于减步进值      MODE=1时的逻辑
 	{
-		Num[Pin->index][Flag-1]-=bujin;
+		Num[Pin->index][Flag-1]+=bujin;
 		Save_Flag=1;
 		menu_display_content(); 
 	}
@@ -170,7 +151,7 @@ void handle_key4()
 		{
 			if(Flag<0)
 			{Flag=0;}
-			tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag)," ");
+			tft180_show_string(Show_arrow_x,(ROW_DISTANCE+1)*(Flag),"   ");
 		}
 		else
 		{
@@ -180,6 +161,18 @@ void handle_key4()
 		}
 		Refesh_arrow();
 	}
+}
+void handle_key5()
+{
+	Key3_count++;
+    
+    // 直接在按键处理函数中处理模式切换
+    switch(Key3_count)
+    {
+		case 1:{Key3_handle1();break;}	//当按下键码值为 3 一次的模式切换（调参模式）
+		case 2:{Key3_handle2();break;}	//当按下键码值为 3 两次的模式切换（翻动模式）
+        default: break;
+    }
 }
 void Key3_handle1()
 {
@@ -208,6 +201,7 @@ void Key3_handle2()
 	Key3_count=0;mode=0;tft180_clear(RGB565_WHITE);                 //按两下如果没有子菜单，刷新显示
 	Refesh_arrow();
 	menu_display_content();
+	Show_bujin();
 }
 /* 函数：按键控制菜单函数
  * 参数1：键码值
@@ -223,6 +217,7 @@ void menu_handle_key(unsigned char Flag_Key)
 		case 2:{handle_key2();break;}  //按下键码值为 2 按键的行为
 		case 3:{handle_key3();break;}  //按下键码值为 3 按键的行为
 		case 4:{handle_key4();break;}  //按下键码值为 4 按键的行为
+		case 5:{handle_key5();break;}  //按下键码值为 5 按键的行为
 	}
 }
 /*菜单初始化
@@ -235,6 +230,6 @@ void menu_Init()
 	Menu_SetChildren(&Page[5],Page5_children);//设定子字节
 	Refesh_arrow();
 	menu_display_content();
-	
+	Show_bujin();
 	
 }
