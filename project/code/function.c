@@ -307,10 +307,8 @@ void GO_Function(void)
 {
 	if(Init_Flag==1)
 	{
-//		EA=0;
 		Turn_mode_Init();
 		Init_Flag=0;
-//		EA=1;
 	}
 	else
 	{

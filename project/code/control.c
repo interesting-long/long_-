@@ -18,7 +18,7 @@ float Servo_turn_pid(float Current)
 	float servo_value;
 	float temp=0;
 	servo_value=Normal_PID(&servo_pid,Current,0.0);
-	temp=func_limit_ab(servo_value,-90,90);
+	temp=func_limit_ab(servo_value,-97,83);
 	
 //	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
 	return temp;

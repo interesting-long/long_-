@@ -48,7 +48,7 @@ void ADC_SampleAndFilter(void)
     unsigned char channel_index=0;         // 通道循环计数器
     
     // 采集5次数据
-    for (sample_index = 0; sample_index < 5; sample_index++) 
+    for (sample_index = 0; sample_index < 4; sample_index++) 
     {
         raw_adc_data[0][sample_index] = adc_convert(ADC1_PIN);
         raw_adc_data[1][sample_index] = adc_convert(ADC2_PIN);
@@ -59,7 +59,7 @@ void ADC_SampleAndFilter(void)
     // 滤波处理
     for (channel_index = 0; channel_index < 4; channel_index++) 
     {
-        filtered_adc[channel_index] = adc_filter(raw_adc_data[channel_index], 5);
+        filtered_adc[channel_index] = adc_filter(raw_adc_data[channel_index], 4);
     }
 	/*传递参数*/
 	ADC_1 = (float)(filtered_adc[0]*1.0f);

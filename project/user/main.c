@@ -108,13 +108,13 @@ EA=1;
 }
 void pit_handler0(void)
 {
-		T3++;
+	T3++;
 	if(T3>50)
 	{
 		T3=0;
 		Set_T++;
 	}
-	if(CAR_Mode==GO||CAR_Mode==GO_Pararm1||CAR_Mode==GO_Pararm2||CAR_Mode==GO_Pararm3||CAR_Mode==ADC_Show)
+	if(CAR_Mode==GO||CAR_Mode==GO_Pararm1||CAR_Mode==GO_Pararm2||CAR_Mode==GO_Pararm3)
 	{
 		pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
 	}
