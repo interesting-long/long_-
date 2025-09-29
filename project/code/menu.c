@@ -199,6 +199,7 @@ void Key3_handle2()
 		Pin=Pin->children[Flag-1];
 		Flag=1;
 		Start_Show_Row=0;
+		Key3_count=0;mode=0;
 		show_all_menu();
 	}
 	else if(Pin->father!=NULL && Flag==1)//第一行进入父字节——————退出操作
@@ -206,6 +207,7 @@ void Key3_handle2()
 		Pin=Pin->father;
 		Flag=1;
 		Start_Show_Row=0;
+		Key3_count=0;mode=0;
 		show_all_menu();
 	}
 	Key3_count=0;mode=0;

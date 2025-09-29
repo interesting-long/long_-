@@ -9,6 +9,19 @@ unsigned char Key_count=0;
 unsigned Time_dou=0;
 unsigned char Init_Flag=0;
 
+struct PageModeMap
+{
+    unsigned char page_index;
+	unsigned char item_index;
+	MODE Mod;
+};
+
+const struct PageModeMap mode_map[] = {
+    {0, 2, GO}, {0, 3, GO_Pararm1}, {0, 4, GO_Pararm2}, {0, 5, GO_Pararm3}, {0, 8, ADC_Show},
+    {5, 3, TEST_SERVO}, {5, 4, Seta_Servo},
+    {6, ANY_ITEM, TEST_PWM},  // 第6页任意项都切换到TEST_PWM
+    {1, ANY_ITEM, GO}, {2, ANY_ITEM, GO_Pararm1}, {3, ANY_ITEM, GO_Pararm2}, {4, ANY_ITEM, GO_Pararm3}
+};
 
 unsigned char Key_Number(void)
 {
@@ -28,49 +41,18 @@ unsigned char Key_Number(void)
 }
 void Turn_mode(void)
 {
-	if((void *)Pin==(void *)&Page[0])
-	{
-		switch(Flag)
-		{
-			case 2:CAR_Mode=(CAR_Mode==GO) ? STOP : GO;break;
-			case 3:CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;break;
-			case 4:CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;break;
-			case 5:CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;break;
-			case 8:CAR_Mode=(CAR_Mode==ADC_Show) ? STOP : ADC_Show;break;
-			default :break;
-		}
-	}
-	else if((void *)Pin==(void *)&Page[5])
-	{
-		switch(Flag)
-		{
-			case 3:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
-			case 4:CAR_Mode=(CAR_Mode==Seta_Servo) ? STOP : Seta_Servo;break;
-			default :break;
-		}
-		
-	}
-	else if((void *)Pin==(void *)&Page[6])
-	{
-		CAR_Mode=(CAR_Mode==TEST_PWM) ? STOP : TEST_PWM;
-	}
-	else if((void *)Pin==(void *)&Page[1])
-	{
-		CAR_Mode=(CAR_Mode==GO) ? STOP : GO;
-	}
-	else if((void *)Pin==(void *)&Page[2])
-	{
-		CAR_Mode=(CAR_Mode==GO_Pararm1) ? STOP : GO_Pararm1;
-	}
-	else if((void *)Pin==(void *)&Page[3])
-	{
-		CAR_Mode=(CAR_Mode==GO_Pararm2) ? STOP : GO_Pararm2;
-	}
-	else if((void *)Pin==(void *)&Page[4])
-	{
-		CAR_Mode=(CAR_Mode==GO_Pararm3) ? STOP : GO_Pararm3;
-	}
-//		Turn_mode_Init();
+	int i;
+    for(i = 0; i < sizeof(mode_map)/sizeof(mode_map[0]); i++) {
+        // 检查页面匹配
+        if((void *)Pin == (void *)&Page[mode_map[i].page_index]) {
+            // 如果是任意项匹配 或 具体项匹配
+            if(mode_map[i].item_index == ANY_ITEM || Flag == mode_map[i].item_index) {
+                CAR_Mode = (CAR_Mode == mode_map[i].Mod) ? STOP : mode_map[i].Mod;
+                Init_Flag = 1;
+                return;
+            }
+        }
+    }
 }
 void Key_scaner(void)
 {

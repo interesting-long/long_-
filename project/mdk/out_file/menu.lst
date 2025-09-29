@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:25:48  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:58:35  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    54   2                      {
    55   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "-->");
    56   3                      }
-C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:25:48  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:58:35  PAGE 2   
 
    57   2                      else
    58   2                      {
@@ -134,7 +134,7 @@ stmt  level    source
   118   2                      Save_Flag=1;
   119   2                      menu_display_content();
   120   2                      Refesh_arrow();
-C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:25:48  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:58:35  PAGE 3   
 
   121   2              }
   122   1      }
@@ -202,7 +202,7 @@ stmt  level    source
   184   1      }
   185          void Key3_handle1()
   186          {
-C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:25:48  PAGE 4   
+C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:58:35  PAGE 4   
 
   187   1              mode=1;
   188   1              Refesh_arrow();
@@ -219,60 +219,62 @@ stmt  level    source
   199   2                      Pin=Pin->children[Flag-1];
   200   2                      Flag=1;
   201   2                      Start_Show_Row=0;
-  202   2                      show_all_menu();
-  203   2              }
-  204   1              else if(Pin->father!=NULL && Flag==1)//第一行进入父字节——————退出操作
-  205   1              {
-  206   2                      Pin=Pin->father;
-  207   2                      Flag=1;
-  208   2                      Start_Show_Row=0;
-  209   2                      show_all_menu();
-  210   2              }
-  211   1              Key3_count=0;mode=0;
-  212   1              Refesh_arrow();
-  213   1      }
-  214          /* 函数：按键控制菜单函数
-  215           * 参数1：键码值
-  216           * 返回值：无
-  217           * 例子：menu_handle_key（Key）；
-  218           */
-  219          void menu_handle_key(unsigned char Flag_Key)
-  220          {
-  221   1      
-  222   1              switch(Flag_Key)
-  223   1              {
-  224   2                      case 1:{handle_key1();break;}  //按下键码值为 1 按键的行为
-  225   2                      case 2:{handle_key2();break;}  //按下键码值为 2 按键的行为
-  226   2                      case 3:{handle_key3();break;}  //按下键码值为 3 按键的行为
-  227   2                      case 4:{handle_key4();break;}  //按下键码值为 4 按键的行为
-  228   2                      case 5:{handle_key5();break;}  //按下键码值为 5 按键的行为
-  229   2              }
-  230   1      }
-  231          /*菜单初始化
-  232          设置子菜单索引
-  233          设置一开始显示的画面
-  234          */
-  235          void menu_Init()
-  236          {
-  237   1              Menu_SetChildren(&Page[0],Page0_children);//设定子字节
-  238   1              Menu_SetChildren(&Page[5],Page5_children);//设定子字节
-  239   1              Refesh_arrow();
-  240   1              menu_display_content();
-  241   1              Show_bujin();
-  242   1              
-  243   1      }
+  202   2                      Key3_count=0;mode=0;
+  203   2                      show_all_menu();
+  204   2              }
+  205   1              else if(Pin->father!=NULL && Flag==1)//第一行进入父字节——————退出操作
+  206   1              {
+  207   2                      Pin=Pin->father;
+  208   2                      Flag=1;
+  209   2                      Start_Show_Row=0;
+  210   2                      Key3_count=0;mode=0;
+  211   2                      show_all_menu();
+  212   2              }
+  213   1              Key3_count=0;mode=0;
+  214   1              Refesh_arrow();
+  215   1      }
+  216          /* 函数：按键控制菜单函数
+  217           * 参数1：键码值
+  218           * 返回值：无
+  219           * 例子：menu_handle_key（Key）；
+  220           */
+  221          void menu_handle_key(unsigned char Flag_Key)
+  222          {
+  223   1      
+  224   1              switch(Flag_Key)
+  225   1              {
+  226   2                      case 1:{handle_key1();break;}  //按下键码值为 1 按键的行为
+  227   2                      case 2:{handle_key2();break;}  //按下键码值为 2 按键的行为
+  228   2                      case 3:{handle_key3();break;}  //按下键码值为 3 按键的行为
+  229   2                      case 4:{handle_key4();break;}  //按下键码值为 4 按键的行为
+  230   2                      case 5:{handle_key5();break;}  //按下键码值为 5 按键的行为
+  231   2              }
+  232   1      }
+  233          /*菜单初始化
+  234          设置子菜单索引
+  235          设置一开始显示的画面
+  236          */
+  237          void menu_Init()
+  238          {
+  239   1              Menu_SetChildren(&Page[0],Page0_children);//设定子字节
+  240   1              Menu_SetChildren(&Page[5],Page5_children);//设定子字节
+  241   1              Refesh_arrow();
+  242   1              menu_display_content();
+  243   1              Show_bujin();
+  244   1              
+  245   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1671     ------
+  code size            =      1691     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
+C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:58:35  PAGE 5   
+
   pdata size           =    ------     ------
   xdata size           =        13     ------
-C251 COMPILER V5.60.0,  menu                                                               29/09/25  10:25:48  PAGE 5   
-
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------

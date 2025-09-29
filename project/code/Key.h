@@ -2,7 +2,9 @@
 #define __KEY_H__
 
 #include "zf_common_headfile.h"
-
+#define Flag_press_time 80
+#define Flag_trigg_time 10
+#define ANY_ITEM 0xFF
 typedef enum
 {
 	State_Release,
@@ -10,9 +12,6 @@ typedef enum
 	State_Press,
 	State_Release_dou
 } Key_State;
-
-#define Flag_press_time 80
-#define Flag_trigg_time 10
 
 extern unsigned char State;
 extern unsigned char keynumber;
