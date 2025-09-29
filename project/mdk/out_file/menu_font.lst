@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          29/09/25  00:03:10  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          29/09/25  10:25:48  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -42,7 +42,7 @@ stmt  level    source
    30              {   4,
    31                      {"back","KP3","KD3","R_PWM3","L_PWM3","","","",""}},
    32              {   5,
-   33                      {"back","PWM","Servo","","","","","",""}},
+   33                      {"back","PWM","Servo","S_Value","","","","",""}},
    34              {   6,
    35                      {"back","LPWM","RPWM","","","","","",""}},
    36                  {   7,
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          29/09/25  00:03:10  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          29/09/25  10:25:48  PAGE 2   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

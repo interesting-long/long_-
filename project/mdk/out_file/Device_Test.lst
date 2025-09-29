@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Device_Test                                                        29/09/25  00:03:10  PAGE 1   
+C251 COMPILER V5.60.0,  Device_Test                                                        29/09/25  10:25:48  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Device_Test
@@ -38,11 +38,16 @@ stmt  level    source
    27   1              MotorL_SetSpeed(Test_LPWM*100);
    28   1              MotorR_SetSpeed(Test_RPWM*100);
    29   1      }
+   30          
+   31          void Set_Sevo(void)
+   32          {
+   33   1              Ser_Servo_Duty(S_Value);
+   34   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       137     ------
+  code size            =       154     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

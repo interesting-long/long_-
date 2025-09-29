@@ -82,6 +82,14 @@ void Show_bujin()
 		case 1:tft180_show_string(Show_bujin_x,0,"<0.01>");break;
 		}
 }
+
+void show_all_menu()
+{
+	tft180_clear(RGB565_WHITE);
+	Refesh_arrow();
+	menu_display_content();
+	Show_bujin();
+}
 void handle_key1()
 {
 	if(mode==0)                                                         //MODE=0时的逻辑
@@ -191,17 +199,17 @@ void Key3_handle2()
 		Pin=Pin->children[Flag-1];
 		Flag=1;
 		Start_Show_Row=0;
+		show_all_menu();
 	}
 	else if(Pin->father!=NULL && Flag==1)//第一行进入父字节——————退出操作
 	{
 		Pin=Pin->father;
 		Flag=1;
 		Start_Show_Row=0;
+		show_all_menu();
 	}
-	Key3_count=0;mode=0;tft180_clear(RGB565_WHITE);                 //按两下如果没有子菜单，刷新显示
+	Key3_count=0;mode=0;
 	Refesh_arrow();
-	menu_display_content();
-	Show_bujin();
 }
 /* 函数：按键控制菜单函数
  * 参数1：键码值

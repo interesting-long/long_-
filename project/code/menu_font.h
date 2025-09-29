@@ -78,6 +78,7 @@ extern float ADC_8;
 #define ML3 Num[4][3]
 #define MR3 Num[4][4]
 
+#define S_Value Num[5][3]
 
 #define Test_LPWM Num[6][1]
 #define Test_RPWM Num[6][2]

@@ -45,8 +45,10 @@ void Turn_mode(void)
 		switch(Flag)
 		{
 			case 3:CAR_Mode=(CAR_Mode==TEST_SERVO) ? STOP : TEST_SERVO;break;
+			case 4:CAR_Mode=(CAR_Mode==Seta_Servo) ? STOP : Seta_Servo;break;
 			default :break;
 		}
+		
 	}
 	else if((void *)Pin==(void *)&Page[6])
 	{

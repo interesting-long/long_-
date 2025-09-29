@@ -12,7 +12,7 @@ typedef enum
 } Key_State;
 
 #define Flag_press_time 80
-#define Flag_trigg_time 20
+#define Flag_trigg_time 10
 
 extern unsigned char State;
 extern unsigned char keynumber;

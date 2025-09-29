@@ -90,6 +90,18 @@ EA=1;
 				{
 				}
 			}
+			case Seta_Servo:
+			{
+				if(Init_Flag==1)
+				{
+					Turn_mode_Init();
+					Init_Flag=0;
+				}
+				else
+				{
+					Set_Sevo();
+				}
+			}
 		}
 
    }

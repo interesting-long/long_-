@@ -121,7 +121,7 @@ void init_all()
 	menu_Init();
 	PT1H = 0;
     PT0H = 1;
-	pit_ms_init(TIM0_PIT, 20);
+	pit_us_init(TIM0_PIT, 19700);
 	pit_ms_init(TIM1_PIT, 5);
     
 }
@@ -222,6 +222,15 @@ void Turn_mode_Init(void)
 			tft180_clear(RGB565_WHITE);
 			break;
 		}
+		case Seta_Servo:
+		{
+			tft180_clear(RGB565_WHITE);
+			system_delay_ms(5);
+			tft180_show_string(0,3*16,"Test for Seta_Servo");
+			system_delay_ms(1000);
+			tft180_clear(RGB565_WHITE);
+			break;
+		}
 	}
 	EA=1;
 }
@@ -277,6 +286,10 @@ void Show_pararm()
 			tft180_show_string(0,4*16,"ADC5:");tft180_show_int16(5*8,4*16,ADC_5);
 			tft180_show_string(0,5*16,"ADC6:");tft180_show_int16(5*8,5*16,ADC_6);
 			tft180_show_string(0,6*16,"ADC8:");tft180_show_int16(5*8,6*16,ADC_8);
+		}break;
+		case Seta_Servo:
+		{
+			tft180_show_string(0,0*16,"Value:");tft180_show_int16(5*8,0*16,S_Value);
 		}break;
 	}
 

@@ -30,7 +30,7 @@ struct Menu Page[Struct_Number]={
     {   4,
             {"back","KP3","KD3","R_PWM3","L_PWM3","","","",""}},
     {   5,
-            {"back","PWM","Servo","","","","","",""}},
+            {"back","PWM","Servo","S_Value","","","","",""}},
     {   6,
             {"back","LPWM","RPWM","","","","","",""}},
 	{   7,

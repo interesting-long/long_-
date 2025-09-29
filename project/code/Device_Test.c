@@ -27,3 +27,8 @@ void PWM_Test(void)
 	MotorL_SetSpeed(Test_LPWM*100);
 	MotorR_SetSpeed(Test_RPWM*100);
 }
+
+void Set_Sevo(void)
+{
+	Ser_Servo_Duty(S_Value);
+}

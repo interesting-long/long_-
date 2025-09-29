@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               29/09/25  10:25:48  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                              {
    56   4                                      GO_Function();
    57   4                                      break;
-C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               29/09/25  10:25:48  PAGE 2   
 
    58   4                              }
    59   3                              case TEST_PWM: 
@@ -103,46 +103,58 @@ stmt  level    source
    90   4                                      {
    91   5                                      }
    92   4                              }
-   93   3                      }
-   94   2      
-   95   2         }
-   96   1      }
-   97          void pit_handler0(void)
-   98          {
-   99   1                      T3++;
-  100   1              if(T3>50)
-  101   1              {
-  102   2                      T3=0;
-  103   2                      Set_T++;
-  104   2              }
-  105   1              if(CAR_Mode==GO||CAR_Mode==GO_Pararm1||CAR_Mode==GO_Pararm2||CAR_Mode==GO_Pararm3||CAR_Mode==ADC_Show)
-  106   1              {
-  107   2                      pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
-  108   2              }
-  109   1      
-  110   1      }
-  111          
-  112          void pit_handler1(void)
-  113          {
-  114   1              T++;
-  115   1              
-  116   1              ADC_SampleAndFilter();
-  117   1              uni=100*unification();
-  118   1              dajiao=Servo_turn_pid(uni);
-  119   1              Key_scaner();
-  120   1              if(T>=50)
-  121   1              {
-  122   2                      T=0;
-  123   2                      Show_pararm();
-C251 COMPILER V5.60.0,  main                                                               29/09/25  00:07:08  PAGE 3   
+   93   3                              case Seta_Servo:
+   94   3                              {
+   95   4                                      if(Init_Flag==1)
+   96   4                                      {
+   97   5                                              Turn_mode_Init();
+   98   5                                              Init_Flag=0;
+   99   5                                      }
+  100   4                                      else
+  101   4                                      {
+  102   5                                              Set_Sevo();
+  103   5                                      }
+  104   4                              }
+  105   3                      }
+  106   2      
+  107   2         }
+  108   1      }
+  109          void pit_handler0(void)
+  110          {
+  111   1                      T3++;
+  112   1              if(T3>50)
+  113   1              {
+  114   2                      T3=0;
+  115   2                      Set_T++;
+  116   2              }
+  117   1              if(CAR_Mode==GO||CAR_Mode==GO_Pararm1||CAR_Mode==GO_Pararm2||CAR_Mode==GO_Pararm3||CAR_Mode==ADC_Show)
+  118   1              {
+  119   2                      pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
+  120   2              }
+  121   1      
+  122   1      }
+  123          
+C251 COMPILER V5.60.0,  main                                                               29/09/25  10:25:48  PAGE 3   
 
-  124   2              }
-  125   1      }
+  124          void pit_handler1(void)
+  125          {
+  126   1              T++;
+  127   1              
+  128   1              ADC_SampleAndFilter();
+  129   1              uni=100*unification();
+  130   1              dajiao=Servo_turn_pid(uni);
+  131   1              Key_scaner();
+  132   1              if(T>=50)
+  133   1              {
+  134   2                      T=0;
+  135   2                      Show_pararm();
+  136   2              }
+  137   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       453     ------
+  code size            =       472     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

@@ -25,7 +25,8 @@ typedef enum
 	GO_Pararm1,
 	GO_Pararm2,
 	GO_Pararm3,
-	ADC_Show
+	ADC_Show,
+	Seta_Servo
 }MODE;
 extern unsigned char CAR_Mode;
 

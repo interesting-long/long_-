@@ -13,6 +13,7 @@ void Menu_SetChildren(struct Menu *parent, unsigned char child_indices[]);
 void Refesh_arrow();
 void menu_display_content();
 void Show_bujin();
+void show_all_menu();
 void handle_key1();
 void handle_key2();
 void handle_key3();
