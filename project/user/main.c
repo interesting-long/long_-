@@ -3,6 +3,7 @@ int T=0;
 
 int T4=0;
 int Init_Time=0;
+unsigned char PIT1_Flag=0;
 
 void pit_handler0 (void);
 void pit_handler1 (void);
@@ -15,14 +16,13 @@ void main()
 	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
 	tim1_irq_handler = pit_handler1;// 设置定时器1中断回调函数
 	
-	
     while(1)
 	{
 		switch(CAR_Mode)
 		{
 			case STOP:
 			{
-EA=0;
+
 				if(Init_Flag==1)
 				{
 					Turn_mode_Init();
@@ -30,10 +30,11 @@ EA=0;
 				}
 				if(Key)
 				{
+					EA=0;
 					menu_handle_key(Key);
 					Key=0;
+					EA=1;
 				}
-EA=1;
 				break;
 			}
 			case GO:
@@ -77,7 +78,8 @@ EA=1;
 					Init_Flag=0;
 					EA=1;
 				}
-				Serve_Test();break;
+				Serve_Test();
+				break;
 			}
 			case ADC_Show:
 			{
@@ -89,6 +91,7 @@ EA=1;
 				else
 				{
 				}
+				break;
 			}
 			case Seta_Servo:
 			{
@@ -101,6 +104,20 @@ EA=1;
 				{
 					Set_Sevo();
 				}
+				break;
+			}
+		}
+		
+		if(PIT1_Flag)
+		{
+			PIT1_Flag=0;
+			ADC_SampleAndFilter();
+			uni=unification();
+			dajiao=Servo_turn_pid(uni);
+			if(++T>=100)
+			{
+				T=0;
+				Show_pararm();
 			}
 		}
 
@@ -118,20 +135,14 @@ void pit_handler0(void)
 	{
 		pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
 	}
-
+	
+	if(CAR_Mode == STOP || CAR_Mode == ADC_Show)
+	{
+		Key_scaner();
+	}
 }
 
 void pit_handler1(void)
 {
-	T++;
-	
-	ADC_SampleAndFilter();
-	uni=100*unification();
-	dajiao=Servo_turn_pid(uni);
-	Key_scaner();
-	if(T>=50)
-	{
-		T=0;
-		Show_pararm();
-	}
+	PIT1_Flag=1;
 }

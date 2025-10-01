@@ -37,6 +37,5 @@ void Servo_Init();
 void CAR_STOP();
 void SET_Time();
 extern unsigned char Init_Fg;
-extern unsigned char Show_Fg;
 extern float dajiao;
 #endif

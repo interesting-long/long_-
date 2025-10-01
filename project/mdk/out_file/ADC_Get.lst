@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  ADC_Get                                                            29/09/25  22:34:14  PAGE 1   
+C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  11:19:11  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE ADC_Get
@@ -59,26 +59,26 @@ stmt  level    source
    48   1          unsigned char channel_index=0;         // 通道循环计数器
    49   1          
    50   1          // 采集5次数据
-   51   1          for (sample_index = 0; sample_index < 4; sample_index++) 
+   51   1          for (sample_index = 0; sample_index < 3; sample_index++) 
    52   1          {
    53   2              raw_adc_data[0][sample_index] = adc_convert(ADC1_PIN);
    54   2              raw_adc_data[1][sample_index] = adc_convert(ADC2_PIN);
    55   2              raw_adc_data[2][sample_index] = adc_convert(ADC3_PIN);
    56   2              raw_adc_data[3][sample_index] = adc_convert(ADC4_PIN);
    57   2          }
-C251 COMPILER V5.60.0,  ADC_Get                                                            29/09/25  22:34:14  PAGE 2   
+C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  11:19:11  PAGE 2   
 
    58   1          
    59   1          // 滤波处理
    60   1          for (channel_index = 0; channel_index < 4; channel_index++) 
    61   1          {
-   62   2              filtered_adc[channel_index] = adc_filter(raw_adc_data[channel_index], 4);
+   62   2              filtered_adc[channel_index] = adc_filter(raw_adc_data[channel_index], 3);
    63   2          }
    64   1              /*传递参数*/
-   65   1              ADC_1 = (float)(filtered_adc[0]*1.0f);
-   66   1              ADC_2 = (float)(filtered_adc[1]*1.0f);
-   67   1              ADC_3 = (float)(filtered_adc[2]*1.0f);
-   68   1              ADC_4 = (float)(filtered_adc[3]*1.0f);
+   65   1              ADC_1 = filtered_adc[0];
+   66   1              ADC_2 = filtered_adc[1];
+   67   1              ADC_3 = filtered_adc[2];
+   68   1              ADC_4 = filtered_adc[3];
    69   1      }
    70          
    71          //void ADC_ALL_GET()
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =        62          2
-C251 COMPILER V5.60.0,  ADC_Get                                                            29/09/25  22:34:14  PAGE 3   
+C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  11:19:11  PAGE 3   
 
   xdata-const size     =    ------     ------
   edata size           =    ------     ------

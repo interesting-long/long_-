@@ -6,7 +6,10 @@ PID servo_pid;
 float dajiao=0;
 unsigned char Sevo_Flag=0;
 unsigned char Init_Fg=0;
-unsigned char Show_Fg=0;
+typedef unsigned char 		uint8_t 	;
+typedef unsigned int	 	uint16_t 	;
+typedef unsigned long int 	uint32_t 	;
+typedef long int 			int32_t 	;
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
  * 参数2：当前值
@@ -32,22 +35,27 @@ float unification(void)
 {
 	
     float error_val;
-    float left_1;
-    float left_2;
-    float right_2;
-    float right_1;
-
-    left_1  = (float)filtered_adc[0];
-    left_2  = (float)filtered_adc[1];
-    right_2 = (float)filtered_adc[2];
-    right_1 = (float)filtered_adc[3];
-    if(left_2 + right_2<=2)
+    uint16_t left_1;
+    uint16_t left_2;
+    uint16_t right_2;
+    uint16_t right_1;
+	int32_t cha;
+	int32_t he;
+	
+    left_1  = filtered_adc[0];
+    left_2  = filtered_adc[1];
+    right_2 = filtered_adc[2];
+    right_1 = filtered_adc[3];
+    if(left_2 + right_2<10)
 	{
 		return 0;
 	}
-	else
+	else 
 	{
-		error_val = (left_1 - right_1) / ((left_2 + right_2)*fast_sqrt(left_2 + right_2));
+		cha=(left_1 - right_1)*100;
+		he=left_2 + right_2;
+		error_val = (float)cha/ (he*fast_sqrt(he));
+//		error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / (left_2 + right_2);
 		return error_val;
 	}
 }
@@ -95,35 +103,34 @@ void Protect()
 {
     if((ADC_1+ADC_2+ADC_3+ADC_4)<PRO)
 	{
-		PRO_Set_Time++;
-		if(PRO_Set_Time>200)
-		{
-			PRO_Set_Time=0;
-			CAR_Mode=STOP;
-			Turn_mode_Init();
-		}
-	}
-	else
-	{
-		PRO_Set_Time=0;
+	CAR_Mode=STOP;
+	Turn_mode_Init();
 	}
 }
 /*自定义初始化函数库*/
 void init_all()
 {
+	EA=0;
+	iap_init();
+	system_delay_ms(10);
 	Motor_Init();
 	Servo_Init();
-	iap_init();
+	PT1H = 0;
+    PT0H = 1;
+	system_delay_ms(5);
+	
 	ADC_GetInit();
 	tft180_init();
+	system_delay_ms(100);
 	tft180_set_color(RGB565_RED,RGB565_WHITE);
 	eeprom_read_Num();
 	menu_Init();
-	PT1H = 0;
-    PT0H = 1;
-	pit_us_init(TIM0_PIT, 19700);
+	system_delay_ms(10);
+	
+	pit_ms_init(TIM0_PIT, 20);
 	pit_ms_init(TIM1_PIT, 5);
-    
+	system_delay_ms(5);
+    EA=1;
 }
 
 //切换模式的初始函数
@@ -136,7 +143,6 @@ void Turn_mode_Init(void)
 		case STOP:
 		{
 			CAR_STOP();
-			Show_Fg=0;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for STOP");
@@ -283,9 +289,6 @@ void Show_pararm()
 			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
 			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
 			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
-			tft180_show_string(0,4*16,"ADC5:");tft180_show_int16(5*8,4*16,ADC_5);
-			tft180_show_string(0,5*16,"ADC6:");tft180_show_int16(5*8,5*16,ADC_6);
-			tft180_show_string(0,6*16,"ADC8:");tft180_show_int16(5*8,6*16,ADC_8);
 		}break;
 		case Seta_Servo:
 		{
@@ -296,7 +299,7 @@ void Show_pararm()
 }
 void SET_Time()
 {
-	if(CAR_Mode!=STOP && Set_T>Time)
+	if(Set_T>Time && CAR_Mode!=STOP)
 	{
 		CAR_Mode=STOP;
 		Turn_mode_Init();
