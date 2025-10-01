@@ -3,6 +3,7 @@ int T=0;
 
 int T4=0;
 int Init_Time=0;
+unsigned char PIT0_Flag=0;
 unsigned char PIT1_Flag=0;
 
 void pit_handler0 (void);
@@ -88,9 +89,6 @@ void main()
 					Turn_mode_Init();
 					Init_Flag=0;
 				}
-				else
-				{
-				}
 				break;
 			}
 			case Seta_Servo:
@@ -112,12 +110,27 @@ void main()
 		{
 			PIT1_Flag=0;
 			ADC_SampleAndFilter();
-			uni=unification();
-			dajiao=Servo_turn_pid(uni);
-			if(++T>=100)
+			dajiao=Servo_turn_pid(unification());
+			if(ADC_Show_Flag)
 			{
-				T=0;
-				Show_pararm();
+				if(++T>=100)
+				{
+					T=0;
+					Show_pararm();
+				}
+			}
+		}
+		if(PIT0_Flag)
+		{
+			PIT0_Flag=0;
+			Protect();
+			if(Servo_Flag)
+			{
+				pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
+			}
+			if(Key_Flag)
+			{
+				Key_scaner();
 			}
 		}
 
@@ -125,21 +138,14 @@ void main()
 }
 void pit_handler0(void)
 {
-	T3++;
-	if(T3>50)
-	{
-		T3=0;
-		Set_T++;
-	}
-	if(CAR_Mode==GO||CAR_Mode==GO_Pararm1||CAR_Mode==GO_Pararm2||CAR_Mode==GO_Pararm3)
-	{
-		pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
-	}
-	
-	if(CAR_Mode == STOP || CAR_Mode == ADC_Show)
-	{
-		Key_scaner();
-	}
+	PIT0_Flag=1;
+//	T3++;
+//	if(T3>50)
+//	{
+//		T3=0;
+//		Set_T++;
+//	}
+
 }
 
 void pit_handler1(void)

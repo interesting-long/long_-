@@ -4,10 +4,15 @@ int T3=0;
 int PRO_Set_Time=0;
 PID servo_pid;
 float dajiao=0;
-unsigned char Sevo_Flag=0;
+
+unsigned char Servo_Flag=0;
+
+unsigned char ADC_Show_Flag=0;
+unsigned char Key_Flag=1;
 unsigned char Init_Fg=0;
 typedef unsigned char 		uint8_t 	;
 typedef unsigned int	 	uint16_t 	;
+typedef int	 				int16_t 	;
 typedef unsigned long int 	uint32_t 	;
 typedef long int 			int32_t 	;
 /*函数：常见的PID计算
@@ -35,10 +40,10 @@ float unification(void)
 {
 	
     float error_val;
-    uint16_t left_1;
-    uint16_t left_2;
-    uint16_t right_2;
-    uint16_t right_1;
+    int16_t left_1;
+    int16_t left_2;
+    int16_t right_2;
+    int16_t right_1;
 	int32_t cha;
 	int32_t he;
 	
@@ -52,11 +57,12 @@ float unification(void)
 	}
 	else 
 	{
-		cha=(left_1 - right_1)*100;
+
 		he=left_2 + right_2;
-		error_val = (float)cha/ (he*fast_sqrt(he));
-//		error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / (left_2 + right_2);
-		return error_val;
+//		cha=(left_1 - right_1)*100;
+//		error_val = (float)cha/ (he*fast_sqrt(he));
+		error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / he;
+		return error_val*100;
 	}
 }
 /*快速开方函数*/
@@ -101,10 +107,13 @@ void CAR_STOP()
 //停车检测
 void Protect()
 {
-    if((ADC_1+ADC_2+ADC_3+ADC_4)<PRO)
+	if(CAR_Mode!= STOP)
 	{
-	CAR_Mode=STOP;
-	Turn_mode_Init();
+		if((filtered_adc[0]+filtered_adc[1]+filtered_adc[2]+filtered_adc[3])<10 )
+		{
+			CAR_Mode=STOP;
+			Turn_mode_Init();
+		}
 	}
 }
 /*自定义初始化函数库*/
@@ -143,6 +152,9 @@ void Turn_mode_Init(void)
 		case STOP:
 		{
 			CAR_STOP();
+			ADC_Show_Flag=0;
+			Key_Flag=1;
+			Servo_Flag=0;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for STOP");
@@ -155,6 +167,9 @@ void Turn_mode_Init(void)
 		}
 		case GO:
 		{
+			ADC_Show_Flag=0;
+			Key_Flag=0;
+			Servo_Flag=1;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GO");
@@ -168,6 +183,9 @@ void Turn_mode_Init(void)
 		}
 		case GO_Pararm1:
 		{
+			ADC_Show_Flag=0;
+			Key_Flag=0;
+			Servo_Flag=1;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP1");
@@ -180,6 +198,9 @@ void Turn_mode_Init(void)
 		}
 		case GO_Pararm2:
 		{
+			ADC_Show_Flag=0;
+			Key_Flag=0;
+			Servo_Flag=1;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP2");
@@ -192,6 +213,9 @@ void Turn_mode_Init(void)
 		}
 		case GO_Pararm3:
 		{
+			ADC_Show_Flag=0;
+			Key_Flag=0;
+			Servo_Flag=1;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for GOP3");
@@ -204,6 +228,8 @@ void Turn_mode_Init(void)
 		}
 		case TEST_PWM:
 		{
+			Key_Flag=1;
+			Servo_Flag=0;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for PWM_TEST");
@@ -213,6 +239,8 @@ void Turn_mode_Init(void)
 		}
 		case TEST_SERVO:
 		{
+			Key_Flag=1;
+			Servo_Flag=0;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for Servo");
@@ -221,6 +249,9 @@ void Turn_mode_Init(void)
 		}
 		case ADC_Show:
 		{
+			ADC_Show_Flag=1;
+			Key_Flag=1;
+			Servo_Flag=1;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for ADC_Show");
@@ -230,6 +261,8 @@ void Turn_mode_Init(void)
 		}
 		case Seta_Servo:
 		{
+			Key_Flag=1;
+			Servo_Flag=0;
 			tft180_clear(RGB565_WHITE);
 			system_delay_ms(5);
 			tft180_show_string(0,3*16,"Test for Seta_Servo");
@@ -285,10 +318,10 @@ void Show_pararm()
 		}break;
 		case ADC_Show:
 		{
-			tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
-			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
-			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
-			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+			tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,filtered_adc[0]);
+			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,filtered_adc[1]);
+			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,filtered_adc[2]);
+			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,filtered_adc[3]);
 		}break;
 		case Seta_Servo:
 		{
@@ -313,9 +346,9 @@ void GO_Function(void)
 		Turn_mode_Init();
 		Init_Flag=0;
 	}
-	else
-	{
-		SET_Time();
-		Protect();
-	}
+//	else
+//	{
+////		SET_Time();
+//		
+//	}
 }

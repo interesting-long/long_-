@@ -2,8 +2,8 @@
 #define __KEY_H__
 
 #include "zf_common_headfile.h"
-#define Flag_press_time 80
-#define Flag_trigg_time 10
+#define Flag_press_time 40
+#define Flag_trigg_time 5
 #define ANY_ITEM 0xFF
 typedef enum
 {

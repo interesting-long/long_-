@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            01/10/25  11:19:11  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -29,7 +29,7 @@ stmt  level    source
    18   1              float servo_value;
    19   1              float temp=0;
    20   1              servo_value=Normal_PID(&servo_pid,Current,0.0);
-   21   1              temp=func_limit_ab(servo_value,-97,83);
+   21   1              temp=func_limit_ab(servo_value,-85,87);
    22   1              
    23   1      //      pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
    24   1              return temp;
@@ -66,7 +66,7 @@ stmt  level    source
    55          {
    56   1          if(pwm>0)
    57   1          {
-C251 COMPILER V5.60.0,  control                                                            01/10/25  11:19:11  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 2   
 
    58   2              pwm_set_duty(MotorR_pwm1,pwm);
    59   2              pwm_set_duty(MotorR_pwm2,0);
@@ -134,7 +134,7 @@ stmt  level    source
   121   3                              servo_pid.Kd = KD2;
   122   3                      }break;
   123   2                      case GO_Pararm3:
-C251 COMPILER V5.60.0,  control                                                            01/10/25  11:19:11  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 3   
 
   124   2                      {
   125   3                              servo_pid.Kp = KP3;
