@@ -23,7 +23,7 @@ int Servo_turn_pid(float Current)
 	float temp ;
     
     // 使用局部变量计算
-    float out = kp * error + kd * (error - last_error);
+    float out = kp * error + kd * (error - last_error);//+Help_turn();
     
     // 写回必要的结构体成员
     servo_pid.LastError = error;

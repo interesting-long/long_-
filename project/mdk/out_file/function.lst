@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          memcpy(&i, &x, 4);
    55   1          
    56   1          i = 532267893U + (i >> 1);
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 2   
 
    57   1          
    58   1          memcpy(&x, &i, 4);
@@ -118,7 +118,7 @@ stmt  level    source
   104   1              PT1H = 0;
   105   1          PT0H = 1;
   106   1              system_delay_ms(5);
-  107   1              
+  107   1              Buzzer_Init();
   108   1              ADC_GetInit();
   109   1              tft180_init();
   110   1              system_delay_ms(100);
@@ -134,7 +134,7 @@ stmt  level    source
   120   1      }
   121          
   122          //切换模式的初始函数
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 3   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 3   
 
   123          void Turn_mode_Init(void)
   124          {
@@ -202,7 +202,7 @@ stmt  level    source
   186   3                              
   187   3                              Motor_Update();
   188   3                              PID_Update();
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 4   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 4   
 
   189   3                              break;
   190   3                      }
@@ -270,7 +270,7 @@ stmt  level    source
   252   1      }
   253          
   254          void Show_pararm()
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 5   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 5   
 
   255          {
   256   1              switch(CAR_Mode)
@@ -315,10 +315,10 @@ stmt  level    source
   295   3                      }break;
   296   2                      case ADC_Show:
   297   2                      {
-  298   3                              tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,filtered_adc[0]);
-  299   3                              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,filtered_adc[1]);
-  300   3                              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,filtered_adc[2]);
-  301   3                              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,filtered_adc[3]);
+  298   3                              tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+  299   3                              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+  300   3                              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+  301   3                              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
   302   3                      }break;
   303   2                      case Seta_Servo:
   304   2                      {
@@ -338,7 +338,7 @@ stmt  level    source
   318          
   319          void GO_Function(void)
   320          {
-C251 COMPILER V5.60.0,  function                                                           03/10/25  15:03:17  PAGE 6   
+C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 6   
 
   321   1              if(Init_Flag==1)
   322   1              {
@@ -350,7 +350,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3119     ------
+  code size            =      3122     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

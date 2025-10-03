@@ -105,5 +105,5 @@
 #include "test.h"
 #include "Device_Test.h"
 #include "Strategy.h"
-
+#include "Buzzer.h"
 #endif

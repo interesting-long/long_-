@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  15:02:34  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  20:47:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -18,7 +18,7 @@ stmt  level    source
     7                  {-1 ,35 ,350 ,39 ,39 ,-1 ,-1 ,-1 ,-1 },
     8                  {-1 ,-1,-1 ,840,-1 ,-1 ,-1 ,-1 ,-1 },
     9                          {-1 ,20 ,20 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-   10                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 }};//数据存储的数组
+   10                  {-1 ,60 ,10 ,300 ,300 ,5 ,-1 ,-1 ,-1 }};//数据存储的数组
    11          
    12          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
              -Page[2]，Page[3]，Page[4]，
@@ -32,7 +32,7 @@ stmt  level    source
    20           */
    21          struct Menu Page[Struct_Number]={
    22              {   0,
-   23                      {"back","GOP","GOP1","GOP2","GOP3","yuzhi","Time","ADC","Test"}},
+   23                      {"back","GOP","GOP1","GOP2","GOP3","Cyle","Time","ADC","Test"}},
    24              {   1,
    25                      {"back","KP","KD","R_PWM","L_PWM","","","",""}},
    26              {   2,
@@ -46,13 +46,13 @@ stmt  level    source
    34              {   6,
    35                      {"back","LPWM","RPWM","","","","","",""}},
    36                  {   7,
-   37                      {"back","Pro","Lose","","","","","",""}},
+   37                      {"back","turn","1_time","2_time","noTime","LorR","","",""}},
    38          };
    39          
    40          struct Menu *Pin=&Page[0];//灵活指针
    41          
    42          //ADC采样参数                                                           
-   43          float ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                       //ADC采样值
+   43          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC采样值
 
 
 Module Information          Static   Overlayable
@@ -62,19 +62,19 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      1374     ------
+  xdata size           =      1360     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  15:02:34  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  20:47:22  PAGE 2   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      1434     ------
+  hconst size          =      1420     ------
 End of Module Information.
 
 

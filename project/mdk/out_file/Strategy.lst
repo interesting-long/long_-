@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  15:02:34  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -12,17 +12,119 @@ stmt  level    source
     1          #include "Strategy.h"
     2          float uni=0;
     3          float last_uni=0;
-    4          int loss_Time=0;
+    4          int if_time=0;
+    5          int if2_time=0;
+    6          int no_time=0;
+    7          int over_time=0;
+    8          int Continue_Time=0;
+    9          unsigned char Enter_Flag_Left=0;
+   10          unsigned char Enter_Flag_Right=0;
+   11          unsigned char Cycle_Over=0;
+   12          unsigned char Cycle_Stat=0;
+   13          //?°Ë®®??°§¶Ão
+   14          //®®??°§¶Ão
+   15          //3??°§¶Ão
+   16          //ª∑µ∫≈–∂œ
+   17          void if_Cycle(void)
+   18          {
+   19   1              switch(Cycle_Stat)
+   20   1              {
+   21   2                      case EXIT:
+   22   2                      {
+   23   3                              Buzzer_OFF();
+   24   3                              if(ADC_2==1023 || ADC_3==1023 )
+   25   3                              {
+   26   4                                      if_time++;
+   27   4                                      if(if_time>Entern_Flag_Time)
+   28   4                                      {
+   29   5                                              Cycle_Stat=APPROACH;
+   30   5                                              if_time=0;
+   31   5                                      }
+   32   4                              }
+   33   3                              else
+   34   3                              {
+   35   4                                      if_time=0;
+   36   4                                      if(Cycle_Over)
+   37   4                                      {
+   38   5                                              over_time++;
+   39   5                                              if(over_time>NOT_Time)
+   40   5                                              {
+   41   6                                                      Cycle_Over=0;
+   42   6                                                      over_time=0;
+   43   6                                              }
+   44   5                                      }
+   45   4                              }
+   46   3                              break;
+   47   3                      }
+   48   2                      case APPROACH:
+   49   2                      {
+   50   3                              if(ADC_2!=1023 || ADC_3!=1023)
+   51   3                              {
+   52   4                                      Cycle_Stat=Left_ENTER;
+   53   4                              }
+   54   3                              else
+   55   3                              {
+   56   4                                      no_time++;
+   57   4                                      if(no_time>20)
+C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 2   
+
+   58   4                                      {
+   59   5                                              Cycle_Stat=EXIT;
+   60   5                                              no_time=0;
+   61   5                                      }
+   62   4                              }
+   63   3                              break;
+   64   3                      }
+   65   2                      case Left_ENTER:
+   66   2                      {
+   67   3                              Enter_Flag_Left=1;
+   68   3                              Buzzer_ON();
+   69   3                              Continue_Time++;
+   70   3                              if(Continue_Time>Entern_Continue_Time)
+   71   3                              {
+   72   4                                      Cycle_Stat=EXIT;
+   73   4                                      Continue_Time = 0;  //
+   74   4                      Enter_Flag_Left = 0;     //
+   75   4                                      Cycle_Over=1;
+   76   4                              }
+   77   3                              break;
+   78   3                      }
+   79   2              }
+   80   1      
+   81   1      }
+   82          //«–Õ‰≤π∂°
+   83          int Help_turn()
+   84          {
+   85   1              if(Cycle_Over!=1)
+   86   1              {
+   87   2                      if(ADC_1+ADC_2<220)
+   88   2                      {
+   89   3                              return -50;
+   90   3                      }
+   91   2                      else if(ADC_3+ADC_4<220)
+   92   2                      {
+   93   3                              return 50;
+   94   3                      }
+   95   2                      else
+   96   2                      {
+   97   3                              return 0;
+   98   3                      }
+   99   2              }
+  100   1              else
+  101   1              {
+  102   2                      return 0;
+  103   2              }
+  104   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =    ------     ------
+  code size            =       391     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        10     ------
+  xdata size           =        22     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -32,7 +134,9 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        25     ------
+  hconst size          =        77     ------
+C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 3   
+
 End of Module Information.
 
 

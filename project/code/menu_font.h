@@ -42,19 +42,16 @@ struct Menu
 extern struct Menu Page[Struct_Number];
 extern struct Menu *Pin;//灵活指针
 //ADC参数
-extern float ADC_1;
-extern float ADC_2;
-extern float ADC_3;
-extern float ADC_4;
-extern float ADC_5;
-extern float ADC_6;
-extern float ADC_8;
+extern unsigned int ADC_1;
+extern unsigned int ADC_2;
+extern unsigned int ADC_3;
+extern unsigned int ADC_4;
 /*******宏定义相应的数值*******/
 
 
 
 
-#define PRO Num[7][1]
+
 #define Time Num[0][6]
 
 #define KP Num[1][1]
@@ -82,4 +79,9 @@ extern float ADC_8;
 #define Test_LPWM Num[6][1]
 #define Test_RPWM Num[6][2]
 
+#define turn_Value 				Num[7][1]
+#define Entern_Flag_Time 		Num[7][2]
+#define Entern_Continue_Time 	Num[7][3]
+#define NOT_Time 				Num[7][4]
+#define Mode_Flag 				Num[7][5]
 #endif 

@@ -7,7 +7,7 @@ float Num[Num_Col][Page_Row_Number]={
         {-1 ,35 ,350 ,39 ,39 ,-1 ,-1 ,-1 ,-1 },
         {-1 ,-1,-1 ,840,-1 ,-1 ,-1 ,-1 ,-1 },
 		{-1 ,20 ,20 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-        {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 }};//数据存储的数组
+        {-1 ,60 ,10 ,300 ,300 ,5 ,-1 ,-1 ,-1 }};//数据存储的数组
 
 unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],Page[2]，Page[3]，Page[4]，
 unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到Page[5],Page[6]
@@ -20,7 +20,7 @@ unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到
  */
 struct Menu Page[Struct_Number]={
     {   0,
-            {"back","GOP","GOP1","GOP2","GOP3","yuzhi","Time","ADC","Test"}},
+            {"back","GOP","GOP1","GOP2","GOP3","Cyle","Time","ADC","Test"}},
     {   1,
             {"back","KP","KD","R_PWM","L_PWM","","","",""}},
     {   2,
@@ -34,10 +34,10 @@ struct Menu Page[Struct_Number]={
     {   6,
             {"back","LPWM","RPWM","","","","","",""}},
 	{   7,
-            {"back","Pro","Lose","","","","","",""}},
+            {"back","turn","1_time","2_time","noTime","LorR","","",""}},
 };
 
 struct Menu *Pin=&Page[0];//灵活指针
 
 //ADC采样参数	                                   			
-float ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;  			//ADC采样值
+unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;  			//ADC采样值

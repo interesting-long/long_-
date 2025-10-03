@@ -61,6 +61,10 @@ void ADC_SampleAndFilter(void)
     {
         filtered_adc[channel_index] = adc_filter(raw_adc_data[channel_index], 3);
     }
+	ADC_1=filtered_adc[0];
+	ADC_2=filtered_adc[1];
+	ADC_3=filtered_adc[2];
+	ADC_4=filtered_adc[3];
 }
 
 //void ADC_ALL_GET()

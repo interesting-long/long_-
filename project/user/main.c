@@ -111,7 +111,34 @@ void pit_handler0(void)
 	Protect();
 	if(Servo_Flag)
 	{
-		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+		if(Enter_Flag_Left)
+		{
+			if(Mode_Flag<-1)//×óÔ²»·
+			{
+				pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
+			}
+			else if(Mode_Flag>1)//ÓÒÔ²»·
+			{
+				pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
+			}
+			else
+			{
+				pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+			}
+		}
+		else
+		{
+			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+		}
+		
+	}
+	if(ADC_Show_Flag)
+	{
+		if(++T>=10)
+		{
+			T=0;
+			Show_pararm();
+		}
 	}
 	if(Key_Flag)
 	{
@@ -124,12 +151,6 @@ void pit_handler1(void)
 {
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
-	if(ADC_Show_Flag)
-	{
-		if(++T>=30)
-		{
-			T=0;
-			Show_pararm();
-		}
-	}
+	if_Cycle();
+	
 }

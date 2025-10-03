@@ -104,7 +104,7 @@ void init_all()
 	PT1H = 0;
     PT0H = 1;
 	system_delay_ms(5);
-	
+	Buzzer_Init();
 	ADC_GetInit();
 	tft180_init();
 	system_delay_ms(100);
@@ -295,10 +295,10 @@ void Show_pararm()
 		}break;
 		case ADC_Show:
 		{
-			tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,filtered_adc[0]);
-			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,filtered_adc[1]);
-			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,filtered_adc[2]);
-			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,filtered_adc[3]);
+			tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
 		}break;
 		case Seta_Servo:
 		{

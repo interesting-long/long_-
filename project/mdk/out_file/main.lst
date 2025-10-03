@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               03/10/25  15:02:33  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                              case GO_Pararm3: 
    56   3                              {
    57   4                                      GO_Function();
-C251 COMPILER V5.60.0,  main                                                               03/10/25  15:02:33  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 2   
 
    58   4                                      break;
    59   4                              }
@@ -124,35 +124,56 @@ stmt  level    source
   111   1              Protect();
   112   1              if(Servo_Flag)
   113   1              {
-  114   2                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-  115   2              }
-  116   1              if(Key_Flag)
-  117   1              {
-  118   2                      Key_scaner();
-  119   2              }
-  120   1      
-  121   1      }
-  122          
-  123          void pit_handler1(void)
-C251 COMPILER V5.60.0,  main                                                               03/10/25  15:02:33  PAGE 3   
+  114   2                      if(Enter_Flag_Left)
+  115   2                      {
+  116   3                              if(Mode_Flag<-1)//×óÔ²»·
+  117   3                              {
+  118   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
+  119   4                              }
+  120   3                              else if(Mode_Flag>1)//ÓÒÔ²»·
+  121   3                              {
+  122   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
+  123   4                              }
+C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 3   
 
-  124          {
-  125   1              ADC_SampleAndFilter();
-  126   1              dajiao=Servo_turn_pid(unification());
-  127   1              if(ADC_Show_Flag)
-  128   1              {
-  129   2                      if(++T>=30)
+  124   3                              else
+  125   3                              {
+  126   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+  127   4                              }
+  128   3                      }
+  129   2                      else
   130   2                      {
-  131   3                              T=0;
-  132   3                              Show_pararm();
-  133   3                      }
+  131   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+  132   3                      }
+  133   2                      
   134   2              }
-  135   1      }
+  135   1              if(ADC_Show_Flag)
+  136   1              {
+  137   2                      if(++T>=10)
+  138   2                      {
+  139   3                              T=0;
+  140   3                              Show_pararm();
+  141   3                      }
+  142   2              }
+  143   1              if(Key_Flag)
+  144   1              {
+  145   2                      Key_scaner();
+  146   2              }
+  147   1      
+  148   1      }
+  149          
+  150          void pit_handler1(void)
+  151          {
+  152   1              ADC_SampleAndFilter();
+  153   1              dajiao=Servo_turn_pid(unification());
+  154   1              if_Cycle();
+  155   1              
+  156   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       363     ------
+  code size            =       521     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
