@@ -5,6 +5,11 @@
 #include "zf_common_headfile.h"
 extern int Set_T;
 extern int T3;
+typedef unsigned char 		uint8_t 	;
+typedef unsigned int	 	uint16_t 	;
+typedef int	 				int16_t 	;
+typedef unsigned long int 	uint32_t 	;
+typedef long int 			int32_t 	;
 typedef struct
 {
         float Kp;
@@ -40,5 +45,5 @@ extern unsigned char Init_Fg;
 extern unsigned char Servo_Flag;
 extern unsigned char Key_Flag;
 extern unsigned char ADC_Show_Flag;
-extern float dajiao;
+extern int dajiao;
 #endif

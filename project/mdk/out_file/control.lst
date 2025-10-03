@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            03/10/25  16:13:16  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -24,131 +24,160 @@ stmt  level    source
    13           * 例子：Servo_turn_pid(变量,-80,80);
    14           * 将变量的值与0进行对比，输出信号控制舵机,而舵机的限幅是正负80
    15           */
-   16          float Servo_turn_pid(float Current)
+   16          int Servo_turn_pid(float Current)
    17          {
-   18   1              float servo_value;
-   19   1              float temp=0;
-   20   1              servo_value=Normal_PID(&servo_pid,Current,0.0);
-   21   1              temp=func_limit_ab(servo_value,-85,87);
-   22   1              
-   23   1      //      pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
-   24   1              return temp;
-   25   1              
-   26   1      }
-   27          
-   28          
-   29          /*
-   30           * 函数功能：左路电机PWM设置
-   31           * 函数名称：MotorL_SetSpeed(unsigned char);
-   32           * 输入参数：想要的PWM值
-   33           * 输出参数：无
-   34           */
-   35          void MotorL_SetSpeed(int pwm)
-   36          {
-   37   1          if(pwm>=0)
-   38   1          {
-   39   2              pwm_set_duty(MotorL_pwm1,pwm);
-   40   2              pwm_set_duty(MotorL_pwm2,0);
-   41   2          }
-   42   1          else
-   43   1          {
-   44   2              pwm_set_duty(MotorL_pwm2,-pwm);
-   45   2              pwm_set_duty(MotorL_pwm1,0);
-   46   2          }
-   47   1      }
-   48          /*
-   49           * 函数功能：右路电机PWM设置
-   50           * 函数名称：MotorR_SetSpeed(unsigned char);
-   51           * 输入参数：想要的PWM值
-   52           * 输出参数：无
-   53           */
-   54          void MotorR_SetSpeed(int pwm)
-   55          {
-   56   1          if(pwm>0)
-   57   1          {
-C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 2   
+   18   1          // 将频繁访问的结构体成员加载到局部变量
+   19   1          float kp = servo_pid.Kp;           // 缓存到快速存储区
+   20   1          float kd = servo_pid.Kd;
+   21   1          float last_error = servo_pid.LastError;
+   22   1          float error = Current;
+   23   1              float temp ;
+   24   1          
+   25   1          // 使用局部变量计算
+   26   1          float out = kp * error + kd * (error - last_error);
+   27   1          
+   28   1          // 写回必要的结构体成员
+   29   1          servo_pid.LastError = error;
+   30   1          
+   31   1          temp = func_limit_ab(out, Servo_min, Servo_max);
+   32   1          return (int)(temp + (temp >= 0 ? 0.5f : -0.5f));
+   33   1      }
+   34          //int Servo_turn_pid(float Current)
+   35          //{
+   36          //    // 放大误差为整数
+   37          //    int32_t error = (int32_t)(Current * 100);             // ×100
+   38          //    int32_t last_error = (int32_t)(servo_pid.LastError);  // ×100
+   39          //    int32_t kp = (int32_t)(servo_pid.Kp * 100);           // ×100
+   40          //    int32_t kd = (int32_t)(servo_pid.Kd * 100);           // ×100
+   41          
+   42          //    // 使用32位，防止溢出 ?
+   43          //    int32_t out = kp * error + kd * (error - last_error);  // ×10000
+   44          
+   45          //    // 更新误差
+   46          //    servo_pid.LastError = error; // ? 保持 ×100 的误差存储方式
+   47          
+   48          //    // 缩回到 ×1 倍输出（比如 -100~+100）
+   49          //    out = out / 10000;
+   50          
+   51          //    // 限幅（这里 Servo_min / Servo_max 必须是 ×1 本身的范围） ?
+   52          //    if (out > Servo_max) out = Servo_max;
+   53          //    if (out < Servo_min) out = Servo_min;
+   54          
+   55          //    return (int)out;  // ? 最终返回还是 "正常倍数"
+   56          //}
+   57          
+C251 COMPILER V5.60.0,  control                                                            03/10/25  16:13:16  PAGE 2   
 
-   58   2              pwm_set_duty(MotorR_pwm1,pwm);
-   59   2              pwm_set_duty(MotorR_pwm2,0);
-   60   2          }
-   61   1          else
-   62   1          {
-   63   2              pwm_set_duty(MotorR_pwm2,-pwm);
-   64   2              pwm_set_duty(MotorR_pwm1,0);
-   65   2          }
-   66   1      }
-   67          /*
-   68           * 函数功能：电机驱动更新
-   69           * 函数名称：Motor_Update();
-   70           * 输入参数：无
-   71           * 输出参数：无
-   72           * 可以进行拓展，写速度策略
-   73           */
-   74          void Motor_Update()
-   75          {  
-   76   1              switch(CAR_Mode)
-   77   1              {
-   78   2                      case GO:
-   79   2                      {
-   80   3                              MotorR_SetSpeed(100*ML);
-   81   3                              MotorL_SetSpeed(100*MR);
-   82   3                      }break;
-   83   2                      case GO_Pararm1:
-   84   2                      {
-   85   3                              MotorR_SetSpeed(100*ML1);
-   86   3                              MotorL_SetSpeed(100*MR1);
-   87   3                      }break;
-   88   2                      case GO_Pararm2:
-   89   2                      {
-   90   3                              MotorR_SetSpeed(100*ML2);
-   91   3                              MotorL_SetSpeed(100*MR2);
-   92   3                      }break;
-   93   2                      case GO_Pararm3:
-   94   2                      {
-   95   3                              MotorR_SetSpeed(100*ML3);
-   96   3                              MotorL_SetSpeed(100*MR3);
-   97   3                      }break;
-   98   2              }
-   99   1              
-  100   1      }
-  101          void PID_Update()
-  102          {  
-  103   1              switch(CAR_Mode)
-  104   1              {
-  105   2                      case GO:
-  106   2                      {
-  107   3                              servo_pid.Kp = KP;
-  108   3                              servo_pid.Ki = 0;
-  109   3                              servo_pid.Kd = KD;
-  110   3                      }break;
-  111   2                      case GO_Pararm1:
-  112   2                      {
-  113   3                              servo_pid.Kp = KP1;
-  114   3                              servo_pid.Ki = 0;
-  115   3                              servo_pid.Kd = KD1;
+   58          /*
+   59           * 函数功能：左路电机PWM设置
+   60           * 函数名称：MotorL_SetSpeed(unsigned char);
+   61           * 输入参数：想要的PWM值
+   62           * 输出参数：无
+   63           */
+   64          void MotorL_SetSpeed(int pwm)
+   65          {
+   66   1          if(pwm>=0)
+   67   1          {
+   68   2              pwm_set_duty(MotorL_pwm1,pwm);
+   69   2              pwm_set_duty(MotorL_pwm2,0);
+   70   2          }
+   71   1          else
+   72   1          {
+   73   2              pwm_set_duty(MotorL_pwm2,-pwm);
+   74   2              pwm_set_duty(MotorL_pwm1,0);
+   75   2          }
+   76   1      }
+   77          /*
+   78           * 函数功能：右路电机PWM设置
+   79           * 函数名称：MotorR_SetSpeed(unsigned char);
+   80           * 输入参数：想要的PWM值
+   81           * 输出参数：无
+   82           */
+   83          void MotorR_SetSpeed(int pwm)
+   84          {
+   85   1          if(pwm>0)
+   86   1          {
+   87   2              pwm_set_duty(MotorR_pwm1,pwm);
+   88   2              pwm_set_duty(MotorR_pwm2,0);
+   89   2          }
+   90   1          else
+   91   1          {
+   92   2              pwm_set_duty(MotorR_pwm2,-pwm);
+   93   2              pwm_set_duty(MotorR_pwm1,0);
+   94   2          }
+   95   1      }
+   96          /*
+   97           * 函数功能：电机驱动更新
+   98           * 函数名称：Motor_Update();
+   99           * 输入参数：无
+  100           * 输出参数：无
+  101           * 可以进行拓展，写速度策略
+  102           */
+  103          void Motor_Update()
+  104          {  
+  105   1              switch(CAR_Mode)
+  106   1              {
+  107   2                      case GO:
+  108   2                      {
+  109   3                              MotorR_SetSpeed(100*ML);
+  110   3                              MotorL_SetSpeed(100*MR);
+  111   3                      }break;
+  112   2                      case GO_Pararm1:
+  113   2                      {
+  114   3                              MotorR_SetSpeed(100*ML1);
+  115   3                              MotorL_SetSpeed(100*MR1);
   116   3                      }break;
   117   2                      case GO_Pararm2:
   118   2                      {
-  119   3                              servo_pid.Kp = KP2;
-  120   3                              servo_pid.Ki = 0;
-  121   3                              servo_pid.Kd = KD2;
-  122   3                      }break;
-  123   2                      case GO_Pararm3:
-C251 COMPILER V5.60.0,  control                                                            01/10/25  17:48:54  PAGE 3   
+  119   3                              MotorR_SetSpeed(100*ML2);
+  120   3                              MotorL_SetSpeed(100*MR2);
+  121   3                      }break;
+  122   2                      case GO_Pararm3:
+  123   2                      {
+C251 COMPILER V5.60.0,  control                                                            03/10/25  16:13:16  PAGE 3   
 
-  124   2                      {
-  125   3                              servo_pid.Kp = KP3;
-  126   3                              servo_pid.Ki = 0;
-  127   3                              servo_pid.Kd = KD3;
-  128   3                      }break;
-  129   2              }
-  130   1              
-  131   1      }
+  124   3                              MotorR_SetSpeed(100*ML3);
+  125   3                              MotorL_SetSpeed(100*MR3);
+  126   3                      }break;
+  127   2              }
+  128   1              
+  129   1      }
+  130          void PID_Update()
+  131          {  
+  132   1              switch(CAR_Mode)
+  133   1              {
+  134   2                      case GO:
+  135   2                      {
+  136   3                              servo_pid.Kp = KP;
+  137   3                              servo_pid.Ki = 0;
+  138   3                              servo_pid.Kd = KD;
+  139   3                      }break;
+  140   2                      case GO_Pararm1:
+  141   2                      {
+  142   3                              servo_pid.Kp = KP1;
+  143   3                              servo_pid.Ki = 0;
+  144   3                              servo_pid.Kd = KD1;
+  145   3                      }break;
+  146   2                      case GO_Pararm2:
+  147   2                      {
+  148   3                              servo_pid.Kp = KP2;
+  149   3                              servo_pid.Ki = 0;
+  150   3                              servo_pid.Kd = KD2;
+  151   3                      }break;
+  152   2                      case GO_Pararm3:
+  153   2                      {
+  154   3                              servo_pid.Kp = KP3;
+  155   3                              servo_pid.Ki = 0;
+  156   3                              servo_pid.Kd = KD3;
+  157   3                      }break;
+  158   2              }
+  159   1              
+  160   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       696     ------
+  code size            =       758     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

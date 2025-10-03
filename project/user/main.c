@@ -23,7 +23,6 @@ void main()
 		{
 			case STOP:
 			{
-
 				if(Init_Flag==1)
 				{
 					Turn_mode_Init();
@@ -105,50 +104,32 @@ void main()
 				break;
 			}
 		}
-		
-		if(PIT1_Flag)
-		{
-			PIT1_Flag=0;
-			ADC_SampleAndFilter();
-			dajiao=Servo_turn_pid(unification());
-			if(ADC_Show_Flag)
-			{
-				if(++T>=100)
-				{
-					T=0;
-					Show_pararm();
-				}
-			}
-		}
-		if(PIT0_Flag)
-		{
-			PIT0_Flag=0;
-			Protect();
-			if(Servo_Flag)
-			{
-				pwm_set_duty(Servo_Pwm,Servo_Mide-dajiao);
-			}
-			if(Key_Flag)
-			{
-				Key_scaner();
-			}
-		}
-
    }
 }
 void pit_handler0(void)
 {
-	PIT0_Flag=1;
-//	T3++;
-//	if(T3>50)
-//	{
-//		T3=0;
-//		Set_T++;
-//	}
+	Protect();
+	if(Servo_Flag)
+	{
+		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+	}
+	if(Key_Flag)
+	{
+		Key_scaner();
+	}
 
 }
 
 void pit_handler1(void)
 {
-	PIT1_Flag=1;
+	ADC_SampleAndFilter();
+	dajiao=Servo_turn_pid(unification());
+	if(ADC_Show_Flag)
+	{
+		if(++T>=30)
+		{
+			T=0;
+			Show_pararm();
+		}
+	}
 }

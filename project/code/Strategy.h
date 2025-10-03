@@ -5,7 +5,5 @@
 
 #define abs(a) ((a) < 0 ? -(a) : (a))
 
-extern float uni;
-extern float last_uni;
-void LineLossProtection();
+
 #endif

@@ -13,18 +13,47 @@ void Ser_Servo_Duty(int value)
  * 例子：Servo_turn_pid(变量,-80,80);
  * 将变量的值与0进行对比，输出信号控制舵机,而舵机的限幅是正负80
  */
-float Servo_turn_pid(float Current)
+int Servo_turn_pid(float Current)
 {
-	float servo_value;
-	float temp=0;
-	servo_value=Normal_PID(&servo_pid,Current,0.0);
-	temp=func_limit_ab(servo_value,-85,87);
-	
-//	pwm_set_duty(Servo_Pwm,Servo_Mide-temp);
-	return temp;
-	
+    // 将频繁访问的结构体成员加载到局部变量
+    float kp = servo_pid.Kp;           // 缓存到快速存储区
+    float kd = servo_pid.Kd;
+    float last_error = servo_pid.LastError;
+    float error = Current;
+	float temp ;
+    
+    // 使用局部变量计算
+    float out = kp * error + kd * (error - last_error);
+    
+    // 写回必要的结构体成员
+    servo_pid.LastError = error;
+    
+    temp = func_limit_ab(out, Servo_min, Servo_max);
+    return (int)(temp + (temp >= 0 ? 0.5f : -0.5f));
 }
+//int Servo_turn_pid(float Current)
+//{
+//    // 放大误差为整数
+//    int32_t error = (int32_t)(Current * 100);             // ×100
+//    int32_t last_error = (int32_t)(servo_pid.LastError);  // ×100
+//    int32_t kp = (int32_t)(servo_pid.Kp * 100);           // ×100
+//    int32_t kd = (int32_t)(servo_pid.Kd * 100);           // ×100
 
+//    // 使用32位，防止溢出 ?
+//    int32_t out = kp * error + kd * (error - last_error);  // ×10000
+
+//    // 更新误差
+//    servo_pid.LastError = error; // ? 保持 ×100 的误差存储方式
+
+//    // 缩回到 ×1 倍输出（比如 -100~+100）
+//    out = out / 10000;
+
+//    // 限幅（这里 Servo_min / Servo_max 必须是 ×1 本身的范围） ?
+//    if (out > Servo_max) out = Servo_max;
+//    if (out < Servo_min) out = Servo_min;
+
+//    return (int)out;  // ? 最终返回还是 "正常倍数"
+//}
 
 /*
  * 函数功能：左路电机PWM设置

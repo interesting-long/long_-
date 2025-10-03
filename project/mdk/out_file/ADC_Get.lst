@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  18:12:25  PAGE 1   
+C251 COMPILER V5.60.0,  ADC_Get                                                            03/10/25  15:02:33  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE ADC_Get
@@ -66,7 +66,7 @@ stmt  level    source
    55   2              raw_adc_data[2][sample_index] = adc_convert(ADC3_PIN);
    56   2              raw_adc_data[3][sample_index] = adc_convert(ADC4_PIN);
    57   2          }
-C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  18:12:25  PAGE 2   
+C251 COMPILER V5.60.0,  ADC_Get                                                            03/10/25  15:02:33  PAGE 2   
 
    58   1          
    59   1          // ÂË²¨´¦Àí
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   bit size             =         1     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.60.0,  ADC_Get                                                            01/10/25  18:12:25  PAGE 3   
+C251 COMPILER V5.60.0,  ADC_Get                                                            03/10/25  15:02:33  PAGE 3   
 
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

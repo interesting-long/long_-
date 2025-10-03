@@ -125,7 +125,7 @@ void adc_init(adc_channel_enum ch, adc_resolution_enum resolution)
         P1M1 |= (1 << (ch & 0x07));
     }
     
-    ADCCFG |= ADC_SYSclk_DIV_2 & 0x0F;			//ADC时钟频率SYSclk/16&0x0F;
+    ADCCFG |= ADC_SYSclk_DIV_4 & 0x0F;			//ADC时钟频率SYSclk/16&0x0F;
     
     ADCCFG |= 1 << 5;							//转换结果右对齐。 ADC_RES 保存结果的高 2 位， ADC_RESL 保存结果的低 8 位。
 	

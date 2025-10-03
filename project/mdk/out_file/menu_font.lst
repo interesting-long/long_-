@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          01/10/25  17:48:54  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  15:02:34  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -12,12 +12,12 @@ stmt  level    source
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
     3                  {-1 ,1 ,2 ,3 ,4  ,-1 ,-1 ,-1 ,-1 },
-    4                  {-1 ,20,20,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-    5                  {-1 ,1 ,2 ,50,50 ,0.8,-1 ,-1 ,-1 },
-    6                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-    7                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-    8                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-    9                          {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
+    4                  {-1 ,28,280,32 ,32 ,-1 ,-1 ,-1 ,-1 },
+    5                  {-1 ,30 ,300 ,35,35 ,-1,-1 ,-1 ,-1 },
+    6                  {-1 ,34 ,340 ,37 ,37 ,-1 ,-1 ,-1 ,-1 },
+    7                  {-1 ,35 ,350 ,39 ,39 ,-1 ,-1 ,-1 ,-1 },
+    8                  {-1 ,-1,-1 ,840,-1 ,-1 ,-1 ,-1 ,-1 },
+    9                          {-1 ,20 ,20 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
    10                  {-1 ,1 ,2 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 }};//数据存储的数组
    11          
    12          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          01/10/25  17:48:54  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          03/10/25  15:02:34  PAGE 2   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

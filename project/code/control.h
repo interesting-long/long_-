@@ -32,7 +32,7 @@ extern unsigned char CAR_Mode;
 
 float pid_control_tyre(float error);
 /*外部调用函数*/
-float Servo_turn_pid(float Current);
+int Servo_turn_pid(float Current);
 void Motor_Update();
 void PID_Update();
 //void Ser_Servo_Duty(int value);

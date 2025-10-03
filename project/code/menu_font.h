@@ -3,9 +3,9 @@
 
 #include "zf_common_headfile.h"
 /*********************运动参数常量设置********************/
-#define Servo_Mide (890)		//大约的舵机中值818
-#define Servo_max	 (97)		//舵机的最大值
-#define Servo_min  (-97)		//舵机的最小值		 	
+#define Servo_Mide (907)		//大约的舵机中值818
+#define Servo_max	 (85)		//舵机的最大值
+#define Servo_min  (-77)		//舵机的最小值		 	
 /*********************显示常量设置***********************/
 /***基础设置*******/
 #define Struct_Number 8         //菜单的页数
@@ -55,7 +55,6 @@ extern float ADC_8;
 
 
 #define PRO Num[7][1]
-#define Lose Num[7][2]
 #define Time Num[0][6]
 
 #define KP Num[1][1]

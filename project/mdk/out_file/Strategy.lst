@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           01/10/25  17:48:55  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  15:02:34  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -13,33 +13,11 @@ stmt  level    source
     2          float uni=0;
     3          float last_uni=0;
     4          int loss_Time=0;
-    5          void LineLossProtection()
-    6          {
-    7   1          uni = unification();
-    8   1      //    if(100 * abs(uni - last_uni) > Lose  && last_uni!=0)
-    9   1      //    {
-   10   1      //              loss_Time++;
-   11   1      //              if(loss_Time>=3)
-   12   1      //              {
-   13   1      //            Servo_turn_pid(last_uni, -90, 90);
-   14   1      //              }
-   15   1      //              else
-   16   1      //              {
-   17   1                              Servo_turn_pid(uni);
-   18   1      //              }
-   19   1      //    }
-   20   1      //    else
-   21   1      //    {
-   22   1      //              loss_Time=0;
-   23   1      //        Servo_turn_pid(uni, -90, 90);
-   24   1      //        last_uni = uni;
-   25   1      //    }
-   26   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        27     ------
+  code size            =    ------     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

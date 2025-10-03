@@ -3,18 +3,14 @@ int Set_T=0;
 int T3=0;
 int PRO_Set_Time=0;
 PID servo_pid;
-float dajiao=0;
+int dajiao=0;
 
 unsigned char Servo_Flag=0;
 
 unsigned char ADC_Show_Flag=0;
 unsigned char Key_Flag=1;
 unsigned char Init_Fg=0;
-typedef unsigned char 		uint8_t 	;
-typedef unsigned int	 	uint16_t 	;
-typedef int	 				int16_t 	;
-typedef unsigned long int 	uint32_t 	;
-typedef long int 			int32_t 	;
+
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
  * 参数2：当前值
@@ -38,32 +34,14 @@ float Normal_PID(PID *PID,float NowData,float Point)
  */
 float unification(void) 
 {
-	
-    float error_val;
-    int16_t left_1;
-    int16_t left_2;
-    int16_t right_2;
-    int16_t right_1;
-	int32_t cha;
-	int32_t he;
-	
-    left_1  = filtered_adc[0];
-    left_2  = filtered_adc[1];
-    right_2 = filtered_adc[2];
-    right_1 = filtered_adc[3];
-    if(left_2 + right_2<10)
-	{
-		return 0;
-	}
-	else 
-	{
+    int16_t left_1  = filtered_adc[0];
+    int16_t left_2  = filtered_adc[1];
+    int16_t right_2 = filtered_adc[2];
+    int16_t right_1 = filtered_adc[3];
 
-		he=left_2 + right_2;
-//		cha=(left_1 - right_1)*100;
-//		error_val = (float)cha/ (he*fast_sqrt(he));
-		error_val = (fast_sqrt(left_1) - fast_sqrt(right_1)) / he;
-		return error_val*100;
-	}
+    int32_t he = left_2 + right_2;
+    if (he < 10) return 0.0f;
+    return (fast_sqrt(left_1) - fast_sqrt(right_1)) * (100.0f / he);
 }
 /*快速开方函数*/
 float fast_sqrt(float number) 
@@ -120,7 +98,6 @@ void Protect()
 void init_all()
 {
 	EA=0;
-	iap_init();
 	system_delay_ms(10);
 	Motor_Init();
 	Servo_Init();
@@ -132,7 +109,7 @@ void init_all()
 	tft180_init();
 	system_delay_ms(100);
 	tft180_set_color(RGB565_RED,RGB565_WHITE);
-	eeprom_read_Num();
+//	eeprom_read_Num();
 	menu_Init();
 	system_delay_ms(10);
 	
@@ -287,7 +264,7 @@ void Show_pararm()
 		case GO:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
 			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
 			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
@@ -296,7 +273,7 @@ void Show_pararm()
 		case GO_Pararm1:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
 			tft180_show_string(0,4*16,"KP1:");  tft180_show_float(5*8,4*16,KP1,2,2);
 			tft180_show_string(0,5*16,"KD1:");  tft180_show_float(5*8,5*16,KD1,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
@@ -304,14 +281,14 @@ void Show_pararm()
 		case GO_Pararm2:
 		{
 			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
 			tft180_show_string(0,4*16,"KP2:");  tft180_show_float(5*8,4*16,KP2,2,2);
 			tft180_show_string(0,5*16,"KD2:");  tft180_show_float(5*8,5*16,KD2,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
 		}break;
 		case GO_Pararm3:
 		{
-			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,uni,2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
 			tft180_show_string(0,4*16,"KP3:");  tft180_show_float(5*8,4*16,KP3,2,2);
 			tft180_show_string(0,5*16,"KD3:");  tft180_show_float(5*8,5*16,KD3,2,2);
 			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
@@ -346,9 +323,4 @@ void GO_Function(void)
 		Turn_mode_Init();
 		Init_Flag=0;
 	}
-//	else
-//	{
-////		SET_Time();
-//		
-//	}
 }

@@ -191,7 +191,7 @@ void Key3_handle2()
 {
 	if(Save_Flag)
 	{
-		eeprom_save_Num();
+//		eeprom_save_Num();
 		Save_Flag=0;
 	}
 	if((Pin->children[Flag-1])!=NULL)//进入子字节——————进入操作
