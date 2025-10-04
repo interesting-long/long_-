@@ -82,6 +82,6 @@ extern unsigned int ADC_4;
 #define turn_Value 				Num[7][1]
 #define Entern_Flag_Time 		Num[7][2]
 #define Entern_Continue_Time 	Num[7][3]
-#define NOT_Time 				Num[7][4]
+#define Entern_Delay_Time 		Num[7][4]
 #define Mode_Flag 				Num[7][5]
 #endif 

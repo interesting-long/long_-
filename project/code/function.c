@@ -87,7 +87,7 @@ void Protect()
 {
 	if(CAR_Mode!= STOP)
 	{
-		if((filtered_adc[0]+filtered_adc[1]+filtered_adc[2]+filtered_adc[3])<10 )
+		if((ADC_1+ADC_2+ADC_3+ADC_4)<5 )
 		{
 			CAR_Mode=STOP;
 			Turn_mode_Init();
@@ -105,6 +105,7 @@ void init_all()
     PT0H = 1;
 	system_delay_ms(5);
 	Buzzer_Init();
+	
 	ADC_GetInit();
 	tft180_init();
 	system_delay_ms(100);
@@ -117,6 +118,7 @@ void init_all()
 	pit_ms_init(TIM1_PIT, 5);
 	system_delay_ms(5);
     EA=1;
+	
 }
 
 //切换模式的初始函数

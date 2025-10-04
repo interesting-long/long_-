@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -27,7 +27,7 @@ stmt  level    source
    16   1              init_all();
    17   1              tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
    18   1              tim1_irq_handler = pit_handler1;// 设置定时器1中断回调函数
-   19   1              
+   19   1              Buzzer_OFF();
    20   1          while(1)
    21   1              {
    22   2                      switch(CAR_Mode)
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                              case GO_Pararm3: 
    56   3                              {
    57   4                                      GO_Function();
-C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 2   
 
    58   4                                      break;
    59   4                              }
@@ -126,15 +126,15 @@ stmt  level    source
   113   1              {
   114   2                      if(Enter_Flag_Left)
   115   2                      {
-  116   3                              if(Mode_Flag<-1)//左圆环
+  116   3                              if(Mode_Flag<-2)//左圆环
   117   3                              {
   118   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
   119   4                              }
-  120   3                              else if(Mode_Flag>1)//右圆环
+  120   3                              else if(Mode_Flag>2)//右圆环
   121   3                              {
   122   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
   123   4                              }
-C251 COMPILER V5.60.0,  main                                                               03/10/25  20:47:22  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 3   
 
   124   3                              else
   125   3                              {
@@ -167,13 +167,13 @@ stmt  level    source
   152   1              ADC_SampleAndFilter();
   153   1              dajiao=Servo_turn_pid(unification());
   154   1              if_Cycle();
-  155   1              
+  155   1      //      
   156   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       521     ------
+  code size            =       524     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

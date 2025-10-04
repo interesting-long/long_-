@@ -9,10 +9,7 @@ int Continue_Time=0;
 unsigned char Enter_Flag_Left=0;
 unsigned char Enter_Flag_Right=0;
 unsigned char Cycle_Over=0;
-unsigned char Cycle_Stat=0;
-//?¤è??·μo
-//è??·μo
-//3??·μo
+unsigned char Cycle_Stat=EXIT;
 //环岛判断
 void if_Cycle(void)
 {
@@ -28,20 +25,12 @@ void if_Cycle(void)
 				{
 					Cycle_Stat=APPROACH;
 					if_time=0;
+					Cycle_Over=0;
 				}
 			}
 			else
 			{
 				if_time=0;
-				if(Cycle_Over)
-				{
-					over_time++;
-					if(over_time>NOT_Time)
-					{
-						Cycle_Over=0;
-						over_time=0;
-					}
-				}
 			}
 			break;
 		}
@@ -49,15 +38,11 @@ void if_Cycle(void)
 		{
 			if(ADC_2!=1023 || ADC_3!=1023)
 			{
-				Cycle_Stat=Left_ENTER;
-			}
-			else
-			{
-				no_time++;
-				if(no_time>20)
+				if2_time++;
+				if(if2_time>Entern_Delay_Time)
 				{
-					Cycle_Stat=EXIT;
-					no_time=0;
+					Cycle_Stat=Left_ENTER;
+					if2_time=0;
 				}
 			}
 			break;
@@ -72,7 +57,6 @@ void if_Cycle(void)
 				Cycle_Stat=EXIT;
 				Continue_Time = 0;  //
                 Enter_Flag_Left = 0;     //
-				Cycle_Over=1;
 			}
 			break;
 		}
@@ -82,23 +66,26 @@ void if_Cycle(void)
 //切弯补丁
 int Help_turn()
 {
-	if(Cycle_Over!=1)
+	int left  = ADC_1 + ADC_2;
+	int right = ADC_3 + ADC_4;
+	if (left < 200 && right < 200)
 	{
-		if(ADC_1+ADC_2<220)
-		{
-			return -50;
-		}
-		else if(ADC_3+ADC_4<220)
-		{
-			return 50;
-		}
+		// 同时满足，取较小一侧优先
+		if (left < right)
+			return -40;   // 左
 		else
-		{
-			return 0;
-		}
+			return 40;    // 右
+	}
+	else if (left < 200)
+	{
+		return -40;   // 左
+	}
+	else if (right < 200)
+	{
+		return 40;    // 右
 	}
 	else
 	{
-		return 0;
+		return 0;     // 不转
 	}
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          memcpy(&i, &x, 4);
    55   1          
    56   1          i = 532267893U + (i >> 1);
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 2   
 
    57   1          
    58   1          memcpy(&x, &i, 4);
@@ -101,7 +101,7 @@ stmt  level    source
    87          {
    88   1              if(CAR_Mode!= STOP)
    89   1              {
-   90   2                      if((filtered_adc[0]+filtered_adc[1]+filtered_adc[2]+filtered_adc[3])<10 )
+   90   2                      if((ADC_1+ADC_2+ADC_3+ADC_4)<5 )
    91   2                      {
    92   3                              CAR_Mode=STOP;
    93   3                              Turn_mode_Init();
@@ -119,233 +119,235 @@ stmt  level    source
   105   1          PT0H = 1;
   106   1              system_delay_ms(5);
   107   1              Buzzer_Init();
-  108   1              ADC_GetInit();
-  109   1              tft180_init();
-  110   1              system_delay_ms(100);
-  111   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
-  112   1      //      eeprom_read_Num();
-  113   1              menu_Init();
-  114   1              system_delay_ms(10);
-  115   1              
-  116   1              pit_ms_init(TIM0_PIT, 20);
-  117   1              pit_ms_init(TIM1_PIT, 5);
-  118   1              system_delay_ms(5);
-  119   1          EA=1;
-  120   1      }
-  121          
-  122          //切换模式的初始函数
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 3   
+  108   1              
+  109   1              ADC_GetInit();
+  110   1              tft180_init();
+  111   1              system_delay_ms(100);
+  112   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
+  113   1      //      eeprom_read_Num();
+  114   1              menu_Init();
+  115   1              system_delay_ms(10);
+  116   1              
+  117   1              pit_ms_init(TIM0_PIT, 20);
+  118   1              pit_ms_init(TIM1_PIT, 5);
+  119   1              system_delay_ms(5);
+  120   1          EA=1;
+  121   1              
+  122   1      }
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 3   
 
-  123          void Turn_mode_Init(void)
-  124          {
-  125   1              EA=0;
-  126   1              Set_T=0;
-  127   1              switch(CAR_Mode)
-  128   1              {
-  129   2                      case STOP:
-  130   2                      {
-  131   3                              CAR_STOP();
-  132   3                              ADC_Show_Flag=0;
-  133   3                              Key_Flag=1;
-  134   3                              Servo_Flag=0;
-  135   3                              tft180_clear(RGB565_WHITE);
-  136   3                              system_delay_ms(5);
-  137   3                              tft180_show_string(0,3*16,"Test for STOP");
-  138   3                              system_delay_ms(1000);
-  139   3                              tft180_clear(RGB565_WHITE);
-  140   3                              Refesh_arrow();
-  141   3                              menu_display_content();
-  142   3                              Show_bujin();
-  143   3                              break;
-  144   3                      }
-  145   2                      case GO:
-  146   2                      {
-  147   3                              ADC_Show_Flag=0;
-  148   3                              Key_Flag=0;
-  149   3                              Servo_Flag=1;
-  150   3                              tft180_clear(RGB565_WHITE);
-  151   3                              system_delay_ms(5);
-  152   3                              tft180_show_string(0,3*16,"Test for GO");
-  153   3                              system_delay_ms(1000);
-  154   3                              tft180_clear(RGB565_WHITE);
-  155   3                              
-  156   3                              
-  157   3                              Motor_Update();
-  158   3                              PID_Update();
-  159   3                              break;
-  160   3                      }
-  161   2                      case GO_Pararm1:
-  162   2                      {
-  163   3                              ADC_Show_Flag=0;
-  164   3                              Key_Flag=0;
-  165   3                              Servo_Flag=1;
-  166   3                              tft180_clear(RGB565_WHITE);
-  167   3                              system_delay_ms(5);
-  168   3                              tft180_show_string(0,3*16,"Test for GOP1");
-  169   3                              system_delay_ms(1000);
-  170   3                              tft180_clear(RGB565_WHITE);
-  171   3                              
-  172   3                              Motor_Update();
-  173   3                              PID_Update();
-  174   3                              break;
-  175   3                      }
-  176   2                      case GO_Pararm2:
-  177   2                      {
-  178   3                              ADC_Show_Flag=0;
-  179   3                              Key_Flag=0;
-  180   3                              Servo_Flag=1;
-  181   3                              tft180_clear(RGB565_WHITE);
-  182   3                              system_delay_ms(5);
-  183   3                              tft180_show_string(0,3*16,"Test for GOP2");
-  184   3                              system_delay_ms(1000);
-  185   3                              tft180_clear(RGB565_WHITE);
-  186   3                              
-  187   3                              Motor_Update();
-  188   3                              PID_Update();
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 4   
+  123          
+  124          //切换模式的初始函数
+  125          void Turn_mode_Init(void)
+  126          {
+  127   1              EA=0;
+  128   1              Set_T=0;
+  129   1              switch(CAR_Mode)
+  130   1              {
+  131   2                      case STOP:
+  132   2                      {
+  133   3                              CAR_STOP();
+  134   3                              ADC_Show_Flag=0;
+  135   3                              Key_Flag=1;
+  136   3                              Servo_Flag=0;
+  137   3                              tft180_clear(RGB565_WHITE);
+  138   3                              system_delay_ms(5);
+  139   3                              tft180_show_string(0,3*16,"Test for STOP");
+  140   3                              system_delay_ms(1000);
+  141   3                              tft180_clear(RGB565_WHITE);
+  142   3                              Refesh_arrow();
+  143   3                              menu_display_content();
+  144   3                              Show_bujin();
+  145   3                              break;
+  146   3                      }
+  147   2                      case GO:
+  148   2                      {
+  149   3                              ADC_Show_Flag=0;
+  150   3                              Key_Flag=0;
+  151   3                              Servo_Flag=1;
+  152   3                              tft180_clear(RGB565_WHITE);
+  153   3                              system_delay_ms(5);
+  154   3                              tft180_show_string(0,3*16,"Test for GO");
+  155   3                              system_delay_ms(1000);
+  156   3                              tft180_clear(RGB565_WHITE);
+  157   3                              
+  158   3                              
+  159   3                              Motor_Update();
+  160   3                              PID_Update();
+  161   3                              break;
+  162   3                      }
+  163   2                      case GO_Pararm1:
+  164   2                      {
+  165   3                              ADC_Show_Flag=0;
+  166   3                              Key_Flag=0;
+  167   3                              Servo_Flag=1;
+  168   3                              tft180_clear(RGB565_WHITE);
+  169   3                              system_delay_ms(5);
+  170   3                              tft180_show_string(0,3*16,"Test for GOP1");
+  171   3                              system_delay_ms(1000);
+  172   3                              tft180_clear(RGB565_WHITE);
+  173   3                              
+  174   3                              Motor_Update();
+  175   3                              PID_Update();
+  176   3                              break;
+  177   3                      }
+  178   2                      case GO_Pararm2:
+  179   2                      {
+  180   3                              ADC_Show_Flag=0;
+  181   3                              Key_Flag=0;
+  182   3                              Servo_Flag=1;
+  183   3                              tft180_clear(RGB565_WHITE);
+  184   3                              system_delay_ms(5);
+  185   3                              tft180_show_string(0,3*16,"Test for GOP2");
+  186   3                              system_delay_ms(1000);
+  187   3                              tft180_clear(RGB565_WHITE);
+  188   3                              
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 4   
 
-  189   3                              break;
-  190   3                      }
-  191   2                      case GO_Pararm3:
-  192   2                      {
-  193   3                              ADC_Show_Flag=0;
-  194   3                              Key_Flag=0;
-  195   3                              Servo_Flag=1;
-  196   3                              tft180_clear(RGB565_WHITE);
-  197   3                              system_delay_ms(5);
-  198   3                              tft180_show_string(0,3*16,"Test for GOP3");
-  199   3                              system_delay_ms(1000);
-  200   3                              tft180_clear(RGB565_WHITE);
-  201   3                              
-  202   3                              Motor_Update();
-  203   3                              PID_Update();
-  204   3                              break;
-  205   3                      }
-  206   2                      case TEST_PWM:
-  207   2                      {
-  208   3                              Key_Flag=1;
-  209   3                              Servo_Flag=0;
-  210   3                              tft180_clear(RGB565_WHITE);
-  211   3                              system_delay_ms(5);
-  212   3                              tft180_show_string(0,3*16,"Test for PWM_TEST");
-  213   3                              system_delay_ms(1000);
-  214   3                              
-  215   3                              break;
-  216   3                      }
-  217   2                      case TEST_SERVO:
-  218   2                      {
-  219   3                              Key_Flag=1;
-  220   3                              Servo_Flag=0;
-  221   3                              tft180_clear(RGB565_WHITE);
-  222   3                              system_delay_ms(5);
-  223   3                              tft180_show_string(0,3*16,"Test for Servo");
-  224   3                              system_delay_ms(1000);
-  225   3                              break;
-  226   3                      }
-  227   2                      case ADC_Show:
-  228   2                      {
-  229   3                              ADC_Show_Flag=1;
-  230   3                              Key_Flag=1;
-  231   3                              Servo_Flag=1;
-  232   3                              tft180_clear(RGB565_WHITE);
-  233   3                              system_delay_ms(5);
-  234   3                              tft180_show_string(0,3*16,"Test for ADC_Show");
-  235   3                              system_delay_ms(1000);
-  236   3                              tft180_clear(RGB565_WHITE);
-  237   3                              break;
-  238   3                      }
-  239   2                      case Seta_Servo:
-  240   2                      {
-  241   3                              Key_Flag=1;
-  242   3                              Servo_Flag=0;
-  243   3                              tft180_clear(RGB565_WHITE);
-  244   3                              system_delay_ms(5);
-  245   3                              tft180_show_string(0,3*16,"Test for Seta_Servo");
-  246   3                              system_delay_ms(1000);
-  247   3                              tft180_clear(RGB565_WHITE);
-  248   3                              break;
-  249   3                      }
-  250   2              }
-  251   1              EA=1;
-  252   1      }
-  253          
-  254          void Show_pararm()
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 5   
+  189   3                              Motor_Update();
+  190   3                              PID_Update();
+  191   3                              break;
+  192   3                      }
+  193   2                      case GO_Pararm3:
+  194   2                      {
+  195   3                              ADC_Show_Flag=0;
+  196   3                              Key_Flag=0;
+  197   3                              Servo_Flag=1;
+  198   3                              tft180_clear(RGB565_WHITE);
+  199   3                              system_delay_ms(5);
+  200   3                              tft180_show_string(0,3*16,"Test for GOP3");
+  201   3                              system_delay_ms(1000);
+  202   3                              tft180_clear(RGB565_WHITE);
+  203   3                              
+  204   3                              Motor_Update();
+  205   3                              PID_Update();
+  206   3                              break;
+  207   3                      }
+  208   2                      case TEST_PWM:
+  209   2                      {
+  210   3                              Key_Flag=1;
+  211   3                              Servo_Flag=0;
+  212   3                              tft180_clear(RGB565_WHITE);
+  213   3                              system_delay_ms(5);
+  214   3                              tft180_show_string(0,3*16,"Test for PWM_TEST");
+  215   3                              system_delay_ms(1000);
+  216   3                              
+  217   3                              break;
+  218   3                      }
+  219   2                      case TEST_SERVO:
+  220   2                      {
+  221   3                              Key_Flag=1;
+  222   3                              Servo_Flag=0;
+  223   3                              tft180_clear(RGB565_WHITE);
+  224   3                              system_delay_ms(5);
+  225   3                              tft180_show_string(0,3*16,"Test for Servo");
+  226   3                              system_delay_ms(1000);
+  227   3                              break;
+  228   3                      }
+  229   2                      case ADC_Show:
+  230   2                      {
+  231   3                              ADC_Show_Flag=1;
+  232   3                              Key_Flag=1;
+  233   3                              Servo_Flag=1;
+  234   3                              tft180_clear(RGB565_WHITE);
+  235   3                              system_delay_ms(5);
+  236   3                              tft180_show_string(0,3*16,"Test for ADC_Show");
+  237   3                              system_delay_ms(1000);
+  238   3                              tft180_clear(RGB565_WHITE);
+  239   3                              break;
+  240   3                      }
+  241   2                      case Seta_Servo:
+  242   2                      {
+  243   3                              Key_Flag=1;
+  244   3                              Servo_Flag=0;
+  245   3                              tft180_clear(RGB565_WHITE);
+  246   3                              system_delay_ms(5);
+  247   3                              tft180_show_string(0,3*16,"Test for Seta_Servo");
+  248   3                              system_delay_ms(1000);
+  249   3                              tft180_clear(RGB565_WHITE);
+  250   3                              break;
+  251   3                      }
+  252   2              }
+  253   1              EA=1;
+  254   1      }
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 5   
 
-  255          {
-  256   1              switch(CAR_Mode)
-  257   1              {
-  258   2                      case STOP:break;
-  259   2                      case TEST_PWM:
-  260   2                      {
-  261   3                              tft180_show_string(0,4*16,"LPW:");  tft180_show_float(5*8,4*16,Test_LPWM,2,2);
-  262   3                              tft180_show_string(0,5*16,"RPW:");  tft180_show_float(5*8,5*16,Test_RPWM,2,2);
-  263   3                      }break;
-  264   2                      case GO:
-  265   2                      {
-  266   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-  267   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-  268   3                              tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
-  269   3                              tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
-  270   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
-  271   3                      }break;
-  272   2                      case TEST_SERVO:break;
-  273   2                      case GO_Pararm1:
-  274   2                      {
-  275   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-  276   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-  277   3                              tft180_show_string(0,4*16,"KP1:");  tft180_show_float(5*8,4*16,KP1,2,2);
-  278   3                              tft180_show_string(0,5*16,"KD1:");  tft180_show_float(5*8,5*16,KD1,2,2);
-  279   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
-  280   3                      }break;
-  281   2                      case GO_Pararm2:
-  282   2                      {
-  283   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-  284   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-  285   3                              tft180_show_string(0,4*16,"KP2:");  tft180_show_float(5*8,4*16,KP2,2,2);
-  286   3                              tft180_show_string(0,5*16,"KD2:");  tft180_show_float(5*8,5*16,KD2,2,2);
-  287   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
-  288   3                      }break;
-  289   2                      case GO_Pararm3:
-  290   2                      {
-  291   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-  292   3                              tft180_show_string(0,4*16,"KP3:");  tft180_show_float(5*8,4*16,KP3,2,2);
-  293   3                              tft180_show_string(0,5*16,"KD3:");  tft180_show_float(5*8,5*16,KD3,2,2);
-  294   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
-  295   3                      }break;
-  296   2                      case ADC_Show:
-  297   2                      {
-  298   3                              tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
-  299   3                              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
-  300   3                              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
-  301   3                              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
-  302   3                      }break;
-  303   2                      case Seta_Servo:
-  304   2                      {
-  305   3                              tft180_show_string(0,0*16,"Value:");tft180_show_int16(5*8,0*16,S_Value);
-  306   3                      }break;
-  307   2              }
-  308   1      
-  309   1      }
-  310          void SET_Time()
-  311          {
-  312   1              if(Set_T>Time && CAR_Mode!=STOP)
-  313   1              {
-  314   2                      CAR_Mode=STOP;
-  315   2                      Turn_mode_Init();
-  316   2              }
-  317   1      }
-  318          
-  319          void GO_Function(void)
-  320          {
-C251 COMPILER V5.60.0,  function                                                           03/10/25  20:32:25  PAGE 6   
+  255          
+  256          void Show_pararm()
+  257          {
+  258   1              switch(CAR_Mode)
+  259   1              {
+  260   2                      case STOP:break;
+  261   2                      case TEST_PWM:
+  262   2                      {
+  263   3                              tft180_show_string(0,4*16,"LPW:");  tft180_show_float(5*8,4*16,Test_LPWM,2,2);
+  264   3                              tft180_show_string(0,5*16,"RPW:");  tft180_show_float(5*8,5*16,Test_RPWM,2,2);
+  265   3                      }break;
+  266   2                      case GO:
+  267   2                      {
+  268   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
+  269   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+  270   3                              tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
+  271   3                              tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
+  272   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
+  273   3                      }break;
+  274   2                      case TEST_SERVO:break;
+  275   2                      case GO_Pararm1:
+  276   2                      {
+  277   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
+  278   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+  279   3                              tft180_show_string(0,4*16,"KP1:");  tft180_show_float(5*8,4*16,KP1,2,2);
+  280   3                              tft180_show_string(0,5*16,"KD1:");  tft180_show_float(5*8,5*16,KD1,2,2);
+  281   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+  282   3                      }break;
+  283   2                      case GO_Pararm2:
+  284   2                      {
+  285   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
+  286   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+  287   3                              tft180_show_string(0,4*16,"KP2:");  tft180_show_float(5*8,4*16,KP2,2,2);
+  288   3                              tft180_show_string(0,5*16,"KD2:");  tft180_show_float(5*8,5*16,KD2,2,2);
+  289   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+  290   3                      }break;
+  291   2                      case GO_Pararm3:
+  292   2                      {
+  293   3                              tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+  294   3                              tft180_show_string(0,4*16,"KP3:");  tft180_show_float(5*8,4*16,KP3,2,2);
+  295   3                              tft180_show_string(0,5*16,"KD3:");  tft180_show_float(5*8,5*16,KD3,2,2);
+  296   3                              tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,2,0);
+  297   3                      }break;
+  298   2                      case ADC_Show:
+  299   2                      {
+  300   3                              tft180_show_string(0,0*16,"ADC1:");tft180_show_int16(5*8,0*16,ADC_1);
+  301   3                              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
+  302   3                              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
+  303   3                              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+  304   3                      }break;
+  305   2                      case Seta_Servo:
+  306   2                      {
+  307   3                              tft180_show_string(0,0*16,"Value:");tft180_show_int16(5*8,0*16,S_Value);
+  308   3                      }break;
+  309   2              }
+  310   1      
+  311   1      }
+  312          void SET_Time()
+  313          {
+  314   1              if(Set_T>Time && CAR_Mode!=STOP)
+  315   1              {
+  316   2                      CAR_Mode=STOP;
+  317   2                      Turn_mode_Init();
+  318   2              }
+  319   1      }
+  320          
+C251 COMPILER V5.60.0,  function                                                           04/10/25  22:09:29  PAGE 6   
 
-  321   1              if(Init_Flag==1)
-  322   1              {
-  323   2                      Turn_mode_Init();
-  324   2                      Init_Flag=0;
-  325   2              }
-  326   1      }
+  321          void GO_Function(void)
+  322          {
+  323   1              if(Init_Flag==1)
+  324   1              {
+  325   2                      Turn_mode_Init();
+  326   2                      Init_Flag=0;
+  327   2              }
+  328   1      }
 
 
 Module Information          Static   Overlayable

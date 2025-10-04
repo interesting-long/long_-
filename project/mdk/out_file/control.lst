@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            03/10/25  20:32:24  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -34,7 +34,7 @@ stmt  level    source
    23   1              float temp ;
    24   1          
    25   1          // 使用局部变量计算
-   26   1          float out = kp * error + kd * (error - last_error);//+Help_turn();
+   26   1          float out = kp * error + kd * (error - last_error)+Help_turn();
    27   1          
    28   1          // 写回必要的结构体成员
    29   1          servo_pid.LastError = error;
@@ -66,7 +66,7 @@ stmt  level    source
    55          //    return (int)out;  // ? 最终返回还是 "正常倍数"
    56          //}
    57          
-C251 COMPILER V5.60.0,  control                                                            03/10/25  20:32:24  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 2   
 
    58          /*
    59           * 函数功能：左路电机PWM设置
@@ -134,7 +134,7 @@ stmt  level    source
   121   3                      }break;
   122   2                      case GO_Pararm3:
   123   2                      {
-C251 COMPILER V5.60.0,  control                                                            03/10/25  20:32:24  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 3   
 
   124   3                              MotorR_SetSpeed(100*ML3);
   125   3                              MotorL_SetSpeed(100*MR3);
@@ -177,12 +177,12 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       758     ------
+  code size            =       833     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         1     ------
+  xdata size           =         1         12
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------

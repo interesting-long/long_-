@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           04/10/25  22:09:30  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -20,106 +20,93 @@ stmt  level    source
     9          unsigned char Enter_Flag_Left=0;
    10          unsigned char Enter_Flag_Right=0;
    11          unsigned char Cycle_Over=0;
-   12          unsigned char Cycle_Stat=0;
-   13          //?°Ë®®??°§¶Ão
-   14          //®®??°§¶Ão
-   15          //3??°§¶Ão
-   16          //ª∑µ∫≈–∂œ
-   17          void if_Cycle(void)
-   18          {
-   19   1              switch(Cycle_Stat)
-   20   1              {
-   21   2                      case EXIT:
-   22   2                      {
-   23   3                              Buzzer_OFF();
-   24   3                              if(ADC_2==1023 || ADC_3==1023 )
-   25   3                              {
-   26   4                                      if_time++;
-   27   4                                      if(if_time>Entern_Flag_Time)
-   28   4                                      {
-   29   5                                              Cycle_Stat=APPROACH;
-   30   5                                              if_time=0;
-   31   5                                      }
-   32   4                              }
-   33   3                              else
-   34   3                              {
-   35   4                                      if_time=0;
-   36   4                                      if(Cycle_Over)
-   37   4                                      {
-   38   5                                              over_time++;
-   39   5                                              if(over_time>NOT_Time)
-   40   5                                              {
-   41   6                                                      Cycle_Over=0;
-   42   6                                                      over_time=0;
-   43   6                                              }
-   44   5                                      }
-   45   4                              }
-   46   3                              break;
-   47   3                      }
-   48   2                      case APPROACH:
-   49   2                      {
-   50   3                              if(ADC_2!=1023 || ADC_3!=1023)
-   51   3                              {
-   52   4                                      Cycle_Stat=Left_ENTER;
-   53   4                              }
-   54   3                              else
-   55   3                              {
-   56   4                                      no_time++;
-   57   4                                      if(no_time>20)
-C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 2   
+   12          unsigned char Cycle_Stat=EXIT;
+   13          //ª∑µ∫≈–∂œ
+   14          void if_Cycle(void)
+   15          {
+   16   1              switch(Cycle_Stat)
+   17   1              {
+   18   2                      case EXIT:
+   19   2                      {
+   20   3                              Buzzer_OFF();
+   21   3                              if(ADC_2==1023 || ADC_3==1023 )
+   22   3                              {
+   23   4                                      if_time++;
+   24   4                                      if(if_time>Entern_Flag_Time)
+   25   4                                      {
+   26   5                                              Cycle_Stat=APPROACH;
+   27   5                                              if_time=0;
+   28   5                                              Cycle_Over=0;
+   29   5                                      }
+   30   4                              }
+   31   3                              else
+   32   3                              {
+   33   4                                      if_time=0;
+   34   4                              }
+   35   3                              break;
+   36   3                      }
+   37   2                      case APPROACH:
+   38   2                      {
+   39   3                              if(ADC_2!=1023 || ADC_3!=1023)
+   40   3                              {
+   41   4                                      if2_time++;
+   42   4                                      if(if2_time>Entern_Delay_Time)
+   43   4                                      {
+   44   5                                              Cycle_Stat=Left_ENTER;
+   45   5                                              if2_time=0;
+   46   5                                      }
+   47   4                              }
+   48   3                              break;
+   49   3                      }
+   50   2                      case Left_ENTER:
+   51   2                      {
+   52   3                              Enter_Flag_Left=1;
+   53   3                              Buzzer_ON();
+   54   3                              Continue_Time++;
+   55   3                              if(Continue_Time>Entern_Continue_Time)
+   56   3                              {
+   57   4                                      Cycle_Stat=EXIT;
+C251 COMPILER V5.60.0,  Strategy                                                           04/10/25  22:09:30  PAGE 2   
 
-   58   4                                      {
-   59   5                                              Cycle_Stat=EXIT;
-   60   5                                              no_time=0;
-   61   5                                      }
-   62   4                              }
-   63   3                              break;
-   64   3                      }
-   65   2                      case Left_ENTER:
-   66   2                      {
-   67   3                              Enter_Flag_Left=1;
-   68   3                              Buzzer_ON();
-   69   3                              Continue_Time++;
-   70   3                              if(Continue_Time>Entern_Continue_Time)
-   71   3                              {
-   72   4                                      Cycle_Stat=EXIT;
-   73   4                                      Continue_Time = 0;  //
-   74   4                      Enter_Flag_Left = 0;     //
-   75   4                                      Cycle_Over=1;
-   76   4                              }
-   77   3                              break;
-   78   3                      }
-   79   2              }
-   80   1      
-   81   1      }
-   82          //«–Õ‰≤π∂°
-   83          int Help_turn()
-   84          {
-   85   1              if(Cycle_Over!=1)
-   86   1              {
-   87   2                      if(ADC_1+ADC_2<220)
-   88   2                      {
-   89   3                              return -50;
-   90   3                      }
-   91   2                      else if(ADC_3+ADC_4<220)
-   92   2                      {
-   93   3                              return 50;
-   94   3                      }
-   95   2                      else
-   96   2                      {
-   97   3                              return 0;
-   98   3                      }
-   99   2              }
-  100   1              else
-  101   1              {
-  102   2                      return 0;
-  103   2              }
-  104   1      }
+   58   4                                      Continue_Time = 0;  //
+   59   4                      Enter_Flag_Left = 0;     //
+   60   4                              }
+   61   3                              break;
+   62   3                      }
+   63   2              }
+   64   1      
+   65   1      }
+   66          //«–Õ‰≤π∂°
+   67          int Help_turn()
+   68          {
+   69   1              int left  = ADC_1 + ADC_2;
+   70   1              int right = ADC_3 + ADC_4;
+   71   1              if (left < 200 && right < 200)
+   72   1              {
+   73   2                      // Õ¨ ±¬˙◊„£¨»°Ωœ–°“ª≤‡”≈œ»
+   74   2                      if (left < right)
+   75   2                              return -40;   // ◊Û
+   76   2                      else
+   77   2                              return 40;    // ”“
+   78   2              }
+   79   1              else if (left < 200)
+   80   1              {
+   81   2                      return -40;   // ◊Û
+   82   2              }
+   83   1              else if (right < 200)
+   84   1              {
+   85   2                      return 40;    // ”“
+   86   2              }
+   87   1              else
+   88   1              {
+   89   2                      return 0;     // ≤ª◊™
+   90   2              }
+   91   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       391     ------
+  code size            =       346     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -135,8 +122,6 @@ Module Information          Static   Overlayable
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =        77     ------
-C251 COMPILER V5.60.0,  Strategy                                                           03/10/25  20:47:22  PAGE 3   
-
 End of Module Information.
 
 

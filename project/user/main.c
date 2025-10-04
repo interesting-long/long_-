@@ -16,7 +16,7 @@ void main()
 	init_all();
 	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
 	tim1_irq_handler = pit_handler1;// 设置定时器1中断回调函数
-	
+	Buzzer_OFF();
     while(1)
 	{
 		switch(CAR_Mode)
@@ -113,11 +113,11 @@ void pit_handler0(void)
 	{
 		if(Enter_Flag_Left)
 		{
-			if(Mode_Flag<-1)//左圆环
+			if(Mode_Flag<-2)//左圆环
 			{
 				pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
 			}
-			else if(Mode_Flag>1)//右圆环
+			else if(Mode_Flag>2)//右圆环
 			{
 				pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
 			}
@@ -152,5 +152,5 @@ void pit_handler1(void)
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
 	if_Cycle();
-	
+//	
 }

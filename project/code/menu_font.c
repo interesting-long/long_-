@@ -7,7 +7,7 @@ float Num[Num_Col][Page_Row_Number]={
         {-1 ,35 ,350 ,39 ,39 ,-1 ,-1 ,-1 ,-1 },
         {-1 ,-1,-1 ,840,-1 ,-1 ,-1 ,-1 ,-1 },
 		{-1 ,20 ,20 ,3 ,-1 ,-1 ,-1 ,-1 ,-1 },
-        {-1 ,60 ,10 ,300 ,300 ,5 ,-1 ,-1 ,-1 }};//数据存储的数组
+        {-1 ,60 ,10 ,250 ,5 ,5,-1 ,-1 ,-1 }};//数据存储的数组
 
 unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],Page[2]，Page[3]，Page[4]，
 unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到Page[5],Page[6]
@@ -34,7 +34,7 @@ struct Menu Page[Struct_Number]={
     {   6,
             {"back","LPWM","RPWM","","","","","",""}},
 	{   7,
-            {"back","turn","1_time","2_time","noTime","LorR","","",""}},
+            {"back","turn","P_time","C_time","D_Time","LorR","","",""}},
 };
 
 struct Menu *Pin=&Page[0];//灵活指针
