@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  16:56:48  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -66,7 +66,7 @@ stmt  level    source
    55          //    return (int)out;  // ? 最终返回还是 "正常倍数"
    56          //}
    57          
-C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  16:56:48  PAGE 2   
 
    58          /*
    59           * 函数功能：左路电机PWM设置
@@ -113,7 +113,7 @@ stmt  level    source
   100           * 输出参数：无
   101           * 可以进行拓展，写速度策略
   102           */
-  103          void Motor_Update(unsigned char X)
+  103          void Motor_Update(char X)
   104          {  
   105   1              switch(CAR_Mode)
   106   1              {
@@ -134,7 +134,7 @@ stmt  level    source
   121   3                      }break;
   122   2                      case GO_Pararm3:
   123   2                      {
-C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  16:56:48  PAGE 3   
 
   124   3                              MotorR_SetSpeed(100*(ML3+X));
   125   3                              MotorL_SetSpeed(100*(MR3+X));
@@ -202,7 +202,7 @@ stmt  level    source
   187   3                              Mode_Flag                       =Mode_Flag2                             ;
   188   3                              turn_Value                      =turn_Value2                    ;
   189   3                      }break;
-C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 4   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  16:56:48  PAGE 4   
 
   190   2                      case GO_Pararm3:
   191   2                      {
@@ -218,7 +218,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1331     ------
+  code size            =      1339     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

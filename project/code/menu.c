@@ -237,6 +237,7 @@ void menu_handle_key(unsigned char Flag_Key)
 void menu_Init()
 {
 	Menu_SetChildren(&Page[0],Page0_children);//设定子字节
+	Menu_SetChildren(&Page[5],Page5_children);//设定子字节
 	Refesh_arrow();
 	menu_display_content();
 	Show_bujin();

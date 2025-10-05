@@ -100,7 +100,7 @@ void MotorR_SetSpeed(int pwm)
  * 输出参数：无
  * 可以进行拓展，写速度策略
  */
-void Motor_Update(unsigned char X)
+void Motor_Update(char X)
 {  
 	switch(CAR_Mode)
 	{

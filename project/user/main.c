@@ -16,7 +16,6 @@ void main()
 	init_all();
 	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
 	tim1_irq_handler = pit_handler1;// 设置定时器1中断回调函数
-	Buzzer_OFF();
     while(1)
 	{
 		switch(CAR_Mode)
@@ -40,8 +39,6 @@ void main()
 			case GO:
 			{
 				GO_Function();
-				MotorR_SetSpeed(100*20);
-				MotorL_SetSpeed(100*20);
 				break;
 			}
 			case GO_Pararm1: 
@@ -138,6 +135,7 @@ void pit_handler0(void)
 	{
 		if(++T>=10)
 		{
+			Buzzer_OFF();
 			T=0;
 			Show_pararm();
 		}
@@ -154,6 +152,9 @@ void pit_handler1(void)
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
 	if_Cycle();
-//	State_of_road();
-//	
+	if(CAR_Mode!=STOP)
+	{
+		
+		State_of_road();
+	}
 }

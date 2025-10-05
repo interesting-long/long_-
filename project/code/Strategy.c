@@ -18,6 +18,8 @@ unsigned int Entern_Delay_Time=0;
 unsigned int Entern_Continue_Time=0;
 int turn_Value=0;
 int Mode_Flag=0;
+
+unsigned int Not_Time=0;
 //»·µºÅÐ¶Ï
 void if_Cycle(void)
 {
@@ -25,7 +27,7 @@ void if_Cycle(void)
 	{
 		case EXIT:
 		{
-			Buzzer_OFF();
+			
 			if(ADC_2==1023 || ADC_3==1023 )
 			{
 				if_time++;
@@ -64,7 +66,13 @@ void if_Cycle(void)
 				Cycle_Stat=EXIT;
 				Continue_Time = 0;  //
                 Enter_Flag_Left = 0;     //
+				Buzzer_OFF();
 			}
+			break;
+		}
+		default :
+		{
+			CAR_STOP();
 			break;
 		}
 	}
@@ -103,37 +111,53 @@ void State_of_road(void)
 	{
 		case Normal_Str:
 		{
-			if(dajiao<20 && dajiao>-20)
+			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
 			{
 				Short_Time++;
-				if(Short_Time>20)
+				if(Short_Time>Short_Judge_Time)
 				{
 					Short_Time=0;
 					Road_Stat=Short_Str;
-					Motor_Update(2);
+					Motor_Update(Short_add);
 					Buzzer_ON();
+					tft180_show_string(0,0*16,"Short");
 				}
 			}
 			break;
 		}
 		case Short_Str:
 		{
-			if(dajiao<20 && dajiao>-20)
+			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
 			{
 				Long_Time++;
-				if(Long_Time>100)
+				Not_Time=0;
+				if(Long_Time>Long_Judge_Time)
 				{
 					Long_Time=0;
 					Road_Stat=Long_Str;
-					Buzzer_OFF();
-					Motor_Update(5);
+					Buzzer_ON();
+					Motor_Update(Long_add);
+					tft180_show_string(0,0*16,"Long");
+				}
+			}
+			else
+			{
+				Not_Time++;
+				{
+					if(Not_Time>30)
+					{
+						Not_Time=0;
+						Road_Stat=Normal_Str;
+						tft180_show_string(0,0*16,"Normal");
+						Buzzer_OFF();
+					}
 				}
 			}
 			break;
 		}
 		case Long_Str:
 		{
-			if(dajiao>50 || dajiao<-50)
+			if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
 			{
 				Bend_Time++;
 				if(Bend_Time>5)
@@ -141,7 +165,8 @@ void State_of_road(void)
 					Bend_Time=0;
 					Road_Stat=Bend;
 					Motor_Update(0);
-					Buzzer_ON();
+					Buzzer_OFF();
+					tft180_show_string(0,0*16,"Bend");
 				}
 			
 			}
@@ -150,18 +175,17 @@ void State_of_road(void)
 		case Bend:
 		{
 			slow_Time++;
-			if(slow_Time<20)
+			if(slow_Time<Bend_Slow_Time)
 			{
-				MotorR_SetSpeed(100*0);
-				MotorL_SetSpeed(100*0);
+				Motor_Update(Bend_slow);
 			}
 			else
 			{
-				if(dajiao>50)
+				if(dajiao>Bend_Flag_Value)
 				{
 					Motor_Update(0);
 				}
-				else if( dajiao<-50)
+				else if( dajiao<-Bend_Flag_Value)
 				{
 					Motor_Update(0);
 				}
@@ -171,8 +195,14 @@ void State_of_road(void)
 					Road_Stat=Normal_Str;
 					Motor_Update(0);
 					Buzzer_OFF();
+					tft180_show_string(0,0*16,"Normal");
 				}
 			}
+			break;
+		}
+		default :
+		{
+			CAR_STOP();
 			break;
 		}
 	

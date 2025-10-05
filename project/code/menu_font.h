@@ -99,6 +99,12 @@ extern unsigned int ADC_4;
 #define Test_LPWM Num[6][1]
 #define Test_RPWM Num[6][2]
 
-
-
+#define Short_add			Num[7][1]
+#define Short_Judge_Time	Num[7][2]
+#define Long_add 			Num[7][3]
+#define Long_Judge_Time 	Num[7][4]
+#define Bend_slow 			Num[7][5]
+#define Bend_Slow_Time 		Num[7][6]
+#define Stright_Flag_Value 	Num[7][7]
+#define Bend_Flag_Value 	Num[7][8]
 #endif 

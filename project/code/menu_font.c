@@ -7,7 +7,7 @@ float Num[Num_Col][Page_Row_Number]={
         {-1  ,32.5,325,39 ,39 ,6 ,250,10 ,5 ,60 },
         {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
 		{-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
-        {-1  ,-1  ,-1 ,-1 ,-1 ,-1,-1 ,-1 ,-1,-1 }};//数据存储的数组
+        {-1  ,3  ,20 ,6 ,80 ,-30,50 ,20 ,50, }};//数据存储的数组
 
 unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],Page[2]，Page[3]，Page[4]，
 unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到Page[5],Page[6]
@@ -20,7 +20,7 @@ unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到
  */
 struct Menu Page[Struct_Number]={
     {   0,
-            {"back","GOP","GOP1","GOP2","GOP3","Cyle","Pro","ADC","Test"}},
+            {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test"}},
     {   1,
             {"back","KP","KD","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
     {   2,
@@ -34,7 +34,7 @@ struct Menu Page[Struct_Number]={
     {   6,
             {"back","LPWM","RPWM","","","","","",""}},
 	{   7,
-            {"back","","","","","","","",""}},
+            {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_slow","Slow_T","S_Vue","B_Vue"}},
 };
 
 struct Menu *Pin=&Page[0];//灵活指针

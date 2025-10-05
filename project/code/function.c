@@ -105,6 +105,7 @@ void init_all()
     PT0H = 1;
 	system_delay_ms(5);
 	Buzzer_Init();
+	Buzzer_OFF();
 	
 	ADC_GetInit();
 	tft180_init();
@@ -138,6 +139,7 @@ void Turn_mode_Init(void)
 		case STOP:
 		{
 			CAR_STOP();
+			Buzzer_OFF();
 			ADC_Show_Flag=0;
 			Key_Flag=1;
 			Servo_Flag=0;
