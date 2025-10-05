@@ -1,15 +1,23 @@
 #include "Strategy.h"
 float uni=0;
 float last_uni=0;
-int if_time=0;
-int if2_time=0;
-int no_time=0;
-int over_time=0;
-int Continue_Time=0;
+unsigned int if_time=0;
+unsigned int if2_time=0;
+unsigned int Continue_Time=0;
 unsigned char Enter_Flag_Left=0;
-unsigned char Enter_Flag_Right=0;
-unsigned char Cycle_Over=0;
 unsigned char Cycle_Stat=EXIT;
+
+unsigned char Road_Stat=Normal_Str;
+unsigned int Short_Time=0;
+unsigned int Long_Time=0;
+unsigned int Bend_Time=0;
+unsigned int slow_Time=0;
+
+unsigned int Entern_Flag_Time=0;
+unsigned int Entern_Delay_Time=0;
+unsigned int Entern_Continue_Time=0;
+int turn_Value=0;
+int Mode_Flag=0;
 //»·µºÅÐ¶Ï
 void if_Cycle(void)
 {
@@ -25,7 +33,6 @@ void if_Cycle(void)
 				{
 					Cycle_Stat=APPROACH;
 					if_time=0;
-					Cycle_Over=0;
 				}
 			}
 			else
@@ -88,4 +95,87 @@ int Help_turn()
 	{
 		return 0;     // ²»×ª
 	}
+}
+
+void State_of_road(void)
+{
+	switch(Road_Stat)
+	{
+		case Normal_Str:
+		{
+			if(dajiao<20 && dajiao>-20)
+			{
+				Short_Time++;
+				if(Short_Time>20)
+				{
+					Short_Time=0;
+					Road_Stat=Short_Str;
+					Motor_Update(2);
+					Buzzer_ON();
+				}
+			}
+			break;
+		}
+		case Short_Str:
+		{
+			if(dajiao<20 && dajiao>-20)
+			{
+				Long_Time++;
+				if(Long_Time>100)
+				{
+					Long_Time=0;
+					Road_Stat=Long_Str;
+					Buzzer_OFF();
+					Motor_Update(5);
+				}
+			}
+			break;
+		}
+		case Long_Str:
+		{
+			if(dajiao>50 || dajiao<-50)
+			{
+				Bend_Time++;
+				if(Bend_Time>5)
+				{
+					Bend_Time=0;
+					Road_Stat=Bend;
+					Motor_Update(0);
+					Buzzer_ON();
+				}
+			
+			}
+			break;
+		}
+		case Bend:
+		{
+			slow_Time++;
+			if(slow_Time<20)
+			{
+				MotorR_SetSpeed(100*0);
+				MotorL_SetSpeed(100*0);
+			}
+			else
+			{
+				if(dajiao>50)
+				{
+					Motor_Update(0);
+				}
+				else if( dajiao<-50)
+				{
+					Motor_Update(0);
+				}
+				else
+				{
+					slow_Time=0;
+					Road_Stat=Normal_Str;
+					Motor_Update(0);
+					Buzzer_OFF();
+				}
+			}
+			break;
+		}
+	
+	}	
+
 }

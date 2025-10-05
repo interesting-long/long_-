@@ -37,6 +37,7 @@ void Turn_mode_Init(void);
 void Show_pararm();
 void GO_Function(void);
 /*内部调用函数*/
+void show_test_info(const char* info) ;
 void Motor_Init(void);
 void Servo_Init();
 void CAR_STOP();

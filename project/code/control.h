@@ -33,8 +33,9 @@ extern unsigned char CAR_Mode;
 float pid_control_tyre(float error);
 /*外部调用函数*/
 int Servo_turn_pid(float Current);
-void Motor_Update();
+void Motor_Update(unsigned char X);
 void PID_Update();
+void Cycle_Update(void);
 //void Ser_Servo_Duty(int value);
 /*内部调用函数*/
 void MotorL_SetSpeed(int pwm);

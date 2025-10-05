@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               05/10/25  12:59:43  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -51,129 +51,132 @@ stmt  level    source
    40   3                              case GO:
    41   3                              {
    42   4                                      GO_Function();
-   43   4                                      break;
-   44   4                              }
-   45   3                              case GO_Pararm1: 
-   46   3                              {
-   47   4                                      GO_Function();
-   48   4                                      break;
-   49   4                              }
-   50   3                              case GO_Pararm2: 
-   51   3                              {
-   52   4                                      GO_Function();
-   53   4                                      break;
-   54   4                              }
-   55   3                              case GO_Pararm3: 
-   56   3                              {
-   57   4                                      GO_Function();
-C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 2   
+   43   4                                      MotorR_SetSpeed(100*20);
+   44   4                                      MotorL_SetSpeed(100*20);
+   45   4                                      break;
+   46   4                              }
+   47   3                              case GO_Pararm1: 
+   48   3                              {
+   49   4                                      GO_Function();
+   50   4                                      break;
+   51   4                              }
+   52   3                              case GO_Pararm2: 
+   53   3                              {
+   54   4                                      GO_Function();
+   55   4                                      break;
+   56   4                              }
+   57   3                              case GO_Pararm3: 
+C251 COMPILER V5.60.0,  main                                                               05/10/25  12:59:43  PAGE 2   
 
-   58   4                                      break;
-   59   4                              }
-   60   3                              case TEST_PWM: 
-   61   3                              {
-   62   4                                      if(Init_Flag==1)
-   63   4                                      {
-   64   5                                              EA=0;
-   65   5                                              Turn_mode_Init();
-   66   5                                              Init_Flag=0;
-   67   5                                              EA=1;
-   68   5                                      }
-   69   4                                      PWM_Test();
-   70   4                                      break;
-   71   4                              }
-   72   3                              case TEST_SERVO: 
-   73   3                              {
-   74   4                                      if(Init_Flag==1)
-   75   4                                      {
-   76   5                                              EA=0;
-   77   5                                              Turn_mode_Init();
-   78   5                                              Init_Flag=0;
-   79   5                                              EA=1;
-   80   5                                      }
-   81   4                                      Serve_Test();
-   82   4                                      break;
-   83   4                              }
-   84   3                              case ADC_Show:
-   85   3                              {
-   86   4                                      if(Init_Flag==1)
-   87   4                                      {
-   88   5                                              Turn_mode_Init();
-   89   5                                              Init_Flag=0;
-   90   5                                      }
-   91   4                                      break;
-   92   4                              }
-   93   3                              case Seta_Servo:
-   94   3                              {
-   95   4                                      if(Init_Flag==1)
-   96   4                                      {
-   97   5                                              Turn_mode_Init();
-   98   5                                              Init_Flag=0;
-   99   5                                      }
-  100   4                                      else
-  101   4                                      {
-  102   5                                              Set_Sevo();
-  103   5                                      }
-  104   4                                      break;
-  105   4                              }
-  106   3                      }
-  107   2         }
-  108   1      }
-  109          void pit_handler0(void)
-  110          {
-  111   1              Protect();
-  112   1              if(Servo_Flag)
-  113   1              {
-  114   2                      if(Enter_Flag_Left)
-  115   2                      {
-  116   3                              if(Mode_Flag<-2)//◊Û‘≤ª∑
-  117   3                              {
-  118   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
-  119   4                              }
-  120   3                              else if(Mode_Flag>2)//”“‘≤ª∑
-  121   3                              {
-  122   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
-  123   4                              }
-C251 COMPILER V5.60.0,  main                                                               04/10/25  22:09:28  PAGE 3   
+   58   3                              {
+   59   4                                      GO_Function();
+   60   4                                      break;
+   61   4                              }
+   62   3                              case TEST_PWM: 
+   63   3                              {
+   64   4                                      if(Init_Flag==1)
+   65   4                                      {
+   66   5                                              EA=0;
+   67   5                                              Turn_mode_Init();
+   68   5                                              Init_Flag=0;
+   69   5                                              EA=1;
+   70   5                                      }
+   71   4                                      PWM_Test();
+   72   4                                      break;
+   73   4                              }
+   74   3                              case TEST_SERVO: 
+   75   3                              {
+   76   4                                      if(Init_Flag==1)
+   77   4                                      {
+   78   5                                              EA=0;
+   79   5                                              Turn_mode_Init();
+   80   5                                              Init_Flag=0;
+   81   5                                              EA=1;
+   82   5                                      }
+   83   4                                      Serve_Test();
+   84   4                                      break;
+   85   4                              }
+   86   3                              case ADC_Show:
+   87   3                              {
+   88   4                                      if(Init_Flag==1)
+   89   4                                      {
+   90   5                                              Turn_mode_Init();
+   91   5                                              Init_Flag=0;
+   92   5                                      }
+   93   4                                      break;
+   94   4                              }
+   95   3                              case Seta_Servo:
+   96   3                              {
+   97   4                                      if(Init_Flag==1)
+   98   4                                      {
+   99   5                                              Turn_mode_Init();
+  100   5                                              Init_Flag=0;
+  101   5                                      }
+  102   4                                      else
+  103   4                                      {
+  104   5                                              Set_Sevo();
+  105   5                                      }
+  106   4                                      break;
+  107   4                              }
+  108   3                      }
+  109   2         }
+  110   1      }
+  111          void pit_handler0(void)
+  112          {
+  113   1              Protect();
+  114   1              if(Servo_Flag)
+  115   1              {
+  116   2                      if(Enter_Flag_Left)
+  117   2                      {
+  118   3                              if(Mode_Flag<-2)//◊Û‘≤ª∑
+  119   3                              {
+  120   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
+  121   4                              }
+  122   3                              else if(Mode_Flag>2)//”“‘≤ª∑
+  123   3                              {
+C251 COMPILER V5.60.0,  main                                                               05/10/25  12:59:43  PAGE 3   
 
-  124   3                              else
-  125   3                              {
-  126   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-  127   4                              }
-  128   3                      }
-  129   2                      else
-  130   2                      {
-  131   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-  132   3                      }
-  133   2                      
-  134   2              }
-  135   1              if(ADC_Show_Flag)
-  136   1              {
-  137   2                      if(++T>=10)
-  138   2                      {
-  139   3                              T=0;
-  140   3                              Show_pararm();
-  141   3                      }
-  142   2              }
-  143   1              if(Key_Flag)
-  144   1              {
-  145   2                      Key_scaner();
-  146   2              }
-  147   1      
-  148   1      }
-  149          
-  150          void pit_handler1(void)
-  151          {
-  152   1              ADC_SampleAndFilter();
-  153   1              dajiao=Servo_turn_pid(unification());
-  154   1              if_Cycle();
-  155   1      //      
-  156   1      }
+  124   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
+  125   4                              }
+  126   3                              else
+  127   3                              {
+  128   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+  129   4                              }
+  130   3                      }
+  131   2                      else
+  132   2                      {
+  133   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+  134   3                      }
+  135   2                      
+  136   2              }
+  137   1              if(ADC_Show_Flag)
+  138   1              {
+  139   2                      if(++T>=10)
+  140   2                      {
+  141   3                              T=0;
+  142   3                              Show_pararm();
+  143   3                      }
+  144   2              }
+  145   1              if(Key_Flag)
+  146   1              {
+  147   2                      Key_scaner();
+  148   2              }
+  149   1      
+  150   1      }
+  151          
+  152          void pit_handler1(void)
+  153          {
+  154   1              ADC_SampleAndFilter();
+  155   1              dajiao=Servo_turn_pid(unification());
+  156   1              if_Cycle();
+  157   1      //      State_of_road();
+  158   1      //      
+  159   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       524     ------
+  code size            =       485     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

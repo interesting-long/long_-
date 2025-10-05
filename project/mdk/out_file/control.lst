@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -66,7 +66,7 @@ stmt  level    source
    55          //    return (int)out;  // ? 最终返回还是 "正常倍数"
    56          //}
    57          
-C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 2   
 
    58          /*
    59           * 函数功能：左路电机PWM设置
@@ -108,36 +108,36 @@ stmt  level    source
    95   1      }
    96          /*
    97           * 函数功能：电机驱动更新
-   98           * 函数名称：Motor_Update();
+   98           * 函数名称：Motor_Update(0);
    99           * 输入参数：无
   100           * 输出参数：无
   101           * 可以进行拓展，写速度策略
   102           */
-  103          void Motor_Update()
+  103          void Motor_Update(unsigned char X)
   104          {  
   105   1              switch(CAR_Mode)
   106   1              {
   107   2                      case GO:
   108   2                      {
-  109   3                              MotorR_SetSpeed(100*ML);
-  110   3                              MotorL_SetSpeed(100*MR);
+  109   3                              MotorR_SetSpeed(100*(ML+X));
+  110   3                              MotorL_SetSpeed(100*(MR+X));
   111   3                      }break;
   112   2                      case GO_Pararm1:
   113   2                      {
-  114   3                              MotorR_SetSpeed(100*ML1);
-  115   3                              MotorL_SetSpeed(100*MR1);
+  114   3                              MotorR_SetSpeed(100*(ML1+X));
+  115   3                              MotorL_SetSpeed(100*(MR1+X));
   116   3                      }break;
   117   2                      case GO_Pararm2:
   118   2                      {
-  119   3                              MotorR_SetSpeed(100*ML2);
-  120   3                              MotorL_SetSpeed(100*MR2);
+  119   3                              MotorR_SetSpeed(100*(ML2+X));
+  120   3                              MotorL_SetSpeed(100*(MR2+X));
   121   3                      }break;
   122   2                      case GO_Pararm3:
   123   2                      {
-C251 COMPILER V5.60.0,  control                                                            04/10/25  22:09:28  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 3   
 
-  124   3                              MotorR_SetSpeed(100*ML3);
-  125   3                              MotorL_SetSpeed(100*MR3);
+  124   3                              MotorR_SetSpeed(100*(ML3+X));
+  125   3                              MotorL_SetSpeed(100*(MR3+X));
   126   3                      }break;
   127   2              }
   128   1              
@@ -173,11 +173,52 @@ stmt  level    source
   158   2              }
   159   1              
   160   1      }
+  161          
+  162          void Cycle_Update(void)
+  163          {
+  164   1              switch(CAR_Mode)
+  165   1              {
+  166   2                      case GO:
+  167   2                      {
+  168   3                              Entern_Flag_Time        =Entern_Flag_Time0              ;
+  169   3                              Entern_Delay_Time       =Entern_Delay_Time0             ;
+  170   3                              Entern_Continue_Time=Entern_Continue_Time0      ;
+  171   3                              Mode_Flag                       =Mode_Flag0                             ;
+  172   3                              turn_Value                      =turn_Value0                    ;
+  173   3                      }break;
+  174   2                      case GO_Pararm1:
+  175   2                      {
+  176   3                              Entern_Flag_Time        =Entern_Flag_Time1              ;
+  177   3                              Entern_Delay_Time       =Entern_Delay_Time1             ;
+  178   3                              Entern_Continue_Time=Entern_Continue_Time1      ;
+  179   3                              Mode_Flag                       =Mode_Flag1                             ;
+  180   3                              turn_Value                      =turn_Value1                    ;
+  181   3                      }break;
+  182   2                      case GO_Pararm2:
+  183   2                      {
+  184   3                              Entern_Flag_Time        =Entern_Flag_Time2              ;
+  185   3                              Entern_Delay_Time       =Entern_Delay_Time2             ;
+  186   3                              Entern_Continue_Time=Entern_Continue_Time2      ;
+  187   3                              Mode_Flag                       =Mode_Flag2                             ;
+  188   3                              turn_Value                      =turn_Value2                    ;
+  189   3                      }break;
+C251 COMPILER V5.60.0,  control                                                            05/10/25  12:52:31  PAGE 4   
+
+  190   2                      case GO_Pararm3:
+  191   2                      {
+  192   3                              Entern_Flag_Time        =Entern_Flag_Time3              ;
+  193   3                              Entern_Delay_Time       =Entern_Delay_Time3             ;
+  194   3                              Entern_Continue_Time=Entern_Continue_Time3      ;
+  195   3                              Mode_Flag                       =Mode_Flag3                             ;
+  196   3                              turn_Value                      =turn_Value3                    ;
+  197   3                      }break;
+  198   2              }
+  199   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       833     ------
+  code size            =      1331     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               04/10/25  22:09:29  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               05/10/25  12:52:31  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    54   2                      {
    55   3                              tft180_show_string(Show_arrow_x, (ROW_DISTANCE+1)*(Flag-1), "-->");
    56   3                      }
-C251 COMPILER V5.60.0,  menu                                                               04/10/25  22:09:29  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               05/10/25  12:52:31  PAGE 2   
 
    57   2                      else
    58   2                      {
@@ -134,7 +134,7 @@ stmt  level    source
   118   2                      Save_Flag=1;
   119   2                      menu_display_content();
   120   2                      Refesh_arrow();
-C251 COMPILER V5.60.0,  menu                                                               04/10/25  22:09:29  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               05/10/25  12:52:31  PAGE 3   
 
   121   2              }
   122   1      }
@@ -202,7 +202,7 @@ stmt  level    source
   184   1      }
   185          void Key3_handle1()
   186          {
-C251 COMPILER V5.60.0,  menu                                                               04/10/25  22:09:29  PAGE 4   
+C251 COMPILER V5.60.0,  menu                                                               05/10/25  12:52:31  PAGE 4   
 
   187   1              mode=1;
   188   1              Refesh_arrow();
@@ -257,23 +257,22 @@ stmt  level    source
   237          void menu_Init()
   238          {
   239   1              Menu_SetChildren(&Page[0],Page0_children);//设定子字节
-  240   1              Menu_SetChildren(&Page[5],Page5_children);//设定子字节
-  241   1              Refesh_arrow();
-  242   1              menu_display_content();
-  243   1              Show_bujin();
-  244   1              
-  245   1      }
+  240   1              Refesh_arrow();
+  241   1              menu_display_content();
+  242   1              Show_bujin();
+  243   1              
+  244   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1688     ------
+  code size            =      1669     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
-C251 COMPILER V5.60.0,  menu                                                               04/10/25  22:09:29  PAGE 5   
-
   pdata size           =    ------     ------
+C251 COMPILER V5.60.0,  menu                                                               05/10/25  12:52:31  PAGE 5   
+
   xdata size           =        13     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------

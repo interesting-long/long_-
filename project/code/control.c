@@ -95,34 +95,34 @@ void MotorR_SetSpeed(int pwm)
 }
 /*
  * 函数功能：电机驱动更新
- * 函数名称：Motor_Update();
+ * 函数名称：Motor_Update(0);
  * 输入参数：无
  * 输出参数：无
  * 可以进行拓展，写速度策略
  */
-void Motor_Update()
+void Motor_Update(unsigned char X)
 {  
 	switch(CAR_Mode)
 	{
 		case GO:
 		{
-			MotorR_SetSpeed(100*ML);
-			MotorL_SetSpeed(100*MR);
+			MotorR_SetSpeed(100*(ML+X));
+			MotorL_SetSpeed(100*(MR+X));
 		}break;
 		case GO_Pararm1:
 		{
-			MotorR_SetSpeed(100*ML1);
-			MotorL_SetSpeed(100*MR1);
+			MotorR_SetSpeed(100*(ML1+X));
+			MotorL_SetSpeed(100*(MR1+X));
 		}break;
 		case GO_Pararm2:
 		{
-			MotorR_SetSpeed(100*ML2);
-			MotorL_SetSpeed(100*MR2);
+			MotorR_SetSpeed(100*(ML2+X));
+			MotorL_SetSpeed(100*(MR2+X));
 		}break;
 		case GO_Pararm3:
 		{
-			MotorR_SetSpeed(100*ML3);
-			MotorL_SetSpeed(100*MR3);
+			MotorR_SetSpeed(100*(ML3+X));
+			MotorL_SetSpeed(100*(MR3+X));
 		}break;
 	}
 	
@@ -157,4 +157,43 @@ void PID_Update()
 		}break;
 	}
 	
+}
+
+void Cycle_Update(void)
+{
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			Entern_Flag_Time	=Entern_Flag_Time0		;
+			Entern_Delay_Time	=Entern_Delay_Time0		;
+			Entern_Continue_Time=Entern_Continue_Time0	;
+			Mode_Flag			=Mode_Flag0				;
+			turn_Value 			=turn_Value0			;
+		}break;
+		case GO_Pararm1:
+		{
+			Entern_Flag_Time	=Entern_Flag_Time1		;
+			Entern_Delay_Time	=Entern_Delay_Time1		;
+			Entern_Continue_Time=Entern_Continue_Time1	;
+			Mode_Flag			=Mode_Flag1				;
+			turn_Value 			=turn_Value1			;
+		}break;
+		case GO_Pararm2:
+		{
+			Entern_Flag_Time	=Entern_Flag_Time2		;
+			Entern_Delay_Time	=Entern_Delay_Time2		;
+			Entern_Continue_Time=Entern_Continue_Time2	;
+			Mode_Flag			=Mode_Flag2				;
+			turn_Value 			=turn_Value2			;
+		}break;
+		case GO_Pararm3:
+		{
+			Entern_Flag_Time	=Entern_Flag_Time3		;
+			Entern_Delay_Time	=Entern_Delay_Time3		;
+			Entern_Continue_Time=Entern_Continue_Time3	;
+			Mode_Flag			=Mode_Flag3				;
+			turn_Value 			=turn_Value3			;
+		}break;
+	}
 }

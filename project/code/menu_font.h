@@ -52,36 +52,53 @@ extern unsigned int ADC_4;
 
 
 
-#define Time Num[0][6]
+#define Pro Num[0][6]
 
 #define KP Num[1][1]
 #define KD Num[1][2]
 #define ML Num[1][3]
 #define MR Num[1][4]
+#define Entern_Flag_Time0 		Num[1][5]
+#define Entern_Continue_Time0 	Num[1][6]
+#define Entern_Delay_Time0 		Num[1][7]
+#define Mode_Flag0 				Num[1][8]
+#define turn_Value0 			Num[1][9]
 
 #define KP1 Num[2][1]
 #define KD1 Num[2][2]
 #define ML1 Num[2][3]
 #define MR1 Num[2][4]
+#define Entern_Flag_Time1 		Num[2][5]
+#define Entern_Continue_Time1 	Num[2][6]
+#define Entern_Delay_Time1 		Num[2][7]
+#define Mode_Flag1 				Num[2][8]
+#define turn_Value1 			Num[2][9]
 
 #define KP2 Num[3][1]
 #define KD2 Num[3][2]
 #define ML2 Num[3][3]
 #define MR2 Num[3][4]
+#define Entern_Flag_Time2 		Num[3][5]
+#define Entern_Continue_Time2 	Num[3][6]
+#define Entern_Delay_Time2 		Num[3][7]
+#define Mode_Flag2 				Num[3][8]
+#define turn_Value2 			Num[3][9]
 
 #define KP3 Num[4][1]
 #define KD3 Num[4][2]
 #define ML3 Num[4][3]
 #define MR3 Num[4][4]
+#define Entern_Flag_Time3		Num[4][5]
+#define Entern_Continue_Time3 	Num[4][6]
+#define Entern_Delay_Time3 		Num[4][7]
+#define Mode_Flag3 				Num[4][8]
+#define turn_Value3 			Num[4][9]
 
 #define S_Value Num[5][3]
 
 #define Test_LPWM Num[6][1]
 #define Test_RPWM Num[6][2]
 
-#define turn_Value 				Num[7][1]
-#define Entern_Flag_Time 		Num[7][2]
-#define Entern_Continue_Time 	Num[7][3]
-#define Entern_Delay_Time 		Num[7][4]
-#define Mode_Flag 				Num[7][5]
+
+
 #endif 

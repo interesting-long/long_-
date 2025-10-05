@@ -12,10 +12,23 @@ typedef enum
 	Left_ENTER,
     EXIT       //
 }Cycle_State;
+typedef enum
+{
+	Normal_Str,
+	Short_Str,
+	Long_Str,
+	Bend
+}Road_State;
 extern float uni;
 extern float last_uni;
 extern unsigned char Enter_Flag_Left;
 extern unsigned char Enter_Flag_Right;
+extern unsigned int Entern_Flag_Time;
+extern unsigned int Entern_Delay_Time;
+extern unsigned int Entern_Continue_Time;
+extern int turn_Value;
+extern int Mode_Flag;
 void if_Cycle(void);
 int Help_turn();
+void State_of_road(void);
 #endif

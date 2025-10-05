@@ -87,7 +87,7 @@ void Protect()
 {
 	if(CAR_Mode!= STOP)
 	{
-		if((ADC_1+ADC_2+ADC_3+ADC_4)<5 )
+		if((ADC_1+ADC_2+ADC_3+ADC_4)<Pro )
 		{
 			CAR_Mode=STOP;
 			Turn_mode_Init();
@@ -120,7 +120,14 @@ void init_all()
     EA=1;
 	
 }
-
+void show_test_info(const char* info) 
+{
+    tft180_clear(RGB565_WHITE);
+    system_delay_ms(5);
+    tft180_show_string(0, 3*16, info);
+    system_delay_ms(1000);
+    tft180_clear(RGB565_WHITE);
+}
 //切换模式的初始函数
 void Turn_mode_Init(void)
 {
@@ -134,11 +141,7 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=1;
 			Servo_Flag=0;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for STOP");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for Stop");
 			Refesh_arrow();
 			menu_display_content();
 			Show_bujin();
@@ -149,15 +152,12 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 			Servo_Flag=1;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for GO");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for GO");
 			
 			
-			Motor_Update();
+			Motor_Update(0);
 			PID_Update();
+			Cycle_Update();
 			break;
 		}
 		case GO_Pararm1:
@@ -165,14 +165,11 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 			Servo_Flag=1;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for GOP1");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for GOP1");
 			
-			Motor_Update();
+			Motor_Update(0);
 			PID_Update();
+			Cycle_Update();
 			break;
 		}
 		case GO_Pararm2:
@@ -180,14 +177,11 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 			Servo_Flag=1;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for GOP2");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for GOP2");
 			
-			Motor_Update();
+			Motor_Update(0);
 			PID_Update();
+			Cycle_Update();
 			break;
 		}
 		case GO_Pararm3:
@@ -195,24 +189,18 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 			Servo_Flag=1;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for GOP3");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for GOP3");
 			
-			Motor_Update();
+			Motor_Update(0);
 			PID_Update();
+			Cycle_Update();
 			break;
 		}
 		case TEST_PWM:
 		{
 			Key_Flag=1;
 			Servo_Flag=0;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for PWM_TEST");
-			system_delay_ms(1000);
+			show_test_info("Test for PWM_TEST");
 			
 			break;
 		}
@@ -220,10 +208,7 @@ void Turn_mode_Init(void)
 		{
 			Key_Flag=1;
 			Servo_Flag=0;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for Servo");
-			system_delay_ms(1000);
+			show_test_info("Test for Servo");
 			break;
 		}
 		case ADC_Show:
@@ -231,22 +216,14 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=1;
 			Key_Flag=1;
 			Servo_Flag=1;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for ADC_Show");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for ADC_Show");
 			break;
 		}
 		case Seta_Servo:
 		{
 			Key_Flag=1;
 			Servo_Flag=0;
-			tft180_clear(RGB565_WHITE);
-			system_delay_ms(5);
-			tft180_show_string(0,3*16,"Test for Seta_Servo");
-			system_delay_ms(1000);
-			tft180_clear(RGB565_WHITE);
+			show_test_info("Test for Seta_Servo");
 			break;
 		}
 	}
@@ -309,14 +286,14 @@ void Show_pararm()
 	}
 
 }
-void SET_Time()
-{
-	if(Set_T>Time && CAR_Mode!=STOP)
-	{
-		CAR_Mode=STOP;
-		Turn_mode_Init();
-	}
-}
+//void SET_Time()
+//{
+//	if(Set_T>Time && CAR_Mode!=STOP)
+//	{
+//		CAR_Mode=STOP;
+//		Turn_mode_Init();
+//	}
+//}
 
 void GO_Function(void)
 {

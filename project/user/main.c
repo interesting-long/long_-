@@ -40,6 +40,8 @@ void main()
 			case GO:
 			{
 				GO_Function();
+				MotorR_SetSpeed(100*20);
+				MotorL_SetSpeed(100*20);
 				break;
 			}
 			case GO_Pararm1: 
@@ -152,5 +154,6 @@ void pit_handler1(void)
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
 	if_Cycle();
+//	State_of_road();
 //	
 }
