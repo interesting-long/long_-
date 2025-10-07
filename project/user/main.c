@@ -144,6 +144,10 @@ void pit_handler0(void)
 	{
 		Key_scaner();
 	}
+	if(CAR_Mode!=STOP)
+	{
+		State_of_road();
+	}
 
 }
 
@@ -152,9 +156,5 @@ void pit_handler1(void)
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
 	if_Cycle();
-	if(CAR_Mode!=STOP)
-	{
-		
-		State_of_road();
-	}
+
 }

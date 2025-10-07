@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          memcpy(&i, &x, 4);
    55   1          
    56   1          i = 532267893U + (i >> 1);
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 2   
 
    57   1          
    58   1          memcpy(&x, &i, 4);
@@ -134,7 +134,7 @@ stmt  level    source
   120   1              system_delay_ms(5);
   121   1          EA=1;
   122   1              
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 3   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 3   
 
   123   1      }
   124          void show_test_info(const char* info) 
@@ -202,7 +202,7 @@ stmt  level    source
   186   3                              Cycle_Update();
   187   3                              break;
   188   3                      }
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 4   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 4   
 
   189   2                      case GO_Pararm3:
   190   2                      {
@@ -270,7 +270,7 @@ stmt  level    source
   252   3                      }break;
   253   2                      case TEST_SERVO:break;
   254   2                      case GO_Pararm1:
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 5   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 5   
 
   255   2                      {
   256   3                              tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
@@ -339,7 +339,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  function                                                           05/10/25  16:56:48  PAGE 6   
+C251 COMPILER V5.60.0,  function                                                           06/10/25  22:25:14  PAGE 6   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

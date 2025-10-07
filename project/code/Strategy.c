@@ -54,6 +54,10 @@ void if_Cycle(void)
 					if2_time=0;
 				}
 			}
+			else
+			{
+				if2_time=0;
+			}
 			break;
 		}
 		case Left_ENTER:
@@ -116,13 +120,17 @@ void State_of_road(void)
 				Short_Time++;
 				if(Short_Time>Short_Judge_Time)
 				{
+					Buzzer_OFF();
 					Short_Time=0;
 					Road_Stat=Short_Str;
 					Motor_Update(Short_add);
-					Buzzer_ON();
 					tft180_show_string(0,0*16,"Short");
 				}
 			}
+			else
+            {
+                Short_Time=0; // 重要：条件不满足时重置计时
+            }
 			break;
 		}
 		case Short_Str:
@@ -133,15 +141,16 @@ void State_of_road(void)
 				Not_Time=0;
 				if(Long_Time>Long_Judge_Time)
 				{
+					Buzzer_OFF();
 					Long_Time=0;
 					Road_Stat=Long_Str;
-					Buzzer_ON();
 					Motor_Update(Long_add);
 					tft180_show_string(0,0*16,"Long");
 				}
 			}
 			else
 			{
+				Long_Time=0;
 				Not_Time++;
 				{
 					if(Not_Time>30)
@@ -149,7 +158,6 @@ void State_of_road(void)
 						Not_Time=0;
 						Road_Stat=Normal_Str;
 						tft180_show_string(0,0*16,"Normal");
-						Buzzer_OFF();
 					}
 				}
 			}
@@ -162,13 +170,17 @@ void State_of_road(void)
 				Bend_Time++;
 				if(Bend_Time>5)
 				{
+					Buzzer_ON();
 					Bend_Time=0;
 					Road_Stat=Bend;
 					Motor_Update(0);
-					Buzzer_OFF();
 					tft180_show_string(0,0*16,"Bend");
 				}
 			
+			}
+			else
+			{
+				Bend_Time=0;
 			}
 			break;
 		}
@@ -191,10 +203,10 @@ void State_of_road(void)
 				}
 				else
 				{
+					Buzzer_OFF();
 					slow_Time=0;
 					Road_Stat=Normal_Str;
 					Motor_Update(0);
-					Buzzer_OFF();
 					tft180_show_string(0,0*16,"Normal");
 				}
 			}
@@ -202,6 +214,7 @@ void State_of_road(void)
 		}
 		default :
 		{
+			Buzzer_OFF();
 			CAR_STOP();
 			break;
 		}

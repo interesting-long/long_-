@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               05/10/25  16:56:47  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               06/10/25  22:25:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                              {
    56   4                                      GO_Function();
    57   4                                      break;
-C251 COMPILER V5.60.0,  main                                                               05/10/25  16:56:47  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               06/10/25  22:25:13  PAGE 2   
 
    58   4                              }
    59   3                              case TEST_PWM: 
@@ -134,7 +134,7 @@ stmt  level    source
   121   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
   122   4                              }
   123   3                              else
-C251 COMPILER V5.60.0,  main                                                               05/10/25  16:56:47  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               06/10/25  22:25:13  PAGE 3   
 
   124   3                              {
   125   4                                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
@@ -159,19 +159,19 @@ stmt  level    source
   144   1              {
   145   2                      Key_scaner();
   146   2              }
-  147   1      
-  148   1      }
-  149          
-  150          void pit_handler1(void)
-  151          {
-  152   1              ADC_SampleAndFilter();
-  153   1              dajiao=Servo_turn_pid(unification());
-  154   1              if_Cycle();
-  155   1              if(CAR_Mode!=STOP)
-  156   1              {
-  157   2                      
-  158   2                      State_of_road();
-  159   2              }
+  147   1              if(CAR_Mode!=STOP)
+  148   1              {
+  149   2                      State_of_road();
+  150   2              }
+  151   1      
+  152   1      }
+  153          
+  154          void pit_handler1(void)
+  155          {
+  156   1              ADC_SampleAndFilter();
+  157   1              dajiao=Servo_turn_pid(unification());
+  158   1              if_Cycle();
+  159   1      
   160   1      }
 
 

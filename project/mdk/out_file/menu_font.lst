@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          05/10/25  16:56:48  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          07/10/25  10:39:06  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -18,7 +18,7 @@ stmt  level    source
     7                  {-1  ,32.5,325,39 ,39 ,6 ,250,10 ,5 ,60 },
     8                  {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
-   10                  {-1  ,3  ,20 ,6 ,80 ,-30,50 ,20 ,50, }};//数据存储的数组
+   10                  {-1  ,1  ,5 ,2 ,16 ,-30,10 ,15 ,40, }};//数据存储的数组
    11          
    12          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
              -Page[2]，Page[3]，Page[4]，
@@ -46,7 +46,7 @@ stmt  level    source
    34              {   6,
    35                      {"back","LPWM","RPWM","","","","","",""}},
    36                  {   7,
-   37                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_slow","Slow_T","",""}},
+   37                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_slow","Slow_T","S_Vue","B_Vue"}},
    38          };
    39          
    40          struct Menu *Pin=&Page[0];//灵活指针
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          05/10/25  16:56:48  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          07/10/25  10:39:06  PAGE 2   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
