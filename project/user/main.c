@@ -60,10 +60,8 @@ void main()
 			{
 				if(Init_Flag==1)
 				{
-					EA=0;
 					Turn_mode_Init();
 					Init_Flag=0;
-					EA=1;
 				}
 				PWM_Test();
 				break;
@@ -72,10 +70,8 @@ void main()
 			{
 				if(Init_Flag==1)
 				{
-					EA=0;
 					Turn_mode_Init();
 					Init_Flag=0;
-					EA=1;
 				}
 				Serve_Test();
 				break;
@@ -102,7 +98,20 @@ void main()
 				}
 				break;
 			}
+			
 		}
+		if(ADC_Show_Flag)
+		{
+			EA=0;
+			if(++T>=10)
+			{
+				Buzzer_OFF();
+				T=0;
+				Show_pararm();
+			}
+			EA=1;
+		}
+
    }
 }
 void pit_handler0(void)
@@ -122,32 +131,24 @@ void pit_handler0(void)
 			}
 			else
 			{
-				pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+				pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
 			}
 		}
 		else
 		{
-			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+			pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
 		}
 		
 	}
-	if(ADC_Show_Flag)
-	{
-		if(++T>=10)
-		{
-			Buzzer_OFF();
-			T=0;
-			Show_pararm();
-		}
-	}
+	
 	if(Key_Flag)
 	{
 		Key_scaner();
 	}
-	if(CAR_Mode!=STOP)
-	{
-		State_of_road();
-	}
+//	if(CAR_Mode!=STOP)
+//	{
+//		State_of_road();
+//	}
 
 }
 
@@ -155,6 +156,5 @@ void pit_handler1(void)
 {
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
-	if_Cycle();
-
+		if_Cycle();
 }

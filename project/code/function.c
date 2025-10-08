@@ -147,6 +147,7 @@ void Turn_mode_Init(void)
 			Refesh_arrow();
 			menu_display_content();
 			Show_bujin();
+			CAR_STOP();
 			break;
 		}
 		case GO:
@@ -217,7 +218,7 @@ void Turn_mode_Init(void)
 		{
 			ADC_Show_Flag=1;
 			Key_Flag=1;
-			Servo_Flag=1;
+			Servo_Flag=0;
 			show_test_info("Test for ADC_Show");
 			break;
 		}
@@ -280,6 +281,7 @@ void Show_pararm()
 			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
 			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
 			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+			tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
 		}break;
 		case Seta_Servo:
 		{

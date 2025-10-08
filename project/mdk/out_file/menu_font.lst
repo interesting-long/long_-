@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          07/10/25  10:39:06  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          08/10/25  15:48:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,14 +11,14 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1,5  ,-1 ,-1,-1},
-    4                  {-1  ,28  ,280,32 ,32 ,6 ,400,30 ,5 ,60 },
-    5                  {-1  ,30  ,300,35 ,35 ,6 ,310,20 ,5 ,60},
-    6                  {-1  ,31  ,310,37 ,37 ,6 ,280,15 ,5 ,60},
-    7                  {-1  ,32.5,325,39 ,39 ,6 ,250,10 ,5 ,60 },
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1,1  ,-1 ,-1,80,200},
+    4                  {-1  ,28  ,280,32 ,32 ,12 ,310,45 ,0 ,65 },
+    5                  {-1  ,30  ,300,35 ,35 ,6 ,320,40 ,0 ,60},
+    6                  {-1  ,31  ,310,37 ,37 ,6 ,280,35 ,0 ,60},
+    7                  {-1  ,32.5,325,39 ,39 ,6 ,270,30 ,0 ,60 },
     8                  {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
-   10                  {-1  ,1  ,5 ,2 ,16 ,-30,10 ,15 ,40, }};//数据存储的数组
+   10                  {-1  ,2  ,5 ,4 ,16 ,-20,5 ,15 ,20, }};//数据存储的数组
    11          
    12          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
              -Page[2]，Page[3]，Page[4]，
@@ -32,7 +32,7 @@ stmt  level    source
    20           */
    21          struct Menu Page[Struct_Number]={
    22              {   0,
-   23                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test"}},
+   23                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Value","ADC_F"}},
    24              {   1,
    25                      {"back","KP","KD","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
    26              {   2,
@@ -62,19 +62,19 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      1360     ------
+  xdata size           =      1490     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          07/10/25  10:39:06  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          08/10/25  15:48:50  PAGE 2   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      1420     ------
+  hconst size          =      1550     ------
 End of Module Information.
 
 
