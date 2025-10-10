@@ -1,8 +1,10 @@
 #include "function.h"
 int Set_T=0;
 int T3=0;
-int PRO_Set_Time=0;
+
 PID servo_pid;
+PID M_left_pid;
+PID M_Right_pid;
 int dajiao=0;
 
 unsigned char Servo_Flag=0;
@@ -11,6 +13,8 @@ unsigned char ADC_Show_Flag=0;
 unsigned char Key_Flag=1;
 unsigned char Init_Fg=0;
 
+int16 encoder_data_dir_1 = 0;
+int16 encoder_data_dir_2 = 0;
 /*函数：常见的PID计算
  * 参数1：结构体变量的地址
  * 参数2：当前值
@@ -101,11 +105,13 @@ void init_all()
 	system_delay_ms(10);
 	Motor_Init();
 	Servo_Init();
-	PT1H = 0;
-    PT0H = 1;
+////	PT1H = 0;
+//    PT1H = 1;
 	system_delay_ms(5);
 	Buzzer_Init();
 	Buzzer_OFF();
+	enconder_init();
+//	wireless_uart_init();
 	
 	ADC_GetInit();
 	tft180_init();
@@ -115,25 +121,25 @@ void init_all()
 	menu_Init();
 	system_delay_ms(10);
 	
-	pit_ms_init(TIM0_PIT, 20);
-	pit_ms_init(TIM1_PIT, 5);
-	system_delay_ms(5);
+	pit_ms_init(TIM1_PIT, 20);
+	pit_ms_init(TIM2_PIT, 5);
     EA=1;
 	
 }
 void show_test_info(const char* info) 
 {
+	EA=0;
     tft180_clear(RGB565_WHITE);
     system_delay_ms(5);
     tft180_show_string(0, 3*16, info);
     system_delay_ms(1000);
     tft180_clear(RGB565_WHITE);
+	
 }
 //切换模式的初始函数
 void Turn_mode_Init(void)
 {
 	EA=0;
-	Set_T=0;
 	switch(CAR_Mode)
 	{
 		case STOP:
@@ -153,12 +159,12 @@ void Turn_mode_Init(void)
 		case GO:
 		{
 			ADC_Show_Flag=0;
-			Key_Flag=0;
+//			Key_Flag=0;
+			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GO");
 			
 			
-			Motor_Update(0);
 			PID_Update();
 			Cycle_Update();
 			break;
@@ -166,11 +172,11 @@ void Turn_mode_Init(void)
 		case GO_Pararm1:
 		{
 			ADC_Show_Flag=0;
-			Key_Flag=0;
+//			Key_Flag=0;
+			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GOP1");
 			
-			Motor_Update(0);
 			PID_Update();
 			Cycle_Update();
 			break;
@@ -178,11 +184,11 @@ void Turn_mode_Init(void)
 		case GO_Pararm2:
 		{
 			ADC_Show_Flag=0;
-			Key_Flag=0;
+//			Key_Flag=0;
+			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GOP2");
 			
-			Motor_Update(0);
 			PID_Update();
 			Cycle_Update();
 			break;
@@ -190,11 +196,12 @@ void Turn_mode_Init(void)
 		case GO_Pararm3:
 		{
 			ADC_Show_Flag=0;
-			Key_Flag=0;
+//			Key_Flag=0;
+			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GOP3");
 			
-			Motor_Update(0);
+			
 			PID_Update();
 			Cycle_Update();
 			break;
@@ -230,6 +237,7 @@ void Turn_mode_Init(void)
 			break;
 		}
 	}
+//	Motor_Update(0);
 	EA=1;
 }
 
@@ -282,6 +290,9 @@ void Show_pararm()
 			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
 			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
 			tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
+			tft180_show_int16(5*8,5*16,encoder_data_dir_1);
+			tft180_show_int16(5*8,6*16,encoder_data_dir_2);
+			tft180_show_int16(5*8,7*16,Motor_left_pid(1000, encoder_data_dir_1));
 		}break;
 		case Seta_Servo:
 		{
@@ -305,5 +316,71 @@ void GO_Function(void)
 	{
 		Turn_mode_Init();
 		Init_Flag=0;
+	}
+}
+
+void  enconder_init(void)
+{
+   	encoder_dir_init(ENCODER_DIR_1, ENCODER_DIR_DIR_1, ENCODER_DIR_PULSE_1);   	// 初始化编码器模块与引脚 带方向增量编码器模式
+    encoder_dir_init(ENCODER_DIR_2, ENCODER_DIR_DIR_2, ENCODER_DIR_PULSE_2);    // 初始化编码器模块与引脚 带方向增量编码器模式
+ }
+void speed_control_ring(void)
+{
+	encoder_data_dir_1 = -encoder_get_count(ENCODER_DIR_1);                  // 获取编码器计数
+	encoder_data_dir_2 = encoder_get_count(ENCODER_DIR_2);            	// 获取编码器计数
+	encoder_clear_count(ENCODER_DIR_1);                                		// 清空编码器计数
+	encoder_clear_count(ENCODER_DIR_2);                             		// 清空编码器计数
+}
+
+void Speed_Control(void)
+{
+	
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			if(M_Mod>1)
+			{
+			MotorL_SetSpeed(Motor_left_pid(ML*100,encoder_data_dir_1));
+			MotorR_SetSpeed(Motor_Right_pid(MR*100,encoder_data_dir_2));
+			}
+			break;
+		}	
+		case GO_Pararm1:
+		{
+			if(M_Mod1>1)
+			{
+			MotorL_SetSpeed(Motor_left_pid(ML1*100,encoder_data_dir_1));
+			MotorR_SetSpeed(Motor_Right_pid(MR1*100,encoder_data_dir_2));
+			}
+			break;
+		}	
+		case GO_Pararm2:
+		{
+			if(M_Mod2>1)
+			{
+			MotorL_SetSpeed(Motor_left_pid(ML2*100,encoder_data_dir_1));
+			MotorR_SetSpeed(Motor_Right_pid(MR2*100,encoder_data_dir_2));
+			}
+			break;
+		}	
+		case GO_Pararm3:
+		{
+			if(M_Mod3>1)
+			{
+			MotorL_SetSpeed(Motor_left_pid(ML3*100,encoder_data_dir_1));
+			MotorR_SetSpeed(Motor_Right_pid(MR3*100,encoder_data_dir_2));
+			}
+			break;
+		}		
+		default:
+		{
+			MotorL_SetSpeed(0);
+			MotorR_SetSpeed(0);
+			M_Right_pid.Out_I=0;
+			M_left_pid.Out_I=0;
+			break;
+		}
+	
 	}
 }

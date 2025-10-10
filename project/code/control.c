@@ -15,46 +15,58 @@ void Ser_Servo_Duty(int value)
  */
 int Servo_turn_pid(float Current)
 {
-    // 将频繁访问的结构体成员加载到局部变量
-    float kp = servo_pid.Kp;           // 缓存到快速存储区
+    float kp = servo_pid.Kp;           
     float kd = servo_pid.Kd;
     float last_error = servo_pid.LastError;
     float error = Current;
 	float temp ;
     
-    // 使用局部变量计算
     float out = kp * error + kd * (error - last_error);
     
-    // 写回必要的结构体成员
     servo_pid.LastError = error;
     
     temp = func_limit_ab(out, Servo_min, Servo_max);
     return (int)(temp + (temp >= 0 ? 0.5f : -0.5f));
 }
-//int Servo_turn_pid(float Current)
-//{
-//    // 放大误差为整数
-//    int32_t error = (int32_t)(Current * 100);             // ×100
-//    int32_t last_error = (int32_t)(servo_pid.LastError);  // ×100
-//    int32_t kp = (int32_t)(servo_pid.Kp * 100);           // ×100
-//    int32_t kd = (int32_t)(servo_pid.Kd * 100);           // ×100
+/*
+*左路速度环控制
+*/
+int Motor_left_pid(int point,int NowData)
+{
+    // 将频繁访问的结构体成员加载到局部变量
+    float kp = M_left_pid.Kp;       
+	float ki = M_left_pid.Ki;
+    int error = point - NowData;
+	float out = 0 ;
+    M_left_pid.Out_I += error;
+	if (M_left_pid.Out_I > Motor_Max) M_left_pid.Out_I = Motor_Max;
+	if (M_left_pid.Out_I < -Motor_Max) M_left_pid.Out_I = -Motor_Max;
+    // 使用局部变量计算
+    out = kp * error + ki *M_left_pid.Out_I;
+    if (out > 10000) out = 10000;
+	if (out < -10000) out = -10000;
+    return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+}
+/*
+*右路速度环控制
+*/
 
-//    // 使用32位，防止溢出 ?
-//    int32_t out = kp * error + kd * (error - last_error);  // ×10000
-
-//    // 更新误差
-//    servo_pid.LastError = error; // ? 保持 ×100 的误差存储方式
-
-//    // 缩回到 ×1 倍输出（比如 -100~+100）
-//    out = out / 10000;
-
-//    // 限幅（这里 Servo_min / Servo_max 必须是 ×1 本身的范围） ?
-//    if (out > Servo_max) out = Servo_max;
-//    if (out < Servo_min) out = Servo_min;
-
-//    return (int)out;  // ? 最终返回还是 "正常倍数"
-//}
-
+int Motor_Right_pid(int point,int NowData)
+{
+    // 将频繁访问的结构体成员加载到局部变量
+    float kp = M_Right_pid.Kp;       
+	float ki = M_Right_pid.Ki;
+    int error = point - NowData;
+	float out = 0 ;
+    M_Right_pid.Out_I += error;
+	if (M_Right_pid.Out_I > Motor_Max) M_Right_pid.Out_I = Motor_Max;
+	if (M_Right_pid.Out_I < -Motor_Max) M_Right_pid.Out_I = -Motor_Max;
+    // 使用局部变量计算
+    out = kp * (error) + ki * (M_Right_pid.Out_I);
+    if (out > 10000) out = 10000;
+	if (out < -10000) out = -10000;
+    return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+}
 /*
  * 函数功能：左路电机PWM设置
  * 函数名称：MotorL_SetSpeed(unsigned char);
@@ -63,6 +75,8 @@ int Servo_turn_pid(float Current)
  */
 void MotorL_SetSpeed(int pwm)
 {
+	if(pwm>Motor_Max){pwm=Motor_Max;}
+	if(pwm<-Motor_Max){pwm=-Motor_Max;}
     if(pwm>=0)
     {
         pwm_set_duty(MotorL_pwm1,pwm);
@@ -82,7 +96,7 @@ void MotorL_SetSpeed(int pwm)
  */
 void MotorR_SetSpeed(int pwm)
 {
-    if(pwm>0)
+    if(pwm>=0)
     {
         pwm_set_duty(MotorR_pwm1,pwm);
         pwm_set_duty(MotorR_pwm2,0);
@@ -124,6 +138,7 @@ void Motor_Update(char X)
 			MotorR_SetSpeed(100*(ML3+X));
 			MotorL_SetSpeed(100*(MR3+X));
 		}break;
+		default:break;
 	}
 	
 }
@@ -136,24 +151,40 @@ void PID_Update()
 			servo_pid.Kp = KP;
 			servo_pid.Ki = 0;
 			servo_pid.Kd = KD;
+			M_left_pid.Kp = ML_KP;
+			M_left_pid.Ki = ML_KI;
+			M_Right_pid.Kp = MR_KP;
+			M_Right_pid.Ki = MR_KI;
 		}break;
 		case GO_Pararm1:
 		{
 			servo_pid.Kp = KP1;
 			servo_pid.Ki = 0;
 			servo_pid.Kd = KD1;
+			M_left_pid.Kp = ML_KP1;
+			M_left_pid.Ki = ML_KI1;
+			M_Right_pid.Kp = MR_KP1;
+			M_Right_pid.Ki = MR_KI1;
 		}break;
 		case GO_Pararm2:
 		{
 			servo_pid.Kp = KP2;
 			servo_pid.Ki = 0;
 			servo_pid.Kd = KD2;
+			M_left_pid.Kp = ML_KP2;
+			M_left_pid.Ki = ML_KI2;
+			M_Right_pid.Kp = MR_KP2;
+			M_Right_pid.Ki = MR_KI2;
 		}break;
 		case GO_Pararm3:
 		{
 			servo_pid.Kp = KP3;
 			servo_pid.Ki = 0;
 			servo_pid.Kd = KD3;
+			M_left_pid.Kp = ML_KP3;
+			M_left_pid.Ki = ML_KI3;
+			M_Right_pid.Kp = MR_KP3;
+			M_Right_pid.Ki = MR_KI3;
 		}break;
 	}
 	

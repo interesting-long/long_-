@@ -237,6 +237,10 @@ void menu_handle_key(unsigned char Flag_Key)
 void menu_Init()
 {
 	Menu_SetChildren(&Page[0],Page0_children);//设定子字节
+	Menu_SetChildren(&Page[1],Page1_children);//设定子字节
+	Menu_SetChildren(&Page[2],Page2_children);//设定子字节
+	Menu_SetChildren(&Page[3],Page3_children);//设定子字节
+	Menu_SetChildren(&Page[4],Page4_children);//设定子字节
 	Menu_SetChildren(&Page[5],Page5_children);//设定子字节
 	Refesh_arrow();
 	menu_display_content();

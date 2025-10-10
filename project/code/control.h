@@ -12,10 +12,12 @@
 #define Servo_Pwm PWMB_CH2_P51
 
 /****电机引脚定义****/
-#define MotorL_pwm2 PWMB_CH1_P01
-#define MotorL_pwm1 PWMA_CH2P_P02
-#define MotorR_pwm2 PWMB_CH3_P05
-#define MotorR_pwm1 PWMA_CH4P_P06
+#define MotorL_pwm2 PWMB_CH3_P05
+#define MotorL_pwm1 PWMA_CH4P_P06
+#define MotorR_pwm2 PWMB_CH1_P01
+#define MotorR_pwm1 PWMA_CH2P_P02
+/******************/
+#define Motor_Max 5000
 typedef enum
 {
 	STOP,
@@ -36,7 +38,8 @@ int Servo_turn_pid(float Current);
 void Motor_Update(char X);
 void PID_Update();
 void Cycle_Update(void);
-//void Ser_Servo_Duty(int value);
+int Motor_left_pid(int point,int NowData);
+int Motor_Right_pid(int point,int NowData);
 /*内部调用函数*/
 void MotorL_SetSpeed(int pwm);
 void MotorR_SetSpeed(int pwm);

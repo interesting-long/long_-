@@ -3,6 +3,14 @@
 
 
 #include "zf_common_headfile.h"
+
+#define ENCODER_DIR_1                 	(TIM0_ENCOEDER)                         // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
+#define ENCODER_DIR_DIR_1              	(IO_P35)            				 	// DIR 对应的引脚
+#define ENCODER_DIR_PULSE_1            	(TIM0_ENCOEDER_P34)            			// PULSE 对应的引脚
+
+#define ENCODER_DIR_2                 	(TIM3_ENCOEDER)                         // 带方向编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER2
+#define ENCODER_DIR_DIR_2           	(IO_P13)             					// DIR 对应的引脚
+#define ENCODER_DIR_PULSE_2       		(TIM3_ENCOEDER_P04)            			// PULSE 对应的引脚
 extern int Set_T;
 extern int T3;
 typedef unsigned char 		uint8_t 	;
@@ -18,7 +26,7 @@ typedef struct
         float LowPass;
 
         float Out_P;
-        float Out_I;
+        int32 Out_I;
         float Out_D;
 
         float PrevError;
@@ -27,6 +35,10 @@ typedef struct
         float LastData;
 }PID;
 extern PID servo_pid;
+extern PID M_left_pid;
+extern PID M_Right_pid;
+extern int16 encoder_data_dir_1;
+extern int16 encoder_data_dir_2;
 /*外部调用函数*/
 float unification(void);
 float fast_sqrt(float number);
@@ -36,6 +48,9 @@ void init_all();
 void Turn_mode_Init(void);
 void Show_pararm();
 void GO_Function(void);
+void  enconder_init(void);
+void speed_control_ring(void);
+void Speed_Control(void);
 /*内部调用函数*/
 void show_test_info(const char* info) ;
 void Motor_Init(void);

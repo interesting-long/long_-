@@ -2,20 +2,17 @@
 int T=0;
 
 int T4=0;
-int Init_Time=0;
-unsigned char PIT0_Flag=0;
-unsigned char PIT1_Flag=0;
-
-void pit_handler0 (void);
+unsigned char speed_update_flag=0;
 void pit_handler1 (void);
+void pit_handler2 (void);
 void main()
 {
 	clock_init(SYSTEM_CLOCK_40M);				// 务必保留
 	debug_init();								// 务必保留
 	/****************************************************/
 	init_all();
-	tim0_irq_handler = pit_handler0;// 设置定时器0中断回调函数
-	tim1_irq_handler = pit_handler1;// 设置定时器1中断回调函数
+	tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
+	tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
     while(1)
 	{
 		switch(CAR_Mode)
@@ -111,10 +108,11 @@ void main()
 			}
 			EA=1;
 		}
-
    }
 }
-void pit_handler0(void)
+
+
+void pit_handler1(void)
 {
 	Protect();
 	if(Servo_Flag)
@@ -145,6 +143,9 @@ void pit_handler0(void)
 	{
 		Key_scaner();
 	}
+	speed_control_ring();
+	Speed_Control();
+
 //	if(CAR_Mode!=STOP)
 //	{
 //		State_of_road();
@@ -152,9 +153,10 @@ void pit_handler0(void)
 
 }
 
-void pit_handler1(void)
+void pit_handler2(void)
 {
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
-		if_Cycle();
+	if_Cycle();
+	
 }

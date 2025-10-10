@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          08/10/25  15:48:50  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          10/10/25  23:25:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,48 +11,66 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1,1  ,-1 ,-1,80,200},
-    4                  {-1  ,28  ,280,32 ,32 ,12 ,310,45 ,0 ,65 },
-    5                  {-1  ,30  ,300,35 ,35 ,6 ,320,40 ,0 ,60},
-    6                  {-1  ,31  ,310,37 ,37 ,6 ,280,35 ,0 ,60},
-    7                  {-1  ,32.5,325,39 ,39 ,6 ,270,30 ,0 ,60 },
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1,100  ,-1 ,-1,80,200},
+    4                  {-1  ,28  ,5,0 ,0 ,12 ,310,45 ,0 ,65 },
+    5                  {-1  ,30  ,5,35 ,35 ,6 ,320,40 ,0 ,60},
+    6                  {-1  ,31  ,5,37 ,37 ,6 ,280,35 ,0 ,60},
+    7                  {-1  ,32.5,5,39 ,39 ,6 ,270,30 ,0 ,60 },
     8                  {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
-   10                  {-1  ,2  ,5 ,4 ,16 ,-20,5 ,15 ,20, }};//数据存储的数组
-   11          
-   12          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
+   10                  {-1  ,2  ,5 ,4 ,16 ,-20,5 ,15 ,20, },
+   11                          
+   12                          {-1  ,28  ,280 ,0  ,0 ,0 ,0  ,-1 ,-1,-1 },
+   13                          {-1  ,30  ,300 ,3  ,3 ,-1,-1 ,-1 ,-1,-1 },
+   14                          {-1  ,310 ,310 ,3  ,3 ,-1,-1 ,-1 ,-1,-1 },
+   15                          {-1  ,32.5,325 ,3  ,3 ,-1,-1 ,-1 ,-1,-1 }};//数据存储的数组
+   16          
+   17          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
              -Page[2]，Page[3]，Page[4]，
-   13          unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到Page[5],Page[6]
-   14          
-   15          
-   16          /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
-   17           *结构体第二行是   显示的数据
-   18           *结构体第三行是   父指针用(函数自动配置）
-   19           *结构体第四行是   子指针数组(位置对应行数)用函数配置
-   20           */
-   21          struct Menu Page[Struct_Number]={
-   22              {   0,
-   23                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Value","ADC_F"}},
-   24              {   1,
-   25                      {"back","KP","KD","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
-   26              {   2,
-   27                      {"back","KP1","KD1","R_PWM1","L_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
-   28              {   3,
-   29                      {"back","KP2","KD2","R_PWM2","L_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
-   30              {   4,
-   31                      {"back","KP3","KD3","R_PWM3","L_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
-   32              {   5,
-   33                      {"back","PWM","Servo","S_Value","","","","",""}},
-   34              {   6,
-   35                      {"back","LPWM","RPWM","","","","","",""}},
-   36                  {   7,
-   37                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_slow","Slow_T","S_Vue","B_Vue"}},
-   38          };
-   39          
-   40          struct Menu *Pin=&Page[0];//灵活指针
-   41          
-   42          //ADC采样参数                                                           
-   43          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC采样值
+   18          unsigned char Page5_children[Page_Row_Number+1]={0, 6};//子字节菜单,第二三行转到Page[5],Page[6]
+   19          unsigned char Page1_children[Page_Row_Number+1]={0, 8};
+   20          unsigned char Page2_children[Page_Row_Number+1]={0, 9};
+   21          unsigned char Page3_children[Page_Row_Number+1]={0, 10};
+   22          unsigned char Page4_children[Page_Row_Number+1]={0, 11};
+   23          
+   24          /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
+   25           *结构体第二行是   显示的数据
+   26           *结构体第三行是   父指针用(函数自动配置）
+   27           *结构体第四行是   子指针数组(位置对应行数)用函数配置
+   28           */
+   29          struct Menu Page[Struct_Number]={
+   30              {   0,
+   31                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Value","ADC_F"}},
+   32              {   1,
+   33                      {"back","PID","Mode","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
+   34              {   2,
+   35                      {"back","PID","Mode","R_PWM1","L_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
+   36              {   3,
+   37                      {"back","PID","Mode","R_PWM2","L_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
+   38              {   4,
+   39                      {"back","PID","Mode","R_PWM3","L_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
+   40              {   5,
+   41                      {"back","PWM","Servo","S_Value","","","","",""}},
+   42              {   6,
+   43                      {"back","LPWM","RPWM","","","","","",""}},
+   44                  {   7,
+   45                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_slow","Slow_T","S_Vue","B_Vue"}},
+   46                  {   8,
+   47                      {"back","S_KP","S_KD","ML_KP","ML_KI","MR_KP","MR_KI","",""}},
+   48                  {   9,
+   49                      {"back","S_KP1","S_KD1","ML_KP1","ML_KI1","MR_KP1","MR_KI1","",""}},
+   50                  {   10,
+   51                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
+   52                  {   11,
+   53                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
+   54          };
+   55          
+   56          struct Menu *Pin=&Page[0];//灵活指针
+C251 COMPILER V5.60.0,  menu_font                                                          10/10/25  23:25:45  PAGE 2   
+
+   57          
+   58          //ADC采样参数                                                           
+   59          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC采样值
 
 
 Module Information          Static   Overlayable
@@ -62,19 +80,17 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      1490     ------
+  xdata size           =      2460     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  menu_font                                                          08/10/25  15:48:50  PAGE 2   
-
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      1550     ------
+  hconst size          =      2540     ------
 End of Module Information.
 
 
