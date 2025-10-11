@@ -3,6 +3,7 @@ int T=0;
 
 int T4=0;
 unsigned char speed_update_flag=0;
+unsigned char Protect_flag=0;
 void pit_handler1 (void);
 void pit_handler2 (void);
 void main()
@@ -55,31 +56,19 @@ void main()
 			}
 			case TEST_PWM: 
 			{
-				if(Init_Flag==1)
-				{
-					Turn_mode_Init();
-					Init_Flag=0;
-				}
+				GO_Function();
 				PWM_Test();
 				break;
 			}
 			case TEST_SERVO: 
 			{
-				if(Init_Flag==1)
-				{
-					Turn_mode_Init();
-					Init_Flag=0;
-				}
+				GO_Function();
 				Serve_Test();
 				break;
 			}
 			case ADC_Show:
 			{
-				if(Init_Flag==1)
-				{
-					Turn_mode_Init();
-					Init_Flag=0;
-				}
+				GO_Function();
 				break;
 			}
 			case Seta_Servo:
@@ -97,17 +86,13 @@ void main()
 			}
 			
 		}
-		if(ADC_Show_Flag)
+		if(Protect_flag)
 		{
-			EA=0;
-			if(++T>=10)
-			{
-				Buzzer_OFF();
-				T=0;
-				Show_pararm();
-			}
-			EA=1;
+			Protect_flag=0;
+			CAR_Mode=STOP;
+			Turn_mode_Init();
 		}
+		
    }
 }
 
@@ -143,13 +128,22 @@ void pit_handler1(void)
 	{
 		Key_scaner();
 	}
-	speed_control_ring();
-	Speed_Control();
 
-//	if(CAR_Mode!=STOP)
-//	{
-//		State_of_road();
-//	}
+	if(ADC_Show_Flag)
+	{
+		if(++T>=10)
+		{
+			Buzzer_OFF();
+			T=0;
+			Show_pararm();
+		}
+	}
+	speed_control_ring();
+//	Speed_Control();
+	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
+	{
+		State_of_road();
+	}
 
 }
 
@@ -157,6 +151,6 @@ void pit_handler2(void)
 {
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
-	if_Cycle();
+//	if_Cycle();
 	
 }

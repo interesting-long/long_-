@@ -31,41 +31,44 @@ int Servo_turn_pid(float Current)
 /*
 *左路速度环控制
 */
-int Motor_left_pid(int point,int NowData)
+int Motor_left_pid(int point)
 {
     // 将频繁访问的结构体成员加载到局部变量
     float kp = M_left_pid.Kp;       
 	float ki = M_left_pid.Ki;
-    int error = point - NowData;
+    float error = point - encoder_data_dir_1;
 	float out = 0 ;
-    M_left_pid.Out_I += error;
-	if (M_left_pid.Out_I > Motor_Max) M_left_pid.Out_I = Motor_Max;
-	if (M_left_pid.Out_I < -Motor_Max) M_left_pid.Out_I = -Motor_Max;
+	if(error<1000 && error>-1000)
+	{M_left_pid.Out_I += error;}
+	if(M_left_pid.Out_I>Motor_Max){M_left_pid.Out_I=Motor_Max;}
+	else if(M_left_pid.Out_I<-Motor_Max){M_left_pid.Out_I=-Motor_Max;}
     // 使用局部变量计算
-    out = kp * error + ki *M_left_pid.Out_I;
-    if (out > 10000) out = 10000;
-	if (out < -10000) out = -10000;
-    return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+    out = kp * error + ki * M_left_pid.Out_I;
+    if (out > 8000) out = 8000;
+	else if (out < -8000) out = -8000;
+    return (int)(out);
 }
 /*
 *右路速度环控制
 */
 
-int Motor_Right_pid(int point,int NowData)
+int Motor_Right_pid(int point)
 {
     // 将频繁访问的结构体成员加载到局部变量
     float kp = M_Right_pid.Kp;       
 	float ki = M_Right_pid.Ki;
-    int error = point - NowData;
+    float error = point - encoder_data_dir_2;
 	float out = 0 ;
     M_Right_pid.Out_I += error;
-	if (M_Right_pid.Out_I > Motor_Max) M_Right_pid.Out_I = Motor_Max;
-	if (M_Right_pid.Out_I < -Motor_Max) M_Right_pid.Out_I = -Motor_Max;
+	if(error<1000 && error>-1000)
+	{M_Right_pid.Out_I += error;}
+	if(M_Right_pid.Out_I>Motor_Max){M_Right_pid.Out_I=Motor_Max;}
+	else if(M_Right_pid.Out_I<-Motor_Max){M_Right_pid.Out_I=-Motor_Max;}
     // 使用局部变量计算
     out = kp * (error) + ki * (M_Right_pid.Out_I);
-    if (out > 10000) out = 10000;
-	if (out < -10000) out = -10000;
-    return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+    if (out > 8000) out = 8000;
+	else if (out < -8000) out = -8000;
+    return (int)(out);
 }
 /*
  * 函数功能：左路电机PWM设置
@@ -75,17 +78,20 @@ int Motor_Right_pid(int point,int NowData)
  */
 void MotorL_SetSpeed(int pwm)
 {
-	if(pwm>Motor_Max){pwm=Motor_Max;}
-	if(pwm<-Motor_Max){pwm=-Motor_Max;}
-    if(pwm>=0)
-    {
-        pwm_set_duty(MotorL_pwm1,pwm);
-        pwm_set_duty(MotorL_pwm2,0);
+    // 死区内直接输出0
+    if(abs(pwm) < 10) {
+        pwm_set_duty(MotorL_pwm1, 0);
+        pwm_set_duty(MotorL_pwm2, 0);
+        return;
     }
-    else
-    {
-        pwm_set_duty(MotorL_pwm2,-pwm);
-        pwm_set_duty(MotorL_pwm1,0);
+    
+    // 死区外补偿
+    if(pwm > 0) {
+        pwm_set_duty(MotorL_pwm1, pwm);
+        pwm_set_duty(MotorL_pwm2, 0);
+    } else {
+        pwm_set_duty(MotorL_pwm2, -pwm);
+        pwm_set_duty(MotorL_pwm1, 0);
     }
 }
 /*
@@ -96,16 +102,31 @@ void MotorL_SetSpeed(int pwm)
  */
 void MotorR_SetSpeed(int pwm)
 {
-    if(pwm>=0)
-    {
-        pwm_set_duty(MotorR_pwm1,pwm);
-        pwm_set_duty(MotorR_pwm2,0);
+	    // 死区内直接输出0
+    if(abs(pwm) < 10) {
+        pwm_set_duty(MotorR_pwm1, 0);
+        pwm_set_duty(MotorR_pwm2, 0);
+        return;
     }
-    else
-    {
-        pwm_set_duty(MotorR_pwm2,-pwm);
-        pwm_set_duty(MotorR_pwm1,0);
+    
+    // 死区外补偿
+    if(pwm > 0) {
+        pwm_set_duty(MotorR_pwm1, pwm);
+        pwm_set_duty(MotorR_pwm2, 0);
+    } else {
+        pwm_set_duty(MotorR_pwm2, -pwm);
+        pwm_set_duty(MotorR_pwm1, 0);
     }
+//    if(pwm>=0)
+//    {
+//        pwm_set_duty(MotorR_pwm1,pwm);
+//        pwm_set_duty(MotorR_pwm2,0);
+//    }
+//    else
+//    {
+//        pwm_set_duty(MotorR_pwm2,-pwm);
+//        pwm_set_duty(MotorR_pwm1,0);
+//    }
 }
 /*
  * 函数功能：电机驱动更新
@@ -115,30 +136,77 @@ void MotorR_SetSpeed(int pwm)
  * 可以进行拓展，写速度策略
  */
 void Motor_Update(char X)
-{  
-	switch(CAR_Mode)
+{ 
+	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
 	{
-		case GO:
+		switch(CAR_Mode)
 		{
-			MotorR_SetSpeed(100*(ML+X));
-			MotorL_SetSpeed(100*(MR+X));
-		}break;
-		case GO_Pararm1:
-		{
-			MotorR_SetSpeed(100*(ML1+X));
-			MotorL_SetSpeed(100*(MR1+X));
-		}break;
-		case GO_Pararm2:
-		{
-			MotorR_SetSpeed(100*(ML2+X));
-			MotorL_SetSpeed(100*(MR2+X));
-		}break;
-		case GO_Pararm3:
-		{
-			MotorR_SetSpeed(100*(ML3+X));
-			MotorL_SetSpeed(100*(MR3+X));
-		}break;
-		default:break;
+			case GO:
+			{
+//				if(M_Mod>1)
+//				{
+				MotorL_SetSpeed(Motor_left_pid((ML+X)*100));
+				MotorR_SetSpeed(Motor_Right_pid((MR+X)*100));
+//				}
+//				else
+//				{
+//				MotorL_SetSpeed((ML+X)*100);
+//				MotorR_SetSpeed((MR+X)*100);
+//				}
+				break;
+			}	
+			case GO_Pararm1:
+			{
+//				if(M_Mod1>1)
+//				{
+				MotorL_SetSpeed(Motor_left_pid((ML1+X)*100));
+				MotorR_SetSpeed(Motor_Right_pid((MR1+X)*100));
+//				}
+//				else
+//				{
+//				MotorL_SetSpeed((ML1+X)*100);
+//				MotorR_SetSpeed((MR1+X)*100);
+//				}
+				break;
+			}	
+			case GO_Pararm2:
+			{
+//				if(M_Mod2>1)
+//				{
+				MotorL_SetSpeed(Motor_left_pid((ML2+X)*100));
+				MotorR_SetSpeed(Motor_Right_pid((MR2+X)*100));
+//				}
+//				else
+//				{
+//				MotorL_SetSpeed((ML2+X)*100);
+//				MotorR_SetSpeed((MR2+X)*100);
+//				}
+				break;
+			}	
+			case GO_Pararm3:
+			{
+//				if(M_Mod3>1)
+//				{
+				MotorL_SetSpeed(Motor_left_pid((ML3+X)*100));
+				MotorR_SetSpeed(Motor_Right_pid((MR3+X)*100));
+//				}
+//				else
+//				{
+//				MotorL_SetSpeed((ML3+X)*100);
+//				MotorR_SetSpeed((MR3+X)*100);
+//				}
+				break;
+			}		
+			default:
+			{
+				MotorL_SetSpeed(0);
+				MotorR_SetSpeed(0);
+				M_Right_pid.Out_I=0;
+				M_left_pid.Out_I=0;
+				break;
+			}
+		
+		}
 	}
 	
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            10/10/25  23:25:44  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            11/10/25  21:56:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -42,43 +42,43 @@ stmt  level    source
    31          /*
    32          *左路速度环控制
    33          */
-   34          int Motor_left_pid(int point,int NowData)
+   34          int Motor_left_pid(int point)
    35          {
    36   1          // 将频繁访问的结构体成员加载到局部变量
    37   1          float kp = M_left_pid.Kp;       
    38   1              float ki = M_left_pid.Ki;
-   39   1          int error = point - NowData;
+   39   1          float error = point - encoder_data_dir_1;
    40   1              float out = 0 ;
    41   1          M_left_pid.Out_I += error;
-   42   1              if (M_left_pid.Out_I > Motor_Max) M_left_pid.Out_I = Motor_Max;
-   43   1              if (M_left_pid.Out_I < -Motor_Max) M_left_pid.Out_I = -Motor_Max;
+   42   1              if(M_left_pid.Out_I>Motor_Max){M_left_pid.Out_I=Motor_Max;}
+   43   1              else if(M_left_pid.Out_I<-Motor_Max){M_left_pid.Out_I=-Motor_Max;}
    44   1          // 使用局部变量计算
-   45   1          out = kp * error + ki *M_left_pid.Out_I;
-   46   1          if (out > 10000) out = 10000;
-   47   1              if (out < -10000) out = -10000;
-   48   1          return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+   45   1          out = kp * error + ki * M_left_pid.Out_I;
+   46   1          if (out > 6000) out = 6000;
+   47   1              else if (out < -6000) out = -6000;
+   48   1          return (int)(out);
    49   1      }
    50          /*
    51          *右路速度环控制
    52          */
    53          
-   54          int Motor_Right_pid(int point,int NowData)
+   54          int Motor_Right_pid(int point)
    55          {
    56   1          // 将频繁访问的结构体成员加载到局部变量
    57   1          float kp = M_Right_pid.Kp;       
-C251 COMPILER V5.60.0,  control                                                            10/10/25  23:25:44  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            11/10/25  21:56:56  PAGE 2   
 
    58   1              float ki = M_Right_pid.Ki;
-   59   1          int error = point - NowData;
+   59   1          float error = point - encoder_data_dir_2;
    60   1              float out = 0 ;
    61   1          M_Right_pid.Out_I += error;
-   62   1              if (M_Right_pid.Out_I > Motor_Max) M_Right_pid.Out_I = Motor_Max;
-   63   1              if (M_Right_pid.Out_I < -Motor_Max) M_Right_pid.Out_I = -Motor_Max;
+   62   1                      if(M_Right_pid.Out_I>Motor_Max){M_Right_pid.Out_I=Motor_Max;}
+   63   1              else if(M_Right_pid.Out_I<-Motor_Max){M_Right_pid.Out_I=-Motor_Max;}
    64   1          // 使用局部变量计算
    65   1          out = kp * (error) + ki * (M_Right_pid.Out_I);
-   66   1          if (out > 10000) out = 10000;
-   67   1              if (out < -10000) out = -10000;
-   68   1          return (int)(out + (out >= 0 ? 0.5f : -0.5f));
+   66   1          if (out > 6000) out = 6000;
+   67   1              else if (out < -6000) out = -6000;
+   68   1          return (int)(out);
    69   1      }
    70          /*
    71           * 函数功能：左路电机PWM设置
@@ -88,169 +88,216 @@ stmt  level    source
    75           */
    76          void MotorL_SetSpeed(int pwm)
    77          {
-   78   1              if(pwm>Motor_Max){pwm=Motor_Max;}
-   79   1              if(pwm<-Motor_Max){pwm=-Motor_Max;}
-   80   1          if(pwm>=0)
-   81   1          {
-   82   2              pwm_set_duty(MotorL_pwm1,pwm);
-   83   2              pwm_set_duty(MotorL_pwm2,0);
-   84   2          }
-   85   1          else
-   86   1          {
-   87   2              pwm_set_duty(MotorL_pwm2,-pwm);
-   88   2              pwm_set_duty(MotorL_pwm1,0);
-   89   2          }
-   90   1      }
-   91          /*
-   92           * 函数功能：右路电机PWM设置
-   93           * 函数名称：MotorR_SetSpeed(unsigned char);
-   94           * 输入参数：想要的PWM值
-   95           * 输出参数：无
-   96           */
-   97          void MotorR_SetSpeed(int pwm)
-   98          {
-   99   1          if(pwm>=0)
-  100   1          {
-  101   2              pwm_set_duty(MotorR_pwm1,pwm);
-  102   2              pwm_set_duty(MotorR_pwm2,0);
-  103   2          }
-  104   1          else
-  105   1          {
-  106   2              pwm_set_duty(MotorR_pwm2,-pwm);
-  107   2              pwm_set_duty(MotorR_pwm1,0);
-  108   2          }
-  109   1      }
-  110          /*
-  111           * 函数功能：电机驱动更新
-  112           * 函数名称：Motor_Update(0);
-  113           * 输入参数：无
-  114           * 输出参数：无
-  115           * 可以进行拓展，写速度策略
-  116           */
-  117          void Motor_Update(char X)
-  118          {  
-  119   1              switch(CAR_Mode)
-  120   1              {
-  121   2                      case GO:
-  122   2                      {
-  123   3                              MotorR_SetSpeed(100*(ML+X));
-C251 COMPILER V5.60.0,  control                                                            10/10/25  23:25:44  PAGE 3   
+   78   1          if(pwm>=0)
+   79   1          {
+   80   2              pwm_set_duty(MotorL_pwm1,pwm);
+   81   2              pwm_set_duty(MotorL_pwm2,0);
+   82   2          }
+   83   1          else
+   84   1          {
+   85   2              pwm_set_duty(MotorL_pwm2,-pwm);
+   86   2              pwm_set_duty(MotorL_pwm1,0);
+   87   2          }
+   88   1      }
+   89          /*
+   90           * 函数功能：右路电机PWM设置
+   91           * 函数名称：MotorR_SetSpeed(unsigned char);
+   92           * 输入参数：想要的PWM值
+   93           * 输出参数：无
+   94           */
+   95          void MotorR_SetSpeed(int pwm)
+   96          {
+   97   1          if(pwm>=0)
+   98   1          {
+   99   2              pwm_set_duty(MotorR_pwm1,pwm);
+  100   2              pwm_set_duty(MotorR_pwm2,0);
+  101   2          }
+  102   1          else
+  103   1          {
+  104   2              pwm_set_duty(MotorR_pwm2,-pwm);
+  105   2              pwm_set_duty(MotorR_pwm1,0);
+  106   2          }
+  107   1      }
+  108          /*
+  109           * 函数功能：电机驱动更新
+  110           * 函数名称：Motor_Update(0);
+  111           * 输入参数：无
+  112           * 输出参数：无
+  113           * 可以进行拓展，写速度策略
+  114           */
+  115          void Motor_Update(char X)
+  116          { 
+  117   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
+  118   1              {
+  119   2                      switch(CAR_Mode)
+  120   2                      {
+  121   3                              case GO:
+  122   3                              {
+  123   4      //                              if(M_Mod>1)
+C251 COMPILER V5.60.0,  control                                                            11/10/25  21:56:56  PAGE 3   
 
-  124   3                              MotorL_SetSpeed(100*(MR+X));
-  125   3                      }break;
-  126   2                      case GO_Pararm1:
-  127   2                      {
-  128   3                              MotorR_SetSpeed(100*(ML1+X));
-  129   3                              MotorL_SetSpeed(100*(MR1+X));
-  130   3                      }break;
-  131   2                      case GO_Pararm2:
-  132   2                      {
-  133   3                              MotorR_SetSpeed(100*(ML2+X));
-  134   3                              MotorL_SetSpeed(100*(MR2+X));
-  135   3                      }break;
-  136   2                      case GO_Pararm3:
-  137   2                      {
-  138   3                              MotorR_SetSpeed(100*(ML3+X));
-  139   3                              MotorL_SetSpeed(100*(MR3+X));
-  140   3                      }break;
-  141   2                      default:break;
-  142   2              }
-  143   1              
-  144   1      }
-  145          void PID_Update()
-  146          {  
-  147   1              switch(CAR_Mode)
-  148   1              {
-  149   2                      case GO:
-  150   2                      {
-  151   3                              servo_pid.Kp = KP;
-  152   3                              servo_pid.Ki = 0;
-  153   3                              servo_pid.Kd = KD;
-  154   3                              M_left_pid.Kp = ML_KP;
-  155   3                              M_left_pid.Ki = ML_KI;
-  156   3                              M_Right_pid.Kp = MR_KP;
-  157   3                              M_Right_pid.Ki = MR_KI;
-  158   3                      }break;
-  159   2                      case GO_Pararm1:
-  160   2                      {
-  161   3                              servo_pid.Kp = KP1;
-  162   3                              servo_pid.Ki = 0;
-  163   3                              servo_pid.Kd = KD1;
-  164   3                              M_left_pid.Kp = ML_KP1;
-  165   3                              M_left_pid.Ki = ML_KI1;
-  166   3                              M_Right_pid.Kp = MR_KP1;
-  167   3                              M_Right_pid.Ki = MR_KI1;
-  168   3                      }break;
-  169   2                      case GO_Pararm2:
-  170   2                      {
-  171   3                              servo_pid.Kp = KP2;
-  172   3                              servo_pid.Ki = 0;
-  173   3                              servo_pid.Kd = KD2;
-  174   3                              M_left_pid.Kp = ML_KP2;
-  175   3                              M_left_pid.Ki = ML_KI2;
-  176   3                              M_Right_pid.Kp = MR_KP2;
-  177   3                              M_Right_pid.Ki = MR_KI2;
-  178   3                      }break;
-  179   2                      case GO_Pararm3:
-  180   2                      {
-  181   3                              servo_pid.Kp = KP3;
-  182   3                              servo_pid.Ki = 0;
-  183   3                              servo_pid.Kd = KD3;
-  184   3                              M_left_pid.Kp = ML_KP3;
-  185   3                              M_left_pid.Ki = ML_KI3;
-  186   3                              M_Right_pid.Kp = MR_KP3;
-  187   3                              M_Right_pid.Ki = MR_KI3;
-  188   3                      }break;
-  189   2              }
-C251 COMPILER V5.60.0,  control                                                            10/10/25  23:25:44  PAGE 4   
+  124   4      //                              {
+  125   4                                      MotorL_SetSpeed(Motor_left_pid((ML+X)*100));
+  126   4                                      MotorR_SetSpeed(Motor_Right_pid((MR+X)*100));
+  127   4      //                              }
+  128   4      //                              else
+  129   4      //                              {
+  130   4      //                              MotorL_SetSpeed((ML+X)*100);
+  131   4      //                              MotorR_SetSpeed((MR+X)*100);
+  132   4      //                              }
+  133   4                                      break;
+  134   4                              }       
+  135   3                              case GO_Pararm1:
+  136   3                              {
+  137   4      //                              if(M_Mod1>1)
+  138   4      //                              {
+  139   4                                      MotorL_SetSpeed(Motor_left_pid((ML1+X)*100));
+  140   4                                      MotorR_SetSpeed(Motor_Right_pid((MR1+X)*100));
+  141   4      //                              }
+  142   4      //                              else
+  143   4      //                              {
+  144   4      //                              MotorL_SetSpeed((ML1+X)*100);
+  145   4      //                              MotorR_SetSpeed((MR1+X)*100);
+  146   4      //                              }
+  147   4                                      break;
+  148   4                              }       
+  149   3                              case GO_Pararm2:
+  150   3                              {
+  151   4      //                              if(M_Mod2>1)
+  152   4      //                              {
+  153   4                                      MotorL_SetSpeed(Motor_left_pid((ML2+X)*100));
+  154   4                                      MotorR_SetSpeed(Motor_Right_pid((MR2+X)*100));
+  155   4      //                              }
+  156   4      //                              else
+  157   4      //                              {
+  158   4      //                              MotorL_SetSpeed((ML2+X)*100);
+  159   4      //                              MotorR_SetSpeed((MR2+X)*100);
+  160   4      //                              }
+  161   4                                      break;
+  162   4                              }       
+  163   3                              case GO_Pararm3:
+  164   3                              {
+  165   4      //                              if(M_Mod3>1)
+  166   4      //                              {
+  167   4                                      MotorL_SetSpeed(Motor_left_pid((ML3+X)*100));
+  168   4                                      MotorR_SetSpeed(Motor_Right_pid((MR3+X)*100));
+  169   4      //                              }
+  170   4      //                              else
+  171   4      //                              {
+  172   4      //                              MotorL_SetSpeed((ML3+X)*100);
+  173   4      //                              MotorR_SetSpeed((MR3+X)*100);
+  174   4      //                              }
+  175   4                                      break;
+  176   4                              }               
+  177   3                              default:
+  178   3                              {
+  179   4                                      MotorL_SetSpeed(0);
+  180   4                                      MotorR_SetSpeed(0);
+  181   4                                      M_Right_pid.Out_I=0;
+  182   4                                      M_left_pid.Out_I=0;
+  183   4                                      break;
+  184   4                              }
+  185   3                      
+  186   3                      }
+  187   2              }
+  188   1              
+  189   1      }
+C251 COMPILER V5.60.0,  control                                                            11/10/25  21:56:56  PAGE 4   
 
-  190   1              
-  191   1      }
-  192          
-  193          void Cycle_Update(void)
-  194          {
-  195   1              switch(CAR_Mode)
-  196   1              {
-  197   2                      case GO:
-  198   2                      {
-  199   3                              Entern_Flag_Time        =Entern_Flag_Time0              ;
-  200   3                              Entern_Delay_Time       =Entern_Delay_Time0             ;
-  201   3                              Entern_Continue_Time=Entern_Continue_Time0      ;
-  202   3                              Mode_Flag                       =Mode_Flag0                             ;
-  203   3                              turn_Value                      =turn_Value0                    ;
-  204   3                      }break;
-  205   2                      case GO_Pararm1:
-  206   2                      {
-  207   3                              Entern_Flag_Time        =Entern_Flag_Time1              ;
-  208   3                              Entern_Delay_Time       =Entern_Delay_Time1             ;
-  209   3                              Entern_Continue_Time=Entern_Continue_Time1      ;
-  210   3                              Mode_Flag                       =Mode_Flag1                             ;
-  211   3                              turn_Value                      =turn_Value1                    ;
-  212   3                      }break;
-  213   2                      case GO_Pararm2:
-  214   2                      {
-  215   3                              Entern_Flag_Time        =Entern_Flag_Time2              ;
-  216   3                              Entern_Delay_Time       =Entern_Delay_Time2             ;
-  217   3                              Entern_Continue_Time=Entern_Continue_Time2      ;
-  218   3                              Mode_Flag                       =Mode_Flag2                             ;
-  219   3                              turn_Value                      =turn_Value2                    ;
-  220   3                      }break;
-  221   2                      case GO_Pararm3:
-  222   2                      {
-  223   3                              Entern_Flag_Time        =Entern_Flag_Time3              ;
-  224   3                              Entern_Delay_Time       =Entern_Delay_Time3             ;
-  225   3                              Entern_Continue_Time=Entern_Continue_Time3      ;
-  226   3                              Mode_Flag                       =Mode_Flag3                             ;
-  227   3                              turn_Value                      =turn_Value3                    ;
-  228   3                      }break;
-  229   2              }
-  230   1      }
-  231          
+  190          void PID_Update()
+  191          {  
+  192   1              switch(CAR_Mode)
+  193   1              {
+  194   2                      case GO:
+  195   2                      {
+  196   3                              servo_pid.Kp = KP;
+  197   3                              servo_pid.Ki = 0;
+  198   3                              servo_pid.Kd = KD;
+  199   3                              M_left_pid.Kp = ML_KP;
+  200   3                              M_left_pid.Ki = ML_KI;
+  201   3                              M_Right_pid.Kp = MR_KP;
+  202   3                              M_Right_pid.Ki = MR_KI;
+  203   3                      }break;
+  204   2                      case GO_Pararm1:
+  205   2                      {
+  206   3                              servo_pid.Kp = KP1;
+  207   3                              servo_pid.Ki = 0;
+  208   3                              servo_pid.Kd = KD1;
+  209   3                              M_left_pid.Kp = ML_KP1;
+  210   3                              M_left_pid.Ki = ML_KI1;
+  211   3                              M_Right_pid.Kp = MR_KP1;
+  212   3                              M_Right_pid.Ki = MR_KI1;
+  213   3                      }break;
+  214   2                      case GO_Pararm2:
+  215   2                      {
+  216   3                              servo_pid.Kp = KP2;
+  217   3                              servo_pid.Ki = 0;
+  218   3                              servo_pid.Kd = KD2;
+  219   3                              M_left_pid.Kp = ML_KP2;
+  220   3                              M_left_pid.Ki = ML_KI2;
+  221   3                              M_Right_pid.Kp = MR_KP2;
+  222   3                              M_Right_pid.Ki = MR_KI2;
+  223   3                      }break;
+  224   2                      case GO_Pararm3:
+  225   2                      {
+  226   3                              servo_pid.Kp = KP3;
+  227   3                              servo_pid.Ki = 0;
+  228   3                              servo_pid.Kd = KD3;
+  229   3                              M_left_pid.Kp = ML_KP3;
+  230   3                              M_left_pid.Ki = ML_KI3;
+  231   3                              M_Right_pid.Kp = MR_KP3;
+  232   3                              M_Right_pid.Ki = MR_KI3;
+  233   3                      }break;
+  234   2              }
+  235   1              
+  236   1      }
+  237          
+  238          void Cycle_Update(void)
+  239          {
+  240   1              switch(CAR_Mode)
+  241   1              {
+  242   2                      case GO:
+  243   2                      {
+  244   3                              Entern_Flag_Time        =Entern_Flag_Time0              ;
+  245   3                              Entern_Delay_Time       =Entern_Delay_Time0             ;
+  246   3                              Entern_Continue_Time=Entern_Continue_Time0      ;
+  247   3                              Mode_Flag                       =Mode_Flag0                             ;
+  248   3                              turn_Value                      =turn_Value0                    ;
+  249   3                      }break;
+  250   2                      case GO_Pararm1:
+  251   2                      {
+  252   3                              Entern_Flag_Time        =Entern_Flag_Time1              ;
+  253   3                              Entern_Delay_Time       =Entern_Delay_Time1             ;
+  254   3                              Entern_Continue_Time=Entern_Continue_Time1      ;
+  255   3                              Mode_Flag                       =Mode_Flag1                             ;
+C251 COMPILER V5.60.0,  control                                                            11/10/25  21:56:56  PAGE 5   
+
+  256   3                              turn_Value                      =turn_Value1                    ;
+  257   3                      }break;
+  258   2                      case GO_Pararm2:
+  259   2                      {
+  260   3                              Entern_Flag_Time        =Entern_Flag_Time2              ;
+  261   3                              Entern_Delay_Time       =Entern_Delay_Time2             ;
+  262   3                              Entern_Continue_Time=Entern_Continue_Time2      ;
+  263   3                              Mode_Flag                       =Mode_Flag2                             ;
+  264   3                              turn_Value                      =turn_Value2                    ;
+  265   3                      }break;
+  266   2                      case GO_Pararm3:
+  267   2                      {
+  268   3                              Entern_Flag_Time        =Entern_Flag_Time3              ;
+  269   3                              Entern_Delay_Time       =Entern_Delay_Time3             ;
+  270   3                              Entern_Continue_Time=Entern_Continue_Time3      ;
+  271   3                              Mode_Flag                       =Mode_Flag3                             ;
+  272   3                              turn_Value                      =turn_Value3                    ;
+  273   3                      }break;
+  274   2              }
+  275   1      }
+  276          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2080     ------
+  code size            =      2143     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

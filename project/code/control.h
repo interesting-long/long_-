@@ -17,7 +17,7 @@
 #define MotorR_pwm2 PWMB_CH1_P01
 #define MotorR_pwm1 PWMA_CH2P_P02
 /******************/
-#define Motor_Max 5000
+#define Motor_Max 6000
 typedef enum
 {
 	STOP,
@@ -38,8 +38,8 @@ int Servo_turn_pid(float Current);
 void Motor_Update(char X);
 void PID_Update();
 void Cycle_Update(void);
-int Motor_left_pid(int point,int NowData);
-int Motor_Right_pid(int point,int NowData);
+int Motor_left_pid(int point);
+int Motor_Right_pid(int point);
 /*内部调用函数*/
 void MotorL_SetSpeed(int pwm);
 void MotorR_SetSpeed(int pwm);

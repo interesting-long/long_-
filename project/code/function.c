@@ -12,6 +12,10 @@ unsigned char Servo_Flag=0;
 unsigned char ADC_Show_Flag=0;
 unsigned char Key_Flag=1;
 unsigned char Init_Fg=0;
+unsigned char GO_PID_Control=0;
+unsigned char GO_PID_Control1=0;
+unsigned char GO_PID_Control2=0;
+unsigned char GO_PID_Control3=0;
 
 int16 encoder_data_dir_1 = 0;
 int16 encoder_data_dir_2 = 0;
@@ -93,8 +97,7 @@ void Protect()
 	{
 		if((ADC_1+ADC_2+ADC_3+ADC_4)<Pro )
 		{
-			CAR_Mode=STOP;
-			Turn_mode_Init();
+			Protect_flag=1;
 		}
 	}
 }
@@ -107,6 +110,7 @@ void init_all()
 	Servo_Init();
 ////	PT1H = 0;
 //    PT1H = 1;
+	interrupt_set_priority(INT1_IRQn,1);
 	system_delay_ms(5);
 	Buzzer_Init();
 	Buzzer_OFF();
@@ -128,7 +132,6 @@ void init_all()
 }
 void show_test_info(const char* info) 
 {
-	EA=0;
     tft180_clear(RGB565_WHITE);
     system_delay_ms(5);
     tft180_show_string(0, 3*16, info);
@@ -154,6 +157,10 @@ void Turn_mode_Init(void)
 			menu_display_content();
 			Show_bujin();
 			CAR_STOP();
+			GO_PID_Control=0;
+			GO_PID_Control1=0;
+			GO_PID_Control2=0;
+			GO_PID_Control3=0;
 			break;
 		}
 		case GO:
@@ -162,8 +169,9 @@ void Turn_mode_Init(void)
 //			Key_Flag=0;
 			Key_Flag=1;
 			Servo_Flag=1;
+//			Servo_Flag=0;
 			show_test_info("Test for GO");
-			
+			GO_PID_Control=1;
 			
 			PID_Update();
 			Cycle_Update();
@@ -174,8 +182,10 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 //			Key_Flag=0;
 			Key_Flag=1;
-			Servo_Flag=1;
+//			Servo_Flag=1;
+			Servo_Flag=0;
 			show_test_info("Test for GOP1");
+			GO_PID_Control1=1;
 			
 			PID_Update();
 			Cycle_Update();
@@ -184,10 +194,11 @@ void Turn_mode_Init(void)
 		case GO_Pararm2:
 		{
 			ADC_Show_Flag=0;
-//			Key_Flag=0;
-			Key_Flag=1;
+			Key_Flag=0;
+//			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GOP2");
+			GO_PID_Control2=1;
 			
 			PID_Update();
 			Cycle_Update();
@@ -196,10 +207,11 @@ void Turn_mode_Init(void)
 		case GO_Pararm3:
 		{
 			ADC_Show_Flag=0;
-//			Key_Flag=0;
-			Key_Flag=1;
+			Key_Flag=0;
+//			Key_Flag=1;
 			Servo_Flag=1;
 			show_test_info("Test for GOP3");
+			GO_PID_Control3=1;
 			
 			
 			PID_Update();
@@ -211,7 +223,6 @@ void Turn_mode_Init(void)
 			Key_Flag=1;
 			Servo_Flag=0;
 			show_test_info("Test for PWM_TEST");
-			
 			break;
 		}
 		case TEST_SERVO:
@@ -253,11 +264,14 @@ void Show_pararm()
 		}break;
 		case GO:
 		{
-			tft180_show_string(0,1*16,"cha:");tft180_show_float(5*8,1*16,dajiao,2,2);
-			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
-			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
-			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
+			tft180_show_string(0,0*16,"Enc1:");tft180_show_int16(5*8,0*16,encoder_data_dir_1);
+			tft180_show_string(0,1*16,"Enc2:");tft180_show_int16(5*8,1*16,encoder_data_dir_2);
+			tft180_show_string(0,2*16,"ML:");tft180_show_int16(5*8,2*16,Motor_left_pid(ML*100));
+			tft180_show_string(0,3*16,"MR:");tft180_show_int16(5*8,3*16,Motor_Right_pid(MR*100));
+//			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+//			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
+//			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
+//			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
 		}break;
 		case TEST_SERVO:break;
 		case GO_Pararm1:
@@ -292,7 +306,6 @@ void Show_pararm()
 			tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
 			tft180_show_int16(5*8,5*16,encoder_data_dir_1);
 			tft180_show_int16(5*8,6*16,encoder_data_dir_2);
-			tft180_show_int16(5*8,7*16,Motor_left_pid(1000, encoder_data_dir_1));
 		}break;
 		case Seta_Servo:
 		{
@@ -326,61 +339,63 @@ void  enconder_init(void)
  }
 void speed_control_ring(void)
 {
-	encoder_data_dir_1 = -encoder_get_count(ENCODER_DIR_1);                  // 获取编码器计数
-	encoder_data_dir_2 = encoder_get_count(ENCODER_DIR_2);            	// 获取编码器计数
+	encoder_data_dir_1 = - encoder_get_count(ENCODER_DIR_1);                  // 获取编码器计数
+	encoder_data_dir_2 = encoder_get_count(ENCODER_DIR_2);            	     // 获取编码器计数
 	encoder_clear_count(ENCODER_DIR_1);                                		// 清空编码器计数
 	encoder_clear_count(ENCODER_DIR_2);                             		// 清空编码器计数
 }
 
 void Speed_Control(void)
 {
-	
-	switch(CAR_Mode)
+	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
 	{
-		case GO:
+		switch(CAR_Mode)
 		{
-			if(M_Mod>1)
+			case GO:
 			{
-			MotorL_SetSpeed(Motor_left_pid(ML*100,encoder_data_dir_1));
-			MotorR_SetSpeed(Motor_Right_pid(MR*100,encoder_data_dir_2));
-			}
-			break;
-		}	
-		case GO_Pararm1:
-		{
-			if(M_Mod1>1)
+				if(M_Mod>1)
+				{
+				MotorL_SetSpeed(Motor_left_pid(ML*100));
+				MotorR_SetSpeed(Motor_Right_pid(MR*100));
+				}
+				break;
+			}	
+			case GO_Pararm1:
 			{
-			MotorL_SetSpeed(Motor_left_pid(ML1*100,encoder_data_dir_1));
-			MotorR_SetSpeed(Motor_Right_pid(MR1*100,encoder_data_dir_2));
-			}
-			break;
-		}	
-		case GO_Pararm2:
-		{
-			if(M_Mod2>1)
+				if(M_Mod1>1)
+				{
+				MotorL_SetSpeed(Motor_left_pid(ML1*100));
+				MotorR_SetSpeed(Motor_Right_pid(MR1*100));
+				}
+				break;
+			}	
+			case GO_Pararm2:
 			{
-			MotorL_SetSpeed(Motor_left_pid(ML2*100,encoder_data_dir_1));
-			MotorR_SetSpeed(Motor_Right_pid(MR2*100,encoder_data_dir_2));
-			}
-			break;
-		}	
-		case GO_Pararm3:
-		{
-			if(M_Mod3>1)
+				if(M_Mod2>1)
+				{
+				MotorL_SetSpeed(Motor_left_pid(ML2*100));
+				MotorR_SetSpeed(Motor_Right_pid(MR2*100));
+				}
+				break;
+			}	
+			case GO_Pararm3:
 			{
-			MotorL_SetSpeed(Motor_left_pid(ML3*100,encoder_data_dir_1));
-			MotorR_SetSpeed(Motor_Right_pid(MR3*100,encoder_data_dir_2));
+				if(M_Mod3>1)
+				{
+				MotorL_SetSpeed(Motor_left_pid(ML3*100));
+				MotorR_SetSpeed(Motor_Right_pid(MR3*100));
+				}
+				break;
+			}		
+			default:
+			{
+				MotorL_SetSpeed(0);
+				MotorR_SetSpeed(0);
+				M_Right_pid.Out_I=0;
+				M_left_pid.Out_I=0;
+				break;
 			}
-			break;
-		}		
-		default:
-		{
-			MotorL_SetSpeed(0);
-			MotorR_SetSpeed(0);
-			M_Right_pid.Out_I=0;
-			M_left_pid.Out_I=0;
-			break;
+		
 		}
-	
 	}
 }

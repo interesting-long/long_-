@@ -1,6 +1,4 @@
 #include "Strategy.h"
-float uni=0;
-float last_uni=0;
 unsigned int if_time=0;
 unsigned int if2_time=0;
 unsigned int Continue_Time=0;
@@ -11,7 +9,6 @@ unsigned char Road_Stat=Normal_Str;
 unsigned int Short_Time=0;
 unsigned int Long_Time=0;
 unsigned int Bend_Time=0;
-unsigned int slow_Time=0;
 
 unsigned int Entern_Flag_Time=0;
 unsigned int Entern_Delay_Time=0;
@@ -45,15 +42,12 @@ void if_Cycle(void)
 		}
 		case APPROACH:
 		{
-//			if(ADC_2!=1023 || ADC_3!=1023)
-//			{
 				if2_time++;
 				if(if2_time>Entern_Delay_Time)
 				{
 					Cycle_Stat=Left_ENTER;
 					if2_time=0;
 				}
-//			}
 			break;
 		}
 		case Left_ENTER:
@@ -126,7 +120,7 @@ int Help_turn2(int temp,int value,int ADC_Flag)
 	}
 	else
 	{
-		return temp;     // 不转
+		return temp;     
 	}
 }
 void State_of_road(void)
@@ -135,30 +129,27 @@ void State_of_road(void)
 	{
 		case Normal_Str:
 		{
+			Motor_Update(0);
 			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
 			{
 				Short_Time++;
 				Bend_Time=0;
 				if(Short_Time>Short_Judge_Time)
 				{
-					Buzzer_OFF();
+//					Buzzer_OFF();
 					Short_Time=0;
 					Road_Stat=Short_Str;
-					Motor_Update(Short_add);
-//					tft180_show_string(0,0*16,"Short");
 				}
 			}
 			else
             {
 				Bend_Time++;
 				Short_Time=0; // 重要：条件不满足时重置计时
-				if(Bend_Time>5)
+				if(Bend_Time>10)
 				{
-					Buzzer_ON();
+//					Buzzer_ON();
 					Bend_Time=0;
 					Road_Stat=Bend;
-					Motor_Update(0);
-//					tft180_show_string(0,0*16,"Bend");
 				}
                 
             }
@@ -166,17 +157,16 @@ void State_of_road(void)
 		}
 		case Short_Str:
 		{
+			Motor_Update(Short_add);
 			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
 			{
 				Long_Time++;
 				Not_Time=0;
 				if(Long_Time>Long_Judge_Time)
 				{
-					Buzzer_OFF();
+//					Buzzer_OFF();
 					Long_Time=0;
 					Road_Stat=Long_Str;
-					Motor_Update(Long_add);
-//					tft180_show_string(0,0*16,"Long");
 				}
 			}
 			else
@@ -184,11 +174,10 @@ void State_of_road(void)
 				Long_Time=0;
 				Not_Time++;
 				{
-					if(Not_Time>10)
+					if(Not_Time>No_Tim)
 					{
 						Not_Time=0;
 						Road_Stat=Normal_Str;
-//						tft180_show_string(0,0*16,"Normal");
 					}
 				}
 			}
@@ -196,16 +185,15 @@ void State_of_road(void)
 		}
 		case Long_Str:
 		{
+			Motor_Update(Long_add);
 			if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
 			{
 				Bend_Time++;
 				if(Bend_Time>5)
 				{
-					Buzzer_ON();
+//					Buzzer_ON();
 					Bend_Time=0;
 					Road_Stat=Bend;
-					Motor_Update(0);
-//					tft180_show_string(0,0*16,"Bend");
 				}
 			
 			}
@@ -217,42 +205,31 @@ void State_of_road(void)
 		}
 		case Bend:
 		{
-			slow_Time++;
-			if(slow_Time<Bend_Slow_Time)
+			Motor_Update(Bend_slow);
+			if(dajiao>Bend_Flag_Value)
 			{
-				Motor_Update(Bend_slow);
+				Not_Time=0;
+			}
+			else if( dajiao<-Bend_Flag_Value)
+			{
+				Not_Time=0;
 			}
 			else
 			{
-				if(dajiao>Bend_Flag_Value)
+				Not_Time++;
+				if(Not_Time>No_Tim)
 				{
-					Motor_Update(0);
+//					Buzzer_OFF();
 					Not_Time=0;
+					Road_Stat=Normal_Str;
 				}
-				else if( dajiao<-Bend_Flag_Value)
-				{
-					Motor_Update(0);
-					Not_Time=0;
-				}
-				else
-				{
-					Not_Time++;
-					if(Not_Time>10)
-					{
-						Buzzer_OFF();
-						Not_Time=0;
-						slow_Time=0;
-						Road_Stat=Normal_Str;
-						Motor_Update(0);
-					}
 //					tft180_show_string(0,0*16,"Normal");
-				}
 			}
 			break;
 		}
 		default :
 		{
-			Buzzer_OFF();
+//			Buzzer_OFF();
 			CAR_STOP();
 			break;
 		}
