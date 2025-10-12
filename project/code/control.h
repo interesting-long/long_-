@@ -12,9 +12,9 @@
 #define Servo_Pwm PWMB_CH2_P51
 
 /****电机引脚定义****/
-#define MotorL_pwm2 PWMB_CH3_P05
+#define MotorL_pwm2 PWMA_CH3N_P05
 #define MotorL_pwm1 PWMA_CH4P_P06
-#define MotorR_pwm2 PWMB_CH1_P01
+#define MotorR_pwm2 PWMA_CH1N_P01
 #define MotorR_pwm1 PWMA_CH2P_P02
 /******************/
 #define Motor_Max 6000

@@ -38,8 +38,7 @@ int Motor_left_pid(int point)
 	float ki = M_left_pid.Ki;
     float error = point - encoder_data_dir_1;
 	float out = 0 ;
-	if(error<1000 && error>-1000)
-	{M_left_pid.Out_I += error;}
+	M_left_pid.Out_I += error;
 	if(M_left_pid.Out_I>Motor_Max){M_left_pid.Out_I=Motor_Max;}
 	else if(M_left_pid.Out_I<-Motor_Max){M_left_pid.Out_I=-Motor_Max;}
     // 使用局部变量计算
@@ -60,8 +59,6 @@ int Motor_Right_pid(int point)
     float error = point - encoder_data_dir_2;
 	float out = 0 ;
     M_Right_pid.Out_I += error;
-	if(error<1000 && error>-1000)
-	{M_Right_pid.Out_I += error;}
 	if(M_Right_pid.Out_I>Motor_Max){M_Right_pid.Out_I=Motor_Max;}
 	else if(M_Right_pid.Out_I<-Motor_Max){M_Right_pid.Out_I=-Motor_Max;}
     // 使用局部变量计算
@@ -78,20 +75,16 @@ int Motor_Right_pid(int point)
  */
 void MotorL_SetSpeed(int pwm)
 {
-    // 死区内直接输出0
-    if(abs(pwm) < 10) {
-        pwm_set_duty(MotorL_pwm1, 0);
-        pwm_set_duty(MotorL_pwm2, 0);
-        return;
+
+	if(pwm>=0)
+    {
+        pwm_set_duty(MotorL_pwm1,pwm);
+        pwm_set_duty(MotorL_pwm2,0);
     }
-    
-    // 死区外补偿
-    if(pwm > 0) {
-        pwm_set_duty(MotorL_pwm1, pwm);
-        pwm_set_duty(MotorL_pwm2, 0);
-    } else {
-        pwm_set_duty(MotorL_pwm2, -pwm);
-        pwm_set_duty(MotorL_pwm1, 0);
+    else
+    {
+        pwm_set_duty(MotorL_pwm2,-pwm);
+        pwm_set_duty(MotorL_pwm1,0);
     }
 }
 /*
@@ -102,31 +95,16 @@ void MotorL_SetSpeed(int pwm)
  */
 void MotorR_SetSpeed(int pwm)
 {
-	    // 死区内直接输出0
-    if(abs(pwm) < 10) {
-        pwm_set_duty(MotorR_pwm1, 0);
-        pwm_set_duty(MotorR_pwm2, 0);
-        return;
+    if(pwm>=0)
+    {
+        pwm_set_duty(MotorR_pwm1,pwm);
+        pwm_set_duty(MotorR_pwm2,0);
     }
-    
-    // 死区外补偿
-    if(pwm > 0) {
-        pwm_set_duty(MotorR_pwm1, pwm);
-        pwm_set_duty(MotorR_pwm2, 0);
-    } else {
-        pwm_set_duty(MotorR_pwm2, -pwm);
-        pwm_set_duty(MotorR_pwm1, 0);
+    else
+    {
+        pwm_set_duty(MotorR_pwm2,-pwm);
+        pwm_set_duty(MotorR_pwm1,0);
     }
-//    if(pwm>=0)
-//    {
-//        pwm_set_duty(MotorR_pwm1,pwm);
-//        pwm_set_duty(MotorR_pwm2,0);
-//    }
-//    else
-//    {
-//        pwm_set_duty(MotorR_pwm2,-pwm);
-//        pwm_set_duty(MotorR_pwm1,0);
-//    }
 }
 /*
  * 函数功能：电机驱动更新

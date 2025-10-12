@@ -3,7 +3,6 @@ int T=0;
 
 int T4=0;
 unsigned char speed_update_flag=0;
-unsigned char Protect_flag=0;
 void pit_handler1 (void);
 void pit_handler2 (void);
 void main()

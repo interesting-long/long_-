@@ -37,6 +37,7 @@ typedef struct
 extern PID servo_pid;
 extern PID M_left_pid;
 extern PID M_Right_pid;
+extern unsigned char Protect_flag;
 extern int16 encoder_data_dir_1;
 extern int16 encoder_data_dir_2;
 extern unsigned char GO_PID_Control;

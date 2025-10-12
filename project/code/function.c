@@ -6,7 +6,7 @@ PID servo_pid;
 PID M_left_pid;
 PID M_Right_pid;
 int dajiao=0;
-
+unsigned char Protect_flag= 0;
 unsigned char Servo_Flag=0;
 
 unsigned char ADC_Show_Flag=0;

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           11/10/25  22:11:22  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           12/10/25  14:42:33  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -53,210 +53,207 @@ stmt  level    source
    42   3                      }
    43   2                      case APPROACH:
    44   2                      {
-   45   3      //                      if(ADC_2!=1023 || ADC_3!=1023)
-   46   3      //                      {
-   47   3                                      if2_time++;
-   48   3                                      if(if2_time>Entern_Delay_Time)
-   49   3                                      {
-   50   4                                              Cycle_Stat=Left_ENTER;
-   51   4                                              if2_time=0;
-   52   4                                      }
-   53   3      //                      }
-   54   3                              break;
-   55   3                      }
-   56   2                      case Left_ENTER:
-   57   2                      {
-C251 COMPILER V5.60.0,  Strategy                                                           11/10/25  22:11:22  PAGE 2   
+   45   3                                      if2_time++;
+   46   3                                      if(if2_time>Entern_Delay_Time)
+   47   3                                      {
+   48   4                                              Cycle_Stat=Left_ENTER;
+   49   4                                              if2_time=0;
+   50   4                                      }
+   51   3                              break;
+   52   3                      }
+   53   2                      case Left_ENTER:
+   54   2                      {
+   55   3                              Enter_Flag_Left=1;
+   56   3                              Buzzer_ON();
+   57   3                              Continue_Time++;
+C251 COMPILER V5.60.0,  Strategy                                                           12/10/25  14:42:33  PAGE 2   
 
-   58   3                              Enter_Flag_Left=1;
-   59   3                              Buzzer_ON();
-   60   3                              Continue_Time++;
-   61   3                              if(Continue_Time>Entern_Continue_Time)
-   62   3                              {
-   63   4                                      Cycle_Stat=EXIT;
-   64   4                                      Continue_Time = 0;  //
-   65   4                      Enter_Flag_Left = 0;     //
-   66   4                                      Buzzer_OFF();
-   67   4                              }
-   68   3                              break;
-   69   3                      }
-   70   2                      default :
-   71   2                      {
-   72   3                              CAR_STOP();
-   73   3                              break;
-   74   3                      }
-   75   2              }
-   76   1      
-   77   1      }
-   78          //切弯补丁
-   79          int Help_turn()
-   80          {
-   81   1              int left  = ADC_1 + ADC_2;
-   82   1              int right = ADC_3 + ADC_4;
-   83   1              if (left < 200 && right < 200)
-   84   1              {
-   85   2                      // 同时满足，取较小一侧优先
-   86   2                      if (left < right)
-   87   2                              return -50;   // 左
-   88   2                      else
-   89   2                              return 50;    // 右
-   90   2              }
-   91   1              else if (left < 200)
-   92   1              {
-   93   2                      return -50;   // 左
-   94   2              }
-   95   1              else if (right < 200)
-   96   1              {
-   97   2                      return 50;    // 右
-   98   2              }
-   99   1              else
-  100   1              {
-  101   2                      return 0;     // 不转
-  102   2              }
-  103   1      }
-  104          int Help_turn2(int temp,int value,int ADC_Flag)
-  105          {
-  106   1              int left  = ADC_1 + ADC_2;
-  107   1              int right = ADC_3 + ADC_4;
-  108   1              if (left < ADC_Flag && right < ADC_Flag)
-  109   1              {
-  110   2                      // 同时满足，取较小一侧优先
-  111   2                      if (left < right)
-  112   2                              return Servo_Mide-value;   // 左
-  113   2                      else
-  114   2                              return Servo_Mide+value;    // 右
-  115   2              }
-  116   1              else if (left < ADC_Flag)
-  117   1              {
-  118   2                      return Servo_Mide-value;   // 左
-  119   2              }
-  120   1              else if (right < ADC_Flag)
-  121   1              {
-  122   2                      return Servo_Mide+value;    // 右
-  123   2              }
-C251 COMPILER V5.60.0,  Strategy                                                           11/10/25  22:11:22  PAGE 3   
+   58   3                              if(Continue_Time>Entern_Continue_Time)
+   59   3                              {
+   60   4                                      Cycle_Stat=EXIT;
+   61   4                                      Continue_Time = 0;  //
+   62   4                      Enter_Flag_Left = 0;     //
+   63   4                                      Buzzer_OFF();
+   64   4                              }
+   65   3                              break;
+   66   3                      }
+   67   2                      default :
+   68   2                      {
+   69   3                              CAR_STOP();
+   70   3                              break;
+   71   3                      }
+   72   2              }
+   73   1      
+   74   1      }
+   75          //切弯补丁
+   76          int Help_turn()
+   77          {
+   78   1              int left  = ADC_1 + ADC_2;
+   79   1              int right = ADC_3 + ADC_4;
+   80   1              if (left < 200 && right < 200)
+   81   1              {
+   82   2                      // 同时满足，取较小一侧优先
+   83   2                      if (left < right)
+   84   2                              return -50;   // 左
+   85   2                      else
+   86   2                              return 50;    // 右
+   87   2              }
+   88   1              else if (left < 200)
+   89   1              {
+   90   2                      return -50;   // 左
+   91   2              }
+   92   1              else if (right < 200)
+   93   1              {
+   94   2                      return 50;    // 右
+   95   2              }
+   96   1              else
+   97   1              {
+   98   2                      return 0;     // 不转
+   99   2              }
+  100   1      }
+  101          int Help_turn2(int temp,int value,int ADC_Flag)
+  102          {
+  103   1              int left  = ADC_1 + ADC_2;
+  104   1              int right = ADC_3 + ADC_4;
+  105   1              if (left < ADC_Flag && right < ADC_Flag)
+  106   1              {
+  107   2                      // 同时满足，取较小一侧优先
+  108   2                      if (left < right)
+  109   2                              return Servo_Mide-value;   // 左
+  110   2                      else
+  111   2                              return Servo_Mide+value;    // 右
+  112   2              }
+  113   1              else if (left < ADC_Flag)
+  114   1              {
+  115   2                      return Servo_Mide-value;   // 左
+  116   2              }
+  117   1              else if (right < ADC_Flag)
+  118   1              {
+  119   2                      return Servo_Mide+value;    // 右
+  120   2              }
+  121   1              else
+  122   1              {
+  123   2                      return temp;     
+C251 COMPILER V5.60.0,  Strategy                                                           12/10/25  14:42:33  PAGE 3   
 
-  124   1              else
-  125   1              {
-  126   2                      return temp;     
-  127   2              }
-  128   1      }
-  129          void State_of_road(void)
-  130          {
-  131   1              switch(Road_Stat)
-  132   1              {
-  133   2                      case Normal_Str:
-  134   2                      {
-  135   3                              Motor_Update(0);
-  136   3                              if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
-  137   3                              {
-  138   4                                      Short_Time++;
-  139   4                                      Bend_Time=0;
-  140   4                                      if(Short_Time>Short_Judge_Time)
-  141   4                                      {
-  142   5      //                                      Buzzer_OFF();
-  143   5                                              Short_Time=0;
-  144   5                                              Road_Stat=Short_Str;
-  145   5                                      }
-  146   4                              }
-  147   3                              else
-  148   3                  {
-  149   4                                      Bend_Time++;
-  150   4                                      Short_Time=0; // 重要：条件不满足时重置计时
-  151   4                                      if(Bend_Time>10)
-  152   4                                      {
-  153   5      //                                      Buzzer_ON();
-  154   5                                              Bend_Time=0;
-  155   5                                              Road_Stat=Bend;
-  156   5                                      }
-  157   4                      
-  158   4                  }
-  159   3                              break;
-  160   3                      }
-  161   2                      case Short_Str:
-  162   2                      {
-  163   3                              Motor_Update(Short_add);
-  164   3                              if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
-  165   3                              {
-  166   4                                      Long_Time++;
-  167   4                                      Not_Time=0;
-  168   4                                      if(Long_Time>Long_Judge_Time)
-  169   4                                      {
-  170   5      //                                      Buzzer_OFF();
-  171   5                                              Long_Time=0;
-  172   5                                              Road_Stat=Long_Str;
-  173   5                                      }
-  174   4                              }
-  175   3                              else
-  176   3                              {
-  177   4                                      Long_Time=0;
-  178   4                                      Not_Time++;
-  179   4                                      {
-  180   5                                              if(Not_Time>No_Tim)
-  181   5                                              {
-  182   6                                                      Not_Time=0;
-  183   6                                                      Road_Stat=Normal_Str;
-  184   6                                              }
-  185   5                                      }
-  186   4                              }
-  187   3                              break;
-  188   3                      }
-  189   2                      case Long_Str:
-C251 COMPILER V5.60.0,  Strategy                                                           11/10/25  22:11:22  PAGE 4   
+  124   2              }
+  125   1      }
+  126          void State_of_road(void)
+  127          {
+  128   1              switch(Road_Stat)
+  129   1              {
+  130   2                      case Normal_Str:
+  131   2                      {
+  132   3                              Motor_Update(0);
+  133   3                              if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
+  134   3                              {
+  135   4                                      Short_Time++;
+  136   4                                      Bend_Time=0;
+  137   4                                      if(Short_Time>Short_Judge_Time)
+  138   4                                      {
+  139   5      //                                      Buzzer_OFF();
+  140   5                                              Short_Time=0;
+  141   5                                              Road_Stat=Short_Str;
+  142   5                                      }
+  143   4                              }
+  144   3                              else
+  145   3                  {
+  146   4                                      Bend_Time++;
+  147   4                                      Short_Time=0; // 重要：条件不满足时重置计时
+  148   4                                      if(Bend_Time>10)
+  149   4                                      {
+  150   5      //                                      Buzzer_ON();
+  151   5                                              Bend_Time=0;
+  152   5                                              Road_Stat=Bend;
+  153   5                                      }
+  154   4                      
+  155   4                  }
+  156   3                              break;
+  157   3                      }
+  158   2                      case Short_Str:
+  159   2                      {
+  160   3                              Motor_Update(Short_add);
+  161   3                              if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
+  162   3                              {
+  163   4                                      Long_Time++;
+  164   4                                      Not_Time=0;
+  165   4                                      if(Long_Time>Long_Judge_Time)
+  166   4                                      {
+  167   5      //                                      Buzzer_OFF();
+  168   5                                              Long_Time=0;
+  169   5                                              Road_Stat=Long_Str;
+  170   5                                      }
+  171   4                              }
+  172   3                              else
+  173   3                              {
+  174   4                                      Long_Time=0;
+  175   4                                      Not_Time++;
+  176   4                                      {
+  177   5                                              if(Not_Time>No_Tim)
+  178   5                                              {
+  179   6                                                      Not_Time=0;
+  180   6                                                      Road_Stat=Normal_Str;
+  181   6                                              }
+  182   5                                      }
+  183   4                              }
+  184   3                              break;
+  185   3                      }
+  186   2                      case Long_Str:
+  187   2                      {
+  188   3                              Motor_Update(Long_add);
+  189   3                              if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
+C251 COMPILER V5.60.0,  Strategy                                                           12/10/25  14:42:33  PAGE 4   
 
-  190   2                      {
-  191   3                              Motor_Update(Long_add);
-  192   3                              if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
-  193   3                              {
-  194   4                                      Bend_Time++;
-  195   4                                      if(Bend_Time>5)
-  196   4                                      {
-  197   5      //                                      Buzzer_ON();
-  198   5                                              Bend_Time=0;
-  199   5                                              Road_Stat=Bend;
-  200   5                                      }
-  201   4                              
-  202   4                              }
-  203   3                              else
-  204   3                              {
-  205   4                                      Bend_Time=0;
-  206   4                              }
-  207   3                              break;
-  208   3                      }
-  209   2                      case Bend:
-  210   2                      {
-  211   3                              Motor_Update(Bend_slow);
-  212   3                              if(dajiao>Bend_Flag_Value)
-  213   3                              {
-  214   4                                      Not_Time=0;
-  215   4                              }
-  216   3                              else if( dajiao<-Bend_Flag_Value)
-  217   3                              {
-  218   4                                      Not_Time=0;
-  219   4                              }
-  220   3                              else
-  221   3                              {
-  222   4                                      Not_Time++;
-  223   4                                      if(Not_Time>No_Tim)
-  224   4                                      {
-  225   5      //                                      Buzzer_OFF();
-  226   5                                              Not_Time=0;
-  227   5                                              Road_Stat=Normal_Str;
-  228   5                                      }
-  229   4      //                                      tft180_show_string(0,0*16,"Normal");
-  230   4                              }
-  231   3                              break;
-  232   3                      }
-  233   2                      default :
-  234   2                      {
-  235   3      //                      Buzzer_OFF();
-  236   3                              CAR_STOP();
-  237   3                              break;
-  238   3                      }
-  239   2              
-  240   2              }       
-  241   1      
-  242   1      }
+  190   3                              {
+  191   4                                      Bend_Time++;
+  192   4                                      if(Bend_Time>5)
+  193   4                                      {
+  194   5      //                                      Buzzer_ON();
+  195   5                                              Bend_Time=0;
+  196   5                                              Road_Stat=Bend;
+  197   5                                      }
+  198   4                              
+  199   4                              }
+  200   3                              else
+  201   3                              {
+  202   4                                      Bend_Time=0;
+  203   4                              }
+  204   3                              break;
+  205   3                      }
+  206   2                      case Bend:
+  207   2                      {
+  208   3                              Motor_Update(Bend_slow);
+  209   3                              if(dajiao>Bend_Flag_Value)
+  210   3                              {
+  211   4                                      Not_Time=0;
+  212   4                              }
+  213   3                              else if( dajiao<-Bend_Flag_Value)
+  214   3                              {
+  215   4                                      Not_Time=0;
+  216   4                              }
+  217   3                              else
+  218   3                              {
+  219   4                                      Not_Time++;
+  220   4                                      if(Not_Time>No_Tim)
+  221   4                                      {
+  222   5      //                                      Buzzer_OFF();
+  223   5                                              Not_Time=0;
+  224   5                                              Road_Stat=Normal_Str;
+  225   5                                      }
+  226   4      //                                      tft180_show_string(0,0*16,"Normal");
+  227   4                              }
+  228   3                              break;
+  229   3                      }
+  230   2                      default :
+  231   2                      {
+  232   3      //                      Buzzer_OFF();
+  233   3                              CAR_STOP();
+  234   3                              break;
+  235   3                      }
+  236   2              
+  237   2              }       
+  238   1      
+  239   1      }
 
 
 Module Information          Static   Overlayable
@@ -271,11 +268,11 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  Strategy                                                           11/10/25  22:11:22  PAGE 5   
-
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
+C251 COMPILER V5.60.0,  Strategy                                                           12/10/25  14:42:33  PAGE 5   
+
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =       102     ------
