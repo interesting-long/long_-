@@ -14,10 +14,11 @@ typedef enum
 }Cycle_State;
 typedef enum
 {
-	Normal_Str,
+//	Normal_Str,
 	Short_Str,
 	Long_Str,
-	Bend
+	Short_Bend,
+	Long_Bend
 }Road_State;
 extern float uni;
 extern float last_uni;

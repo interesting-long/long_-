@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            12/10/25  14:42:32  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            12/10/25  22:10:38  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -66,7 +66,7 @@ stmt  level    source
    55          {
    56   1          // 将频繁访问的结构体成员加载到局部变量
    57   1          float kp = M_Right_pid.Kp;       
-C251 COMPILER V5.60.0,  control                                                            12/10/25  14:42:32  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            12/10/25  22:10:38  PAGE 2   
 
    58   1              float ki = M_Right_pid.Ki;
    59   1          float error = point - encoder_data_dir_2;
@@ -134,7 +134,7 @@ stmt  level    source
   121   2                      {
   122   3                              case GO:
   123   3                              {
-C251 COMPILER V5.60.0,  control                                                            12/10/25  14:42:32  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            12/10/25  22:10:38  PAGE 3   
 
   124   4      //                              if(M_Mod>1)
   125   4      //                              {
@@ -202,7 +202,7 @@ stmt  level    source
   187   3                      }
   188   2              }
   189   1              
-C251 COMPILER V5.60.0,  control                                                            12/10/25  14:42:32  PAGE 4   
+C251 COMPILER V5.60.0,  control                                                            12/10/25  22:10:38  PAGE 4   
 
   190   1      }
   191          void PID_Update()
@@ -270,7 +270,7 @@ stmt  level    source
   253   3                              Entern_Flag_Time        =Entern_Flag_Time1              ;
   254   3                              Entern_Delay_Time       =Entern_Delay_Time1             ;
   255   3                              Entern_Continue_Time=Entern_Continue_Time1      ;
-C251 COMPILER V5.60.0,  control                                                            12/10/25  14:42:32  PAGE 5   
+C251 COMPILER V5.60.0,  control                                                            12/10/25  22:10:38  PAGE 5   
 
   256   3                              Mode_Flag                       =Mode_Flag1                             ;
   257   3                              turn_Value                      =turn_Value1                    ;

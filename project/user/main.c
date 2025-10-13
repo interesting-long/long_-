@@ -150,6 +150,6 @@ void pit_handler2(void)
 {
 	ADC_SampleAndFilter();
 	dajiao=Servo_turn_pid(unification());
-//	if_Cycle();
+	if_Cycle();
 	
 }
