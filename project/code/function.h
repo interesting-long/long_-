@@ -32,7 +32,7 @@ typedef struct
         float PrevError;
         float LastError;
         float Error;
-        float LastData;
+        float Last_Out;
 }PID;
 extern PID servo_pid;
 extern PID M_left_pid;
@@ -56,6 +56,7 @@ void GO_Function(void);
 void  enconder_init(void);
 void speed_control_ring(void);
 void Speed_Control(void);
+void Servo_Control(void);
 /*内部调用函数*/
 void show_test_info(const char* info) ;
 void Motor_Init(void);

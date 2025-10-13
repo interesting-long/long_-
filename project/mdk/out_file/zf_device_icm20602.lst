@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 1   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_icm20602
@@ -66,7 +66,7 @@ stmt  level    source
    51          *                   GND                 电源地
    52          *                   ------------------------------------
    53          *********************************************************************************************************
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 2   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 2   
 
              -***********/
    54          
@@ -134,7 +134,7 @@ stmt  level    source
                        // 参数说明     len             数据长度
                        // 返回参数     void
                        // 使用示例     icm20602_read_registers(ICM20602_ACCEL_XOUT_H, dat, 6);
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 3   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 3   
 
                        // 备注信息     内部调用
                        //------------------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ stmt  level    source
   167                  static void icm20602_simspi_r_reg_byte(uint8 cmd, uint8 *val)
   168                  {
   169   1                      cmd |= ICM20602_SPI_R;
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 4   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 4   
 
   170   1                      icm20602_simspi_wr_byte(cmd);
   171   1                      *val = icm20602_simspi_wr_byte(0);
@@ -270,7 +270,7 @@ stmt  level    source
   226                  // 参数说明     reg             寄存器地址
   227                  // 参数说明     dat            数据缓冲区
   228                  // 参数说明     len             数据长度
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 5   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 5   
 
   229                  // 返回参数     void
   230                  // 使用示例     icm20602_read_registers(ICM20602_ACC_ADDRESS, dat, 6);
@@ -338,7 +338,7 @@ stmt  level    source
   281          // 使用示例     icm20602_self_check();
   282          // 备注信息     内部调用
   283          //-------------------------------------------------------------------------------------------------------
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 6   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 6   
 
              -------------
   284          static uint8 icm20602_self_check (void)
@@ -406,7 +406,7 @@ stmt  level    source
   339          // 函数简介     初始化 ICM20602
   340          // 参数说明     void
   341          // 返回参数     uint8           1-初始化失败 0-初始化成功
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 7   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 7   
 
   342          // 使用示例     icm20602_init();
   343          // 备注信息
@@ -474,7 +474,7 @@ stmt  level    source
   401   2              if(1 == return_state)
   402   2              {
   403   3                  break;
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 8   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 8   
 
   404   3              }
   405   2              
@@ -542,7 +542,7 @@ stmt  level    source
   461   2              // 设置为 0x08 陀螺仪量程为 ±500  dps    获取到的陀螺仪数据除以 65.5    可以转化为带物理单位的数
              -据 单位为 °/s
   462   2              // 设置为 0x10 陀螺仪量程为 ±1000 dps    获取到的陀螺仪数据除以 32.8    可以转化为带物理单位的数
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 9   
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 9   
 
              -据 单位为 °/s
   463   2              // 设置为 0x18 陀螺仪量程为 ±2000 dps    获取到的陀螺仪数据除以 16.4    可以转化为带物理单位的数
@@ -611,7 +611,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  zf_device_icm20602                                                 11/10/25  18:39:10  PAGE 10  
+C251 COMPILER V5.60.0,  zf_device_icm20602                                                 13/10/25  20:07:44  PAGE 10  
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

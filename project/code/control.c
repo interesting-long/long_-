@@ -29,43 +29,57 @@ int Servo_turn_pid(float Current)
     return (int)(temp + (temp >= 0 ? 0.5f : -0.5f));
 }
 /*
-*左路速度环控制
+*左电机增量式pi控制器
+*
 */
-int Motor_left_pid(int point)
+int Motor_Left_pi_control(int point)
 {
-    // 将频繁访问的结构体成员加载到局部变量
-    float kp = M_left_pid.Kp;       
-	float ki = M_left_pid.Ki;
-    float error = point - encoder_data_dir_1;
-	float out = 0 ;
-	M_left_pid.Out_I += error;
-	if(M_left_pid.Out_I>Motor_Max){M_left_pid.Out_I=Motor_Max;}
-	else if(M_left_pid.Out_I<-Motor_Max){M_left_pid.Out_I=-Motor_Max;}
-    // 使用局部变量计算
-    out = kp * error + ki * M_left_pid.Out_I;
-    if (out > 8000) out = 8000;
-	else if (out < -8000) out = -8000;
-    return (int)(out);
-}
-/*
-*右路速度环控制
-*/
+	float kp=M_left_pid.Kp;
+	float ki=M_left_pid.Ki;
+	float out = 0;
+	
+	int error = point - encoder_data_dir_1;//误差计算
 
-int Motor_Right_pid(int point)
+	float delta_out = kp * (error - M_left_pid.LastError) +//增量计算
+					  ki * error;
+	delta_out=delta_out> 1500? 1500:delta_out;
+	delta_out=delta_out<-1500?-1500:delta_out;
+	out = M_left_pid.Last_Out + delta_out;
+	
+	if(out > 8000) {out = 8000;}
+	else if(out < -8000){out = -8000;}
+	
+	M_left_pid.LastError = error;
+	M_left_pid.Last_Out = out;
+	
+	return (int)out;
+}
+
+/*
+*右电机增量式pi控制器
+*
+*/
+int Motor_Right_pi_control(int point)
 {
-    // 将频繁访问的结构体成员加载到局部变量
-    float kp = M_Right_pid.Kp;       
-	float ki = M_Right_pid.Ki;
-    float error = point - encoder_data_dir_2;
-	float out = 0 ;
-    M_Right_pid.Out_I += error;
-	if(M_Right_pid.Out_I>Motor_Max){M_Right_pid.Out_I=Motor_Max;}
-	else if(M_Right_pid.Out_I<-Motor_Max){M_Right_pid.Out_I=-Motor_Max;}
-    // 使用局部变量计算
-    out = kp * (error) + ki * (M_Right_pid.Out_I);
-    if (out > 8000) out = 8000;
-	else if (out < -8000) out = -8000;
-    return (int)(out);
+	float kp=M_Right_pid.Kp;
+	float ki=M_Right_pid.Ki;
+	float out = 0;
+	
+	int error = point - encoder_data_dir_2;//误差计算
+
+	float delta_out = kp * (error - M_Right_pid.LastError) +//增量计算
+					  ki * error;
+	delta_out=delta_out> 1500? 1500:delta_out;
+	delta_out=delta_out<-1500?-1500:delta_out;
+	out = M_Right_pid.Last_Out + delta_out;
+	
+	if(out > 8000) {out = 8000;}
+	else if(out < -8000){out = -8000;}
+	
+	M_Right_pid.LastError = error;
+	M_Right_pid.Last_Out = out;
+	
+	return (int)out;
 }
 /*
  * 函数功能：左路电机PWM设置
@@ -115,78 +129,41 @@ void MotorR_SetSpeed(int pwm)
  */
 void Motor_Update(char X)
 { 
-	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
+	switch(CAR_Mode)
 	{
-		switch(CAR_Mode)
+		case GO:
 		{
-			case GO:
-			{
-//				if(M_Mod>1)
-//				{
-				MotorL_SetSpeed(Motor_left_pid((ML+X)*100));
-				MotorR_SetSpeed(Motor_Right_pid((MR+X)*100));
-//				}
-//				else
-//				{
-//				MotorL_SetSpeed((ML+X)*100);
-//				MotorR_SetSpeed((MR+X)*100);
-//				}
-				break;
-			}	
-			case GO_Pararm1:
-			{
-//				if(M_Mod1>1)
-//				{
-				MotorL_SetSpeed(Motor_left_pid((ML1+X)*100));
-				MotorR_SetSpeed(Motor_Right_pid((MR1+X)*100));
-//				}
-//				else
-//				{
-//				MotorL_SetSpeed((ML1+X)*100);
-//				MotorR_SetSpeed((MR1+X)*100);
-//				}
-				break;
-			}	
-			case GO_Pararm2:
-			{
-//				if(M_Mod2>1)
-//				{
-				MotorL_SetSpeed(Motor_left_pid((ML2+X)*100));
-				MotorR_SetSpeed(Motor_Right_pid((MR2+X)*100));
-//				}
-//				else
-//				{
-//				MotorL_SetSpeed((ML2+X)*100);
-//				MotorR_SetSpeed((MR2+X)*100);
-//				}
-				break;
-			}	
-			case GO_Pararm3:
-			{
-//				if(M_Mod3>1)
-//				{
-				MotorL_SetSpeed(Motor_left_pid((ML3+X)*100));
-				MotorR_SetSpeed(Motor_Right_pid((MR3+X)*100));
-//				}
-//				else
-//				{
-//				MotorL_SetSpeed((ML3+X)*100);
-//				MotorR_SetSpeed((MR3+X)*100);
-//				}
-				break;
-			}		
-			default:
-			{
-				MotorL_SetSpeed(0);
-				MotorR_SetSpeed(0);
-				M_Right_pid.Out_I=0;
-				M_left_pid.Out_I=0;
-				break;
-			}
-		
+			MotorL_SetSpeed(Motor_Left_pi_control((ML+X)*100));
+			MotorR_SetSpeed(Motor_Right_pi_control((MR+X)*100));
+
+			break;
+		}	
+		case GO_Pararm1:
+		{
+			MotorL_SetSpeed(Motor_Left_pi_control((ML1+X)*100));
+			MotorR_SetSpeed(Motor_Right_pi_control((MR1+X)*100));
+			break;
+		}	
+		case GO_Pararm2:
+		{
+			MotorL_SetSpeed(Motor_Left_pi_control((ML2+X)*100));
+			MotorR_SetSpeed(Motor_Right_pi_control((MR2+X)*100));
+			break;
+		}	
+		case GO_Pararm3:
+		{
+			MotorL_SetSpeed(Motor_Left_pi_control((ML3+X)*100));
+			MotorR_SetSpeed(Motor_Right_pi_control((MR3+X)*100));
+			break;
+		}		
+		default:
+		{
+			MotorL_SetSpeed(0);
+			MotorR_SetSpeed(0);
+			break;
 		}
-	}
 	
+	}
 }
 void PID_Update()
 {  
@@ -275,3 +252,44 @@ void Cycle_Update(void)
 	}
 }
 
+/*
+//*位置式pi控制
+//左路速度环控制
+//*/
+//int Motor_left_pid(int point)
+//{
+//    // 将频繁访问的结构体成员加载到局部变量
+//    float kp = M_left_pid.Kp;       
+//	float ki = M_left_pid.Ki;
+//    float error = point - encoder_data_dir_1;
+//	float out = 0 ;
+//	M_left_pid.Out_I += error;
+//	if(M_left_pid.Out_I>Motor_Max){M_left_pid.Out_I=Motor_Max;}
+//	else if(M_left_pid.Out_I<-Motor_Max){M_left_pid.Out_I=-Motor_Max;}
+//    // 使用局部变量计算
+//    out = kp * error + ki * M_left_pid.Out_I;
+//    if (out > 8000) out = 8000;
+//	else if (out < -8000) out = -8000;
+//    return (int)(out);
+//}
+///*
+//*位置式pi控制
+//右路速度环控制
+//*/
+
+//int Motor_Right_pid(int point)
+//{
+//    // 将频繁访问的结构体成员加载到局部变量
+//    float kp = M_Right_pid.Kp;       
+//	float ki = M_Right_pid.Ki;
+//    float error = point - encoder_data_dir_2;
+//	float out = 0 ;
+//    M_Right_pid.Out_I += error;
+//	if(M_Right_pid.Out_I>Motor_Max){M_Right_pid.Out_I=Motor_Max;}
+//	else if(M_Right_pid.Out_I<-Motor_Max){M_Right_pid.Out_I=-Motor_Max;}
+//    // 使用局部变量计算
+//    out = kp * (error) + ki * (M_Right_pid.Out_I);
+//    if (out > 8000) out = 8000;
+//	else if (out < -8000) out = -8000;
+//    return (int)(out);
+//}

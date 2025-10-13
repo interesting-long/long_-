@@ -6,10 +6,12 @@ unsigned char Enter_Flag_Left=0;
 unsigned char Cycle_Stat=EXIT;
 
 unsigned char Road_Stat=Short_Str;
+
 unsigned int Short_Time=0;
 unsigned int Long_Time=0;
 unsigned int Bend_Time=0;
 unsigned int SLOW_Time=0;
+unsigned int Accel_Time=0;
 
 unsigned int Entern_Flag_Time=0;
 unsigned int Entern_Delay_Time=0;
@@ -17,7 +19,7 @@ unsigned int Entern_Continue_Time=0;
 int turn_Value=0;
 int Mode_Flag=0;
 
-unsigned int Not_Time=0;
+
 //环岛判断
 void if_Cycle(void)
 {
@@ -124,45 +126,17 @@ int Help_turn2(int temp,int value,int ADC_Flag)
 		return temp;     
 	}
 }
-void State_of_road(void)
+int State_of_road(void)
 {
 	switch(Road_Stat)
 	{
-//		case Normal_Str:
-//		{
-//			Motor_Update(0);
-//			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
-//			{
-//				Short_Time++;
-//				Bend_Time=0;
-//				if(Short_Time>Short_Judge_Time)
-//				{
-////					Buzzer_OFF();
-//					Short_Time=0;
-//					Road_Stat=Short_Str;
-//				}
-//			}
-//			else
-//            {
-//				Bend_Time++;
-//				Short_Time=0; // 重要：条件不满足时重置计时
-//				if(Bend_Time>10)
-//				{
-////					Buzzer_ON();
-//					Bend_Time=0;
-//					Road_Stat=Bend;
-//				}
-//                
-//            }
-//			break;
-//		}
 		case Short_Str:
 		{
 			Motor_Update(Short_add);
-			if(dajiao<Stright_Flag_Value && dajiao>-Stright_Flag_Value)
+			if(abs(dajiao)<Stright_Flag_Value)
 			{
 				Long_Time++;
-				Not_Time=0;
+				Bend_Time=0;
 				if(Long_Time>Long_Judge_Time)
 				{
 					Long_Time=0;
@@ -172,92 +146,108 @@ void State_of_road(void)
 			else
 			{
 				Long_Time=0;
-				Not_Time++;
+				Bend_Time++;
 				{
-					if(Not_Time>No_Tim)
+					if(Bend_Time>Bend_Judge_Time)
 					{
-						Not_Time=0;
+						Bend_Time=0;
 						Road_Stat=Short_Bend;
 					}
 				}
 			}
+			return Short_add;
 			break;
 		}
 		case Long_Str:
 		{
 			Motor_Update(Long_add);
-			if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
+			Accel_Time++;
+			if(abs(dajiao)>Bend_Flag_Value)
 			{
 				Bend_Time++;
-				if(Bend_Time>5)
+				if(Bend_Time>Bend_Judge_Time)
 				{
+					if(Accel_Time>300)//加速时间1.5s
+					{
+						Road_Stat=Long_Bend;
+					}
+					else
+					{
+						Road_Stat=Short_Bend;
+					}
 					Bend_Time=0;
-					Road_Stat=Long_Bend;
+					Accel_Time=0;
 				}
-			
 			}
 			else
 			{
 				Bend_Time=0;
 			}
+			return Long_add;
 			break;
 		}
 		case Short_Bend:
 		{
-			Motor_Update(Bend_slow);
-			if(dajiao>Bend_Flag_Value)
+			Motor_Update(Bend_speed);
+			if(abs(dajiao)>Bend_Flag_Value)
 			{
-				Not_Time=0;
-			}
-			else if( dajiao<-Bend_Flag_Value)
-			{
-				Not_Time=0;
+				Short_Time=0;
 			}
 			else
 			{
-				Not_Time++;
-				if(Not_Time>No_Tim)
+				Short_Time++;
+				if(Short_Time>Short_Judge_Time)
 				{
-					Not_Time=0;
+					Short_Time=0;
 					Road_Stat=Short_Str;
 				}
 			}
+			return Bend_speed;
 			break;
 		}
 		case Long_Bend:
 		{
 			SLOW_Time++;
-			if(SLOW_Time>2)
+			if(SLOW_Time>L_Turn_B_Slow_Time)
 			{
-				//减速时间
+				Motor_Update(L_Turn_B_Slow_Value);//减速
 			}
 			else
 			{
-				if(dajiao>Bend_Flag_Value || dajiao<-Bend_Flag_Value)
-				{
-					//弯道时间
-					Not_Time=0;
-				}
-				else
-				{
-					Not_Time++;
-					if(Not_Time>No_Tim)
-					{
-						Not_Time=0;
-						Road_Stat=Short_Str;
-					}
-				}
+				Motor_Update(Bend_speed);
 			}
-			
+			//检查是否回到了直道
+			if(abs(dajiao)<Bend_Flag_Value)
+			{
+				Short_Time++;
+				if(Short_Time>Short_Judge_Time)
+				{
+					Short_Time=0;
+					SLOW_Time=0;
+					Road_Stat=Short_Str;
+				}
+				
+			}
+			else
+			{
+				Short_Time=0;
+			}
+			if(SLOW_Time>L_Turn_B_Slow_Time)
+			{
+				return L_Turn_B_Slow_Value;
+			}
+			else
+			{
+				return Bend_speed;
+			}
 			break;
 		}
 		default :
 		{
-//			Buzzer_OFF();
 			CAR_STOP();
+			return 0;
 			break;
 		}
 	
 	}
-
 }

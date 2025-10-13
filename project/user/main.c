@@ -1,6 +1,6 @@
 #include "zf_common_headfile.h"
 int T=0;
-
+int delta_Speed=0;
 int T4=0;
 unsigned char speed_update_flag=0;
 void pit_handler1 (void);
@@ -15,15 +15,12 @@ void main()
 	tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
     while(1)
 	{
+		
 		switch(CAR_Mode)
 		{
 			case STOP:
 			{
-				if(Init_Flag==1)
-				{
-					Turn_mode_Init();
-					Init_Flag=0;
-				}
+				GO_Function();
 				if(Key)
 				{
 					EA=0;
@@ -36,6 +33,13 @@ void main()
 			case GO:
 			{
 				GO_Function();
+				if(Key)
+				{
+//					EA=0;
+//					menu_handle_key(Key);
+//					Key=0;
+//					EA=1;
+				}
 				break;
 			}
 			case GO_Pararm1: 
@@ -72,18 +76,10 @@ void main()
 			}
 			case Seta_Servo:
 			{
-				if(Init_Flag==1)
-				{
-					Turn_mode_Init();
-					Init_Flag=0;
-				}
-				else
-				{
-					Set_Sevo();
-				}
+				GO_Function();
+				Set_Sevo();
 				break;
 			}
-			
 		}
 		if(Protect_flag)
 		{
@@ -91,6 +87,7 @@ void main()
 			CAR_Mode=STOP;
 			Turn_mode_Init();
 		}
+
 		
    }
 }
@@ -98,58 +95,40 @@ void main()
 
 void pit_handler1(void)
 {
-	Protect();
-	if(Servo_Flag)
+	T++;
+	ADC_SampleAndFilter();//ADC采样
+	dajiao=Servo_turn_pid(unification());//转向值计算
+	if_Cycle();//环岛检测
+	if(Servo_Flag)//舵机控制
 	{
-		if(Enter_Flag_Left)
-		{
-			if(Mode_Flag<-2)//左圆环
-			{
-				pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
-			}
-			else if(Mode_Flag>2)//右圆环
-			{
-				pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
-			}
-			else
-			{
-				pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
-			}
-		}
-		else
-		{
-			pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
-		}
-		
+		Servo_Control();
 	}
 	
-	if(Key_Flag)
+	speed_control_ring();//读取编码器
+	
+	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
 	{
-		Key_scaner();
+		Speed_Control();
+//		delta_Speed=State_of_road();
 	}
-
-	if(ADC_Show_Flag)
+//	printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
+	if(T>=4)
 	{
-		if(++T>=10)
+		T=0;
+		Protect();
+		if(Key_Flag)//按键检测
 		{
-			Buzzer_OFF();
-			T=0;
+			Key_scaner();
+		}
+		if(ADC_Show_Flag)//ADC显示
+		{
 			Show_pararm();
 		}
-	}
-	speed_control_ring();
-//	Speed_Control();
-	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
-	{
-		State_of_road();
 	}
 
 }
 
 void pit_handler2(void)
 {
-	ADC_SampleAndFilter();
-	dajiao=Servo_turn_pid(unification());
-	if_Cycle();
 	
 }

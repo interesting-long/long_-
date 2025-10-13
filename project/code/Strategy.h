@@ -32,5 +32,5 @@ extern int Mode_Flag;
 void if_Cycle(void);
 int Help_turn();
 int Help_turn2(int temp,int value,int ADC_Flag);
-void State_of_road(void);
+int State_of_road(void);
 #endif

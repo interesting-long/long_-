@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               12/10/25  22:10:39  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               13/10/25  20:07:46  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    55          {       
    56   1              u8 i;                     
    57   1              if(cmd)
-C251 COMPILER V5.60.0,  oled                                                               12/10/25  22:10:39  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               13/10/25  20:07:46  PAGE 2   
 
    58   1                OLED_DC_Set();
    59   1              else 
@@ -134,7 +134,7 @@ stmt  level    source
   119          //sizey:Ñ¡Ôñ×ÖÌå 6x8  8x16
   120          void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 sizey,unsigned char facial)
   121          {       
-C251 COMPILER V5.60.0,  oled                                                               12/10/25  22:10:39  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               13/10/25  20:07:46  PAGE 3   
 
   122   1              u8 c=0,sizex=sizey/2;
   123   1              u16 i=0,size1;
@@ -202,7 +202,7 @@ stmt  level    source
   181   2      }
   182   1           else if(facial){
   183   2               for(t=0;t<len;t++)
-C251 COMPILER V5.60.0,  oled                                                               12/10/25  22:10:39  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               13/10/25  20:07:46  PAGE 4   
 
   184   2              {
   185   3                      temp=(num/oled_pow(10,len-t-1))%10;
@@ -270,7 +270,7 @@ stmt  level    source
   243          void OLED_Init(void)
   244          {
   245   1              OLED_RES_Clr();
-C251 COMPILER V5.60.0,  oled                                                               12/10/25  22:10:39  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               13/10/25  20:07:46  PAGE 5   
 
   246   1        delay_ms(200);
   247   1              OLED_RES_Set();

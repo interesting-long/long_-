@@ -38,8 +38,10 @@ int Servo_turn_pid(float Current);
 void Motor_Update(char X);
 void PID_Update();
 void Cycle_Update(void);
-int Motor_left_pid(int point);
-int Motor_Right_pid(int point);
+//int Motor_left_pid(int point);
+//int Motor_Right_pid(int point);
+int Motor_Left_pi_control(int point);
+int Motor_Right_pi_control(int point);
 /*内部调用函数*/
 void MotorL_SetSpeed(int pwm);
 void MotorR_SetSpeed(int pwm);

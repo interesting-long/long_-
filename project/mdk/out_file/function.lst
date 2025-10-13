@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -66,7 +66,7 @@ stmt  level    source
    54          /*快速开方函数*/
    55          float fast_sqrt(float number) 
    56          {
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 2   
 
    57   1          unsigned long i;
    58   1          float x = number;
@@ -119,30 +119,30 @@ stmt  level    source
   105          void init_all()
   106          {
   107   1              EA=0;
-  108   1              system_delay_ms(10);
-  109   1              Motor_Init();
-  110   1              Servo_Init();
-  111   1      ////    PT1H = 0;
-  112   1      //    PT1H = 1;
+  108   1      //      wireless_uart_init();
+  109   1              system_delay_ms(10);
+  110   1              Motor_Init();
+  111   1              Servo_Init();
+  112   1      
   113   1              interrupt_set_priority(INT1_IRQn,1);
   114   1              system_delay_ms(5);
   115   1              Buzzer_Init();
   116   1              Buzzer_OFF();
   117   1              enconder_init();
-  118   1      //      wireless_uart_init();
+  118   1              
   119   1              
   120   1              ADC_GetInit();
   121   1              tft180_init();
   122   1              system_delay_ms(100);
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 3   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 3   
 
   123   1              tft180_set_color(RGB565_RED,RGB565_WHITE);
   124   1      //      eeprom_read_Num();
   125   1              menu_Init();
   126   1              system_delay_ms(10);
   127   1              
-  128   1              pit_ms_init(TIM1_PIT, 20);
-  129   1              pit_ms_init(TIM2_PIT, 5);
+  128   1              pit_ms_init(TIM1_PIT, 5);
+  129   1      //      pit_ms_init(TIM2_PIT, 5);
   130   1          EA=1;
   131   1              
   132   1      }
@@ -202,7 +202,7 @@ stmt  level    source
   186   3                              Servo_Flag=0;
   187   3                              show_test_info("Test for GOP1");
   188   3                              GO_PID_Control1=1;
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 4   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 4   
 
   189   3                              
   190   3                              PID_Update();
@@ -270,7 +270,7 @@ stmt  level    source
   252   1              EA=1;
   253   1      }
   254          
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 5   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 5   
 
   255          void Show_pararm()
   256          {
@@ -286,8 +286,8 @@ stmt  level    source
   266   2                      {
   267   3                              tft180_show_string(0,0*16,"Enc1:");tft180_show_int16(5*8,0*16,encoder_data_dir_1);
   268   3                              tft180_show_string(0,1*16,"Enc2:");tft180_show_int16(5*8,1*16,encoder_data_dir_2);
-  269   3                              tft180_show_string(0,2*16,"ML:");tft180_show_int16(5*8,2*16,Motor_left_pid(ML*100));
-  270   3                              tft180_show_string(0,3*16,"MR:");tft180_show_int16(5*8,3*16,Motor_Right_pid(MR*100));
+  269   3                              tft180_show_string(0,2*16,"ML:");tft180_show_int16(5*8,2*16,Motor_Left_pi_control(ML*100));
+  270   3                              tft180_show_string(0,3*16,"MR:");tft180_show_int16(5*8,3*16,Motor_Right_pi_control(MR*100));
   271   3      //                      tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
   272   3      //                      tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
   273   3      //                      tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
@@ -323,9 +323,9 @@ stmt  level    source
   303   3                              tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
   304   3                              tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
   305   3                              tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
-  306   3                              tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
-  307   3                              tft180_show_int16(5*8,5*16,encoder_data_dir_1);
-  308   3                              tft180_show_int16(5*8,6*16,encoder_data_dir_2);
+  306   3      //                      tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
+  307   3      //                      tft180_show_int16(5*8,5*16,encoder_data_dir_1);
+  308   3      //                      tft180_show_int16(5*8,6*16,encoder_data_dir_2);
   309   3                      }break;
   310   2                      case Seta_Servo:
   311   2                      {
@@ -338,7 +338,7 @@ stmt  level    source
   318          //{
   319          //      if(Set_T>Time && CAR_Mode!=STOP)
   320          //      {
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 6   
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 6   
 
   321          //              CAR_Mode=STOP;
   322          //              Turn_mode_Init();
@@ -371,65 +371,85 @@ stmt  level    source
   347          
   348          void Speed_Control(void)
   349          {
-  350   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
+  350   1              switch(CAR_Mode)
   351   1              {
-  352   2                      switch(CAR_Mode)
+  352   2                      case GO:
   353   2                      {
-  354   3                              case GO:
+  354   3                              if(M_Mod>1)
   355   3                              {
-  356   4                                      if(M_Mod>1)
-  357   4                                      {
-  358   5                                      MotorL_SetSpeed(Motor_left_pid(ML*100));
-  359   5                                      MotorR_SetSpeed(Motor_Right_pid(MR*100));
-  360   5                                      }
-  361   4                                      break;
-  362   4                              }       
-  363   3                              case GO_Pararm1:
+  356   4                              MotorL_SetSpeed(Motor_Left_pi_control(ML*100));
+  357   4                              MotorR_SetSpeed(Motor_Right_pi_control(MR*100));
+  358   4                              }
+  359   3                              break;
+  360   3                      }       
+  361   2                      case GO_Pararm1:
+  362   2                      {
+  363   3                              if(M_Mod1>1)
   364   3                              {
-  365   4                                      if(M_Mod1>1)
-  366   4                                      {
-  367   5                                      MotorL_SetSpeed(Motor_left_pid(ML1*100));
-  368   5                                      MotorR_SetSpeed(Motor_Right_pid(MR1*100));
-  369   5                                      }
-  370   4                                      break;
-  371   4                              }       
-  372   3                              case GO_Pararm2:
+  365   4                              MotorL_SetSpeed(Motor_Left_pi_control(ML1*100));
+  366   4                              MotorR_SetSpeed(Motor_Right_pi_control(MR1*100));
+  367   4                              }
+  368   3                              break;
+  369   3                      }       
+  370   2                      case GO_Pararm2:
+  371   2                      {
+  372   3                              if(M_Mod2>1)
   373   3                              {
-  374   4                                      if(M_Mod2>1)
-  375   4                                      {
-  376   5                                      MotorL_SetSpeed(Motor_left_pid(ML2*100));
-  377   5                                      MotorR_SetSpeed(Motor_Right_pid(MR2*100));
-  378   5                                      }
-  379   4                                      break;
-  380   4                              }       
-  381   3                              case GO_Pararm3:
+  374   4                              MotorL_SetSpeed(Motor_Left_pi_control(ML2*100));
+  375   4                              MotorR_SetSpeed(Motor_Right_pi_control(MR2*100));
+  376   4                              }
+  377   3                              break;
+  378   3                      }       
+  379   2                      case GO_Pararm3:
+  380   2                      {
+  381   3                              if(M_Mod3>1)
   382   3                              {
-  383   4                                      if(M_Mod3>1)
-  384   4                                      {
-C251 COMPILER V5.60.0,  function                                                           12/10/25  22:10:38  PAGE 7   
+  383   4                              MotorL_SetSpeed(Motor_Left_pi_control(ML3*100));
+  384   4                              MotorR_SetSpeed(Motor_Right_pi_control(MR3*100));
+C251 COMPILER V5.60.0,  function                                                           13/10/25  21:50:55  PAGE 7   
 
-  385   5                                      MotorL_SetSpeed(Motor_left_pid(ML3*100));
-  386   5                                      MotorR_SetSpeed(Motor_Right_pid(MR3*100));
-  387   5                                      }
-  388   4                                      break;
-  389   4                              }               
-  390   3                              default:
-  391   3                              {
-  392   4                                      MotorL_SetSpeed(0);
-  393   4                                      MotorR_SetSpeed(0);
-  394   4                                      M_Right_pid.Out_I=0;
-  395   4                                      M_left_pid.Out_I=0;
-  396   4                                      break;
-  397   4                              }
-  398   3                      
-  399   3                      }
-  400   2              }
-  401   1      }
+  385   4                              }
+  386   3                              break;
+  387   3                      }               
+  388   2                      default:
+  389   2                      {
+  390   3                              MotorL_SetSpeed(0);
+  391   3                              MotorR_SetSpeed(0);
+  392   3                              M_left_pid.Last_Out=0;
+  393   3                              M_Right_pid.Last_Out=0;
+  394   3                              break;
+  395   3                      }
+  396   2              
+  397   2              }
+  398   1      }
+  399          
+  400          void Servo_Control(void)
+  401          {
+  402   1              if(Enter_Flag_Left)
+  403   1              {
+  404   2                      if(Mode_Flag<-2)//左圆环
+  405   2                      {
+  406   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+turn_Value);
+  407   3                      }
+  408   2                      else if(Mode_Flag>2)//右圆环
+  409   2                      {
+  410   3                              pwm_set_duty(Servo_Pwm,Servo_Mide-turn_Value);
+  411   3                      }
+  412   2                      else
+  413   2                      {
+  414   3                              pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
+  415   3                      }
+  416   2              }
+  417   1              else
+  418   1              {
+  419   2                      pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
+  420   2              }
+  421   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3328     ------
+  code size            =      3394     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -444,7 +464,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =       340     ------
+  hconst size          =       335     ------
 End of Module Information.
 
 
