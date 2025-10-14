@@ -44,6 +44,7 @@ extern unsigned char GO_PID_Control;
 extern unsigned char GO_PID_Control1;
 extern unsigned char GO_PID_Control2;
 extern unsigned char GO_PID_Control3;
+extern int Speed_Mode;
 /*外部调用函数*/
 float unification(void);
 float fast_sqrt(float number);

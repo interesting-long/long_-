@@ -42,8 +42,8 @@ int Motor_Left_pi_control(int point)
 
 	float delta_out = kp * (error - M_left_pid.LastError) +//增量计算
 					  ki * error;
-	delta_out=delta_out> 1500? 1500:delta_out;
-	delta_out=delta_out<-1500?-1500:delta_out;
+	delta_out=delta_out> 2000? 2000:delta_out;
+	delta_out=delta_out<-2000?-2000:delta_out;
 	out = M_left_pid.Last_Out + delta_out;
 	
 	if(out > 8000) {out = 8000;}
@@ -69,8 +69,8 @@ int Motor_Right_pi_control(int point)
 
 	float delta_out = kp * (error - M_Right_pid.LastError) +//增量计算
 					  ki * error;
-	delta_out=delta_out> 1500? 1500:delta_out;
-	delta_out=delta_out<-1500?-1500:delta_out;
+	delta_out=delta_out> 2000? 2000:delta_out;
+	delta_out=delta_out<-2000?-2000:delta_out;
 	out = M_Right_pid.Last_Out + delta_out;
 	
 	if(out > 8000) {out = 8000;}

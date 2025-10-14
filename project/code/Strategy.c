@@ -126,6 +126,43 @@ int Help_turn2(int temp,int value,int ADC_Flag)
 		return temp;     
 	}
 }
+int Help_turn_Two(int temp, int value, int value2, int ADC_Flag, int ADC_Flag2)
+{
+    int left  = ADC_1 + ADC_2;
+    int right = ADC_3 + ADC_4;
+
+    // -------- 第一组阈值判断 --------
+    if (left < ADC_Flag && right < ADC_Flag)
+    {
+        return (left < right) ? (Servo_Mide - value) : (Servo_Mide + value);
+    }
+    else if (left < ADC_Flag)
+    {
+        return Servo_Mide - value;
+    }
+    else if (right < ADC_Flag)
+    {
+        return Servo_Mide + value;
+    }
+
+    // -------- 第二组阈值判断 --------
+    if (left < ADC_Flag2 && right < ADC_Flag2)
+    {
+        return (left < right) ? (Servo_Mide - value2) : (Servo_Mide + value2);
+    }
+    else if (left < ADC_Flag2)
+    {
+        return Servo_Mide - value2;
+    }
+    else if (right < ADC_Flag2)
+    {
+        return Servo_Mide + value2;
+    }
+
+    // -------- 都不满足，返回原值 --------
+    return temp;
+}
+
 int State_of_road(void)
 {
 	switch(Road_Stat)
@@ -210,11 +247,11 @@ int State_of_road(void)
 			SLOW_Time++;
 			if(SLOW_Time>L_Turn_B_Slow_Time)
 			{
-				Motor_Update(L_Turn_B_Slow_Value);//减速
+				Motor_Update(Bend_speed);//减速
 			}
 			else
 			{
-				Motor_Update(Bend_speed);
+				Motor_Update(L_Turn_B_Slow_Value);
 			}
 			//检查是否回到了直道
 			if(abs(dajiao)<Bend_Flag_Value)
@@ -234,12 +271,13 @@ int State_of_road(void)
 			}
 			if(SLOW_Time>L_Turn_B_Slow_Time)
 			{
-				return L_Turn_B_Slow_Value;
+				return Bend_speed;
 			}
 			else
 			{
-				return Bend_speed;
+				return L_Turn_B_Slow_Value;
 			}
+			
 			break;
 		}
 		default :

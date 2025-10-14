@@ -17,6 +17,8 @@ unsigned char GO_PID_Control1=0;
 unsigned char GO_PID_Control2=0;
 unsigned char GO_PID_Control3=0;
 
+int Speed_Mode=0;
+
 int16 encoder_data_dir_1 = 0;
 int16 encoder_data_dir_2 = 0;
 /*函数：常见的PID计算
@@ -151,6 +153,7 @@ void Turn_mode_Init(void)
 			Buzzer_OFF();
 			ADC_Show_Flag=0;
 			Key_Flag=1;
+			
 			Servo_Flag=0;
 			show_test_info("Test for Stop");
 			Refesh_arrow();
@@ -168,6 +171,7 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 //			Key_Flag=0;
 			Key_Flag=1;
+			Speed_Mode=M_Mod;
 			Servo_Flag=1;
 //			Servo_Flag=0;
 			show_test_info("Test for GO");
@@ -182,6 +186,7 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 //			Key_Flag=0;
 			Key_Flag=1;
+			Speed_Mode=M_Mod1;
 //			Servo_Flag=1;
 			Servo_Flag=0;
 			show_test_info("Test for GOP1");
@@ -196,6 +201,7 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 //			Key_Flag=1;
+			Speed_Mode=M_Mod2;
 			Servo_Flag=1;
 			show_test_info("Test for GOP2");
 			GO_PID_Control2=1;
@@ -209,6 +215,7 @@ void Turn_mode_Init(void)
 			ADC_Show_Flag=0;
 			Key_Flag=0;
 //			Key_Flag=1;
+			Speed_Mode=M_Mod3;
 			Servo_Flag=1;
 			show_test_info("Test for GOP3");
 			GO_PID_Control3=1;
@@ -351,38 +358,26 @@ void Speed_Control(void)
 	{
 		case GO:
 		{
-			if(M_Mod>1)
-			{
 			MotorL_SetSpeed(Motor_Left_pi_control(ML*100));
 			MotorR_SetSpeed(Motor_Right_pi_control(MR*100));
-			}
 			break;
 		}	
 		case GO_Pararm1:
 		{
-			if(M_Mod1>1)
-			{
 			MotorL_SetSpeed(Motor_Left_pi_control(ML1*100));
 			MotorR_SetSpeed(Motor_Right_pi_control(MR1*100));
-			}
 			break;
 		}	
 		case GO_Pararm2:
 		{
-			if(M_Mod2>1)
-			{
 			MotorL_SetSpeed(Motor_Left_pi_control(ML2*100));
 			MotorR_SetSpeed(Motor_Right_pi_control(MR2*100));
-			}
 			break;
 		}	
 		case GO_Pararm3:
 		{
-			if(M_Mod3>1)
-			{
 			MotorL_SetSpeed(Motor_Left_pi_control(ML3*100));
 			MotorR_SetSpeed(Motor_Right_pi_control(MR3*100));
-			}
 			break;
 		}		
 		default:
@@ -411,11 +406,13 @@ void Servo_Control(void)
 		}
 		else
 		{
-			pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
+			pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value,ADC_Falg));
+//			pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 		}
 	}
 	else
 	{
-		pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value2,ADC_Falg));
+		pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value,ADC_Falg));
+//		pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 	}
 }

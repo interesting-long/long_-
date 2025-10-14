@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          13/10/25  21:31:05  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          14/10/25  22:38:26  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,16 +11,16 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,10 ,-1 ,-1,72,220},
-    4                  {-1  ,28  ,5  ,6 ,6 ,12,310,45 ,0  ,65 },//GO模式
-    5                  {-1  ,-1  ,5  ,24  ,24  ,6 ,320,40 ,0  ,60},//GPO1模式
-    6                  {-1  ,-1  ,5  ,27 ,27 ,6 ,280,35 ,0  ,60},//GPO2模式
-    7                  {-1  ,-1  ,5  ,29 ,29 ,6 ,270,30 ,0  ,60 },//GPO3模式
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,10 ,-1 ,-1,72,220,50,400},
+    4                  {-1  ,28  ,0  ,6 ,6 ,12,250,30 ,0  ,65 },//GO模式
+    5                  {-1  ,-1  ,0  ,24  ,24  ,6 ,320,40 ,0  ,60},//GPO1模式
+    6                  {-1  ,-1  ,0  ,27 ,27 ,6 ,280,35 ,0  ,60},//GPO2模式
+    7                  {-1  ,-1  ,0  ,29 ,29 ,6 ,270,30 ,0  ,60 },//GPO3模式
     8                  {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
-   10                  {-1  ,1   ,30 ,2  ,30 ,0 ,30 ,-10 ,20, 20,40},//速度策略参数
+   10                  {-1  ,1   ,30 ,2  ,60 ,0 ,15 ,-20 ,20, 20,20},//速度策略参数
    11                          
-   12                          {-1  ,29  ,290 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
+   12                          {-1  ,30  ,300 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
    13                          {-1  ,32  ,320 ,6  ,1,6 ,1 ,-1 ,-1,-1 },//GPO1pid
    14                          {-1  ,33  ,330 ,6  ,1,6 ,1,-1 ,-1,-1 },//GPO2pid
    15                          {-1  ,34  ,340 ,6  ,1,6 ,1,-1 ,-1,-1 }};//GPO3pid
@@ -40,7 +40,8 @@ stmt  level    source
    28           */
    29          struct Menu Page[Struct_Number]={
    30              {   0,
-   31                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Value","ADC_F"}},
+   31                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Valu2","ADC_F2
+             -"}},
    32              {   1,
    33                      {"back","PID","Mode","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
    34              {   2,
@@ -65,9 +66,9 @@ stmt  level    source
    52                  {   11,
    53                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
    54          };
-   55          
-C251 COMPILER V5.60.0,  menu_font                                                          13/10/25  21:31:05  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          14/10/25  22:38:26  PAGE 2   
 
+   55          
    56          struct Menu *Pin=&Page[0];//灵活指针
    57          
    58          //ADC采样参数                                                           
@@ -81,7 +82,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      2460     ------
+  xdata size           =      2658     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -91,7 +92,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      2540     ------
+  hconst size          =      2738     ------
 End of Module Information.
 
 

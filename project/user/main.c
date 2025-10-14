@@ -1,10 +1,11 @@
 #include "zf_common_headfile.h"
 int T=0;
 int delta_Speed=0;
+
 int T4=0;
 unsigned char speed_update_flag=0;
 void pit_handler1 (void);
-void pit_handler2 (void);
+//void pit_handler2 (void);
 void main()
 {
 	clock_init(SYSTEM_CLOCK_40M);				// 务必保留
@@ -12,7 +13,7 @@ void main()
 	/****************************************************/
 	init_all();
 	tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
-	tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
+//	tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
     while(1)
 	{
 		
@@ -103,13 +104,18 @@ void pit_handler1(void)
 	{
 		Servo_Control();
 	}
-	
 	speed_control_ring();//读取编码器
 	
 	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
 	{
+		if(Speed_Mode>5)
+		{
+		State_of_road();
+		}
+		else
+		{
 		Speed_Control();
-//		delta_Speed=State_of_road();
+		}
 	}
 //	printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
 	if(T>=4)
@@ -125,10 +131,9 @@ void pit_handler1(void)
 			Show_pararm();
 		}
 	}
-
 }
 
-void pit_handler2(void)
-{
-	
-}
+//void pit_handler2(void)
+//{
+//	
+//}

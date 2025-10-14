@@ -18,7 +18,7 @@
 #define num_float_int      3    //数据整数部分的位数
 
 /******显示位置设置*******/
-#define Page_Row_Number 12       //一级菜单的最大行数
+#define Page_Row_Number 13       //一级菜单的最大行数
 #define Page_Col_Number 8      //一行当中字符串的最大长度
 #define ROW_DISTANCE     16      //行间距
 
@@ -57,8 +57,10 @@ extern unsigned int ADC_4;
 
 
 #define Pro 					Num[0][6]
-#define Help_Value2 			Num[0][9]
+#define Help_Value 				Num[0][9]
 #define ADC_Falg 				Num[0][10]
+#define Help_Value2 			Num[0][11]
+#define ADC_Falg2 				Num[0][12]
 
 #define M_Mod 					Num[1][2]
 #define ML 						Num[1][3]

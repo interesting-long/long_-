@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               13/10/25  21:50:55  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -12,146 +12,151 @@ stmt  level    source
     1          #include "zf_common_headfile.h"
     2          int T=0;
     3          int delta_Speed=0;
-    4          int T4=0;
-    5          unsigned char speed_update_flag=0;
-    6          void pit_handler1 (void);
-    7          void pit_handler2 (void);
-    8          void main()
-    9          {
-   10   1              clock_init(SYSTEM_CLOCK_40M);                           // 务必保留
-   11   1              debug_init();                                                           // 务必保留
-   12   1              /****************************************************/
-   13   1              init_all();
-   14   1              tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
-   15   1              tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
-   16   1          while(1)
-   17   1              {
-   18   2                      
-   19   2                      switch(CAR_Mode)
-   20   2                      {
-   21   3                              case STOP:
-   22   3                              {
-   23   4                                      GO_Function();
-   24   4                                      if(Key)
-   25   4                                      {
-   26   5                                              EA=0;
-   27   5                                              menu_handle_key(Key);
-   28   5                                              Key=0;
-   29   5                                              EA=1;
-   30   5                                      }
-   31   4                                      break;
-   32   4                              }
-   33   3                              case GO:
-   34   3                              {
-   35   4                                      GO_Function();
-   36   4                                      if(Key)
-   37   4                                      {
-   38   5      //                                      EA=0;
-   39   5      //                                      menu_handle_key(Key);
-   40   5      //                                      Key=0;
-   41   5      //                                      EA=1;
-   42   5                                      }
-   43   4                                      break;
-   44   4                              }
-   45   3                              case GO_Pararm1: 
-   46   3                              {
-   47   4                                      GO_Function();
-   48   4                                      break;
-   49   4                              }
-   50   3                              case GO_Pararm2: 
-   51   3                              {
-   52   4                                      GO_Function();
-   53   4                                      break;
-   54   4                              }
-   55   3                              case GO_Pararm3: 
-   56   3                              {
-   57   4                                      GO_Function();
-C251 COMPILER V5.60.0,  main                                                               13/10/25  21:50:55  PAGE 2   
+    4          
+    5          int T4=0;
+    6          unsigned char speed_update_flag=0;
+    7          void pit_handler1 (void);
+    8          //void pit_handler2 (void);
+    9          void main()
+   10          {
+   11   1              clock_init(SYSTEM_CLOCK_40M);                           // 务必保留
+   12   1              debug_init();                                                           // 务必保留
+   13   1              /****************************************************/
+   14   1              init_all();
+   15   1              tim1_irq_handler = pit_handler1;// 设置定时器0中断回调函数
+   16   1      //      tim2_irq_handler = pit_handler2;// 设置定时器1中断回调函数
+   17   1          while(1)
+   18   1              {
+   19   2                      
+   20   2                      switch(CAR_Mode)
+   21   2                      {
+   22   3                              case STOP:
+   23   3                              {
+   24   4                                      GO_Function();
+   25   4                                      if(Key)
+   26   4                                      {
+   27   5                                              EA=0;
+   28   5                                              menu_handle_key(Key);
+   29   5                                              Key=0;
+   30   5                                              EA=1;
+   31   5                                      }
+   32   4                                      break;
+   33   4                              }
+   34   3                              case GO:
+   35   3                              {
+   36   4                                      GO_Function();
+   37   4                                      if(Key)
+   38   4                                      {
+   39   5      //                                      EA=0;
+   40   5      //                                      menu_handle_key(Key);
+   41   5      //                                      Key=0;
+   42   5      //                                      EA=1;
+   43   5                                      }
+   44   4                                      break;
+   45   4                              }
+   46   3                              case GO_Pararm1: 
+   47   3                              {
+   48   4                                      GO_Function();
+   49   4                                      break;
+   50   4                              }
+   51   3                              case GO_Pararm2: 
+   52   3                              {
+   53   4                                      GO_Function();
+   54   4                                      break;
+   55   4                              }
+   56   3                              case GO_Pararm3: 
+   57   3                              {
+C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 2   
 
-   58   4                                      break;
-   59   4                              }
-   60   3                              case TEST_PWM: 
-   61   3                              {
-   62   4                                      GO_Function();
-   63   4                                      PWM_Test();
-   64   4                                      break;
-   65   4                              }
-   66   3                              case TEST_SERVO: 
-   67   3                              {
-   68   4                                      GO_Function();
-   69   4                                      Serve_Test();
-   70   4                                      break;
-   71   4                              }
-   72   3                              case ADC_Show:
-   73   3                              {
-   74   4                                      GO_Function();
-   75   4                                      break;
-   76   4                              }
-   77   3                              case Seta_Servo:
-   78   3                              {
-   79   4                                      GO_Function();
-   80   4                                      Set_Sevo();
-   81   4                                      break;
-   82   4                              }
-   83   3                      }
-   84   2                      if(Protect_flag)
-   85   2                      {
-   86   3                              Protect_flag=0;
-   87   3                              CAR_Mode=STOP;
-   88   3                              Turn_mode_Init();
-   89   3                      }
-   90   2      
-   91   2                      
-   92   2         }
-   93   1      }
-   94          
+   58   4                                      GO_Function();
+   59   4                                      break;
+   60   4                              }
+   61   3                              case TEST_PWM: 
+   62   3                              {
+   63   4                                      GO_Function();
+   64   4                                      PWM_Test();
+   65   4                                      break;
+   66   4                              }
+   67   3                              case TEST_SERVO: 
+   68   3                              {
+   69   4                                      GO_Function();
+   70   4                                      Serve_Test();
+   71   4                                      break;
+   72   4                              }
+   73   3                              case ADC_Show:
+   74   3                              {
+   75   4                                      GO_Function();
+   76   4                                      break;
+   77   4                              }
+   78   3                              case Seta_Servo:
+   79   3                              {
+   80   4                                      GO_Function();
+   81   4                                      Set_Sevo();
+   82   4                                      break;
+   83   4                              }
+   84   3                      }
+   85   2                      if(Protect_flag)
+   86   2                      {
+   87   3                              Protect_flag=0;
+   88   3                              CAR_Mode=STOP;
+   89   3                              Turn_mode_Init();
+   90   3                      }
+   91   2      
+   92   2                      
+   93   2         }
+   94   1      }
    95          
-   96          void pit_handler1(void)
-   97          {
-   98   1              T++;
-   99   1              ADC_SampleAndFilter();//ADC采样
-  100   1              dajiao=Servo_turn_pid(unification());//转向值计算
-  101   1              if_Cycle();//环岛检测
-  102   1              if(Servo_Flag)//舵机控制
-  103   1              {
-  104   2                      Servo_Control();
-  105   2              }
-  106   1              
+   96          
+   97          void pit_handler1(void)
+   98          {
+   99   1              T++;
+  100   1              ADC_SampleAndFilter();//ADC采样
+  101   1              dajiao=Servo_turn_pid(unification());//转向值计算
+  102   1              if_Cycle();//环岛检测
+  103   1              if(Servo_Flag)//舵机控制
+  104   1              {
+  105   2                      Servo_Control();
+  106   2              }
   107   1              speed_control_ring();//读取编码器
   108   1              
   109   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
   110   1              {
-  111   2                      Speed_Control();
-  112   2      //              delta_Speed=State_of_road();
-  113   2              }
-  114   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
-  115   1              if(T>=4)
-  116   1              {
-  117   2                      T=0;
-  118   2                      Protect();
-  119   2                      if(Key_Flag)//按键检测
-  120   2                      {
-  121   3                              Key_scaner();
-  122   3                      }
-  123   2                      if(ADC_Show_Flag)//ADC显示
-C251 COMPILER V5.60.0,  main                                                               13/10/25  21:50:55  PAGE 3   
+  111   2                      if(Speed_Mode>5)
+  112   2                      {
+  113   3                      State_of_road();
+  114   3                      }
+  115   2                      else
+  116   2                      {
+  117   3                      Speed_Control();
+  118   3                      }
+  119   2              }
+  120   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
+  121   1              if(T>=4)
+  122   1              {
+  123   2                      T=0;
+C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 3   
 
-  124   2                      {
-  125   3                              Show_pararm();
-  126   3                      }
-  127   2              }
-  128   1      
-  129   1      }
-  130          
-  131          void pit_handler2(void)
-  132          {
-  133   1              
+  124   2                      Protect();
+  125   2                      if(Key_Flag)//按键检测
+  126   2                      {
+  127   3                              Key_scaner();
+  128   3                      }
+  129   2                      if(ADC_Show_Flag)//ADC显示
+  130   2                      {
+  131   3                              Show_pararm();
+  132   3                      }
+  133   2              }
   134   1      }
+  135          
+  136          //void pit_handler2(void)
+  137          //{
+  138          //      
+  139          //}
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       346     ------
+  code size            =       352     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
