@@ -101,31 +101,73 @@ int Help_turn()
 		return 0;     // 不转
 	}
 }
-int Help_turn2(int temp,int value,int ADC_Flag)
+void Help_turn2(int* temp, int value, int ADC_Flag)
 {
-	int left  = ADC_1 + ADC_2;
-	int right = ADC_3 + ADC_4;
-	if (left < ADC_Flag && right < ADC_Flag)
-	{
-		// 同时满足，取较小一侧优先
-		if (left < right)
-			return Servo_Mide-value;   // 左
-		else
-			return Servo_Mide+value;    // 右
-	}
-	else if (left < ADC_Flag)
-	{
-		return Servo_Mide-value;   // 左
-	}
-	else if (right < ADC_Flag)
-	{
-		return Servo_Mide+value;    // 右
-	}
-	else
-	{
-		return temp;     
-	}
+    static int count_left = 0;   // 记录左侧条件满足的次数
+    static int count_right = 0;  // 记录右侧条件满足的次数
+    int left  = ADC_1 + ADC_2;
+    int right = ADC_3 + ADC_4;
+    const int threshold = 15;
+
+    if (left < ADC_Flag && right < ADC_Flag)
+    {
+        // 第一次判断时立即执行
+        if (count_left == 0 && count_right == 0)
+        {
+            if (left < right)
+            {
+                *temp = -value;   // 左
+            }
+            else
+            {
+                *temp = value;    // 右
+            }
+        }
+        else
+        {
+            // 开始计次
+            if (left < right)
+            {
+                count_left++;
+                count_right = 0;  // 清除右侧计数
+                // 计数达到阈值时才改变方向
+                if (count_left >= threshold)
+                {
+                    *temp = -value;   // 左
+                    count_left = 0;   // 重置计数器
+					
+                }
+            }
+            else
+            {
+                count_right++;
+                count_left = 0;  // 清除左侧计数
+                // 计数达到阈值时才改变方向
+                if (count_right >= threshold)
+                {
+                    *temp = value;    // 右
+                    count_right = 0;  // 重置计数器
+					
+                }
+            }
+        }
+    }
+    else if (left < ADC_Flag)
+    {
+        // 不需要计次，立即执行左转
+        *temp = -value;   // 左
+        count_left = 0;    // 清除计数器
+		count_right = 0;
+    }
+    else if (right < ADC_Flag)
+    {
+        // 不需要计次，立即执行右转
+        *temp = value;    // 右
+        count_right = 0;   // 清除计数器
+		count_left = 0;
+    }
 }
+
 int Help_turn_Two(int temp, int value, int value2, int ADC_Flag, int ADC_Flag2)
 {
     int left  = ADC_1 + ADC_2;
@@ -204,7 +246,7 @@ int State_of_road(void)
 				Bend_Time++;
 				if(Bend_Time>Bend_Judge_Time)
 				{
-					if(Accel_Time>300)//加速时间1.5s
+					if(Accel_Time>200)//加速时间1.5s
 					{
 						Road_Stat=Long_Bend;
 					}
@@ -247,11 +289,14 @@ int State_of_road(void)
 			SLOW_Time++;
 			if(SLOW_Time>L_Turn_B_Slow_Time)
 			{
-				Motor_Update(Bend_speed);//减速
+				Buzzer_OFF();
+				Motor_Update(Bend_speed);//弯道速度
 			}
 			else
 			{
-				Motor_Update(L_Turn_B_Slow_Value);
+				Buzzer_ON();
+				
+				Motor_Update(L_Turn_B_Slow_Value);//减速
 			}
 			//检查是否回到了直道
 			if(abs(dajiao)<Bend_Flag_Value)
@@ -259,6 +304,7 @@ int State_of_road(void)
 				Short_Time++;
 				if(Short_Time>Short_Judge_Time)
 				{
+					Buzzer_OFF();
 					Short_Time=0;
 					SLOW_Time=0;
 					Road_Stat=Short_Str;

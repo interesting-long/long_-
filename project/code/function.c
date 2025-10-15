@@ -169,8 +169,8 @@ void Turn_mode_Init(void)
 		case GO:
 		{
 			ADC_Show_Flag=0;
-//			Key_Flag=0;
-			Key_Flag=1;
+			Key_Flag=0;
+//			Key_Flag=1;
 			Speed_Mode=M_Mod;
 			Servo_Flag=1;
 //			Servo_Flag=0;
@@ -184,11 +184,11 @@ void Turn_mode_Init(void)
 		case GO_Pararm1:
 		{
 			ADC_Show_Flag=0;
-//			Key_Flag=0;
-			Key_Flag=1;
+			Key_Flag=0;
+//			Key_Flag=1;
 			Speed_Mode=M_Mod1;
-//			Servo_Flag=1;
-			Servo_Flag=0;
+			Servo_Flag=1;
+//			Servo_Flag=0;
 			show_test_info("Test for GOP1");
 			GO_PID_Control1=1;
 			
@@ -243,7 +243,7 @@ void Turn_mode_Init(void)
 		{
 			ADC_Show_Flag=1;
 			Key_Flag=1;
-			Servo_Flag=0;
+			Servo_Flag=1;
 			show_test_info("Test for ADC_Show");
 			break;
 		}
@@ -406,13 +406,15 @@ void Servo_Control(void)
 		}
 		else
 		{
-			pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value,ADC_Falg));
+			Help_turn2(&dajiao,Help_Value,ADC_Falg);
+			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
 //			pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 		}
 	}
 	else
 	{
-		pwm_set_duty(Servo_Pwm,Help_turn2(Servo_Mide+dajiao,Help_Value,ADC_Falg));
+		Help_turn2(&dajiao,Help_Value,ADC_Falg);
+		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
 //		pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 	}
 }

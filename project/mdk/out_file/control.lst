@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  control                                                            14/10/25  22:04:29  PAGE 1   
+C251 COMPILER V5.60.0,  control                                                            15/10/25  19:19:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE control
@@ -66,7 +66,7 @@ stmt  level    source
    55   1              return (int)out;
    56   1      }
    57          
-C251 COMPILER V5.60.0,  control                                                            14/10/25  22:04:29  PAGE 2   
+C251 COMPILER V5.60.0,  control                                                            15/10/25  19:19:09  PAGE 2   
 
    58          /*
    59          *右电机增量式pi控制器
@@ -134,7 +134,7 @@ stmt  level    source
   121   2          }
   122   1      }
   123          /*
-C251 COMPILER V5.60.0,  control                                                            14/10/25  22:04:29  PAGE 3   
+C251 COMPILER V5.60.0,  control                                                            15/10/25  19:19:09  PAGE 3   
 
   124           * 函数功能：电机驱动更新
   125           * 函数名称：Motor_Update(0);
@@ -202,7 +202,7 @@ stmt  level    source
   187   3                              M_left_pid.Kp = ML_KP1;
   188   3                              M_left_pid.Ki = ML_KI1;
   189   3                              M_Right_pid.Kp = MR_KP1;
-C251 COMPILER V5.60.0,  control                                                            14/10/25  22:04:29  PAGE 4   
+C251 COMPILER V5.60.0,  control                                                            15/10/25  19:19:09  PAGE 4   
 
   190   3                              M_Right_pid.Ki = MR_KI1;
   191   3                      }break;
@@ -270,7 +270,7 @@ stmt  level    source
   253   1      }
   254          
   255          /*
-C251 COMPILER V5.60.0,  control                                                            14/10/25  22:04:29  PAGE 5   
+C251 COMPILER V5.60.0,  control                                                            15/10/25  19:19:09  PAGE 5   
 
   256          //*位置式pi控制
   257          //左路速度环控制

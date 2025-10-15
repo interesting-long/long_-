@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   4                              }
    56   3                              case GO_Pararm3: 
    57   3                              {
-C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 2   
 
    58   4                                      GO_Function();
    59   4                                      break;
@@ -134,7 +134,7 @@ stmt  level    source
   121   1              if(T>=4)
   122   1              {
   123   2                      T=0;
-C251 COMPILER V5.60.0,  main                                                               14/10/25  22:04:29  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 3   
 
   124   2                      Protect();
   125   2                      if(Key_Flag)//°´¼ü¼ì²â
