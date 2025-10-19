@@ -1,6 +1,8 @@
 #include "control.h"
 
 unsigned char CAR_Mode=STOP;
+float Left_Speed=0;
+float Right_Speed=0;
 void Ser_Servo_Duty(int value)
 {
     pwm_set_duty(Servo_Pwm,value);
@@ -127,43 +129,45 @@ void MotorR_SetSpeed(int pwm)
  * 输出参数：无
  * 可以进行拓展，写速度策略
  */
-void Motor_Update(char X)
+void Motor_Update(float X)
 { 
-	switch(CAR_Mode)
-	{
-		case GO:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control((ML+X)*100));
-			MotorR_SetSpeed(Motor_Right_pi_control((MR+X)*100));
+//	switch(CAR_Mode)
+//	{
+//		case GO:
+//		{
+//			MotorL_SetSpeed(Motor_Left_pi_control((ML+X)*100));
+//			MotorR_SetSpeed(Motor_Right_pi_control((MR+X)*100));
 
-			break;
-		}	
-		case GO_Pararm1:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control((ML1+X)*100));
-			MotorR_SetSpeed(Motor_Right_pi_control((MR1+X)*100));
-			break;
-		}	
-		case GO_Pararm2:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control((ML2+X)*100));
-			MotorR_SetSpeed(Motor_Right_pi_control((MR2+X)*100));
-			break;
-		}	
-		case GO_Pararm3:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control((ML3+X)*100));
-			MotorR_SetSpeed(Motor_Right_pi_control((MR3+X)*100));
-			break;
-		}		
-		default:
-		{
-			MotorL_SetSpeed(0);
-			MotorR_SetSpeed(0);
-			break;
-		}
-	
-	}
+//			break;
+//		}	
+//		case GO_Pararm1:
+//		{
+//			MotorL_SetSpeed(Motor_Left_pi_control((ML1+X)*100));
+//			MotorR_SetSpeed(Motor_Right_pi_control((MR1+X)*100));
+//			break;
+//		}	
+//		case GO_Pararm2:
+//		{
+//			MotorL_SetSpeed(Motor_Left_pi_control((ML2+X)*100));
+//			MotorR_SetSpeed(Motor_Right_pi_control((MR2+X)*100));
+//			break;
+//		}	
+//		case GO_Pararm3:
+//		{
+//			MotorL_SetSpeed(Motor_Left_pi_control((ML3+X)*100));
+//			MotorR_SetSpeed(Motor_Right_pi_control((MR3+X)*100));
+//			break;
+//		}		
+//		default:
+//		{
+//			MotorL_SetSpeed(0);
+//			MotorR_SetSpeed(0);
+//			break;
+//		}
+//	
+//	}
+		MotorL_SetSpeed(Motor_Left_pi_control((Left_Speed+X)*100));
+		MotorR_SetSpeed(Motor_Right_pi_control((Right_Speed+X)*100));
 }
 void PID_Update()
 {  
@@ -293,3 +297,41 @@ void Cycle_Update(void)
 //	else if (out < -8000) out = -8000;
 //    return (int)(out);
 //}
+
+void Speed_diff(float value,float Pargarm)
+{
+	switch(CAR_Mode)
+	{
+		case GO:
+		{
+			Left_Speed=ML-value*Pargarm;
+			Right_Speed=MR+value*Pargarm;
+			break;
+		}
+		case GO_Pararm1:
+		{
+			Left_Speed=ML1-value*Pargarm;
+			Right_Speed=MR1+value*Pargarm;
+			break;
+		}
+		case GO_Pararm2:
+		{
+			Left_Speed=ML2-value*Pargarm;
+			Right_Speed=MR2+value*Pargarm;
+			break;
+		}
+		case GO_Pararm3:
+		{
+			Left_Speed=ML3-value*Pargarm;
+			Right_Speed=MR3+value*Pargarm;
+			break;
+		}
+		default :
+		{
+			Left_Speed=0;
+			Right_Speed=0;
+			M_Right_pid.Last_Out=0;
+			M_Right_pid.Last_Out=0;
+		}
+	}
+}

@@ -1,17 +1,17 @@
 #include "menu_font.h"
 float Num[Num_Col][Page_Row_Number]={
-        {-1  ,1   ,2  ,3  ,4  ,-1 ,10 ,-1 ,-1,72,220,50,400},
-        {-1  ,28  ,0  ,6 ,6 ,12,250,30 ,0  ,65 },//GO模式
-        {-1  ,-1  ,0  ,6.2  ,6.2,12 ,250,30 ,0  ,65},//GPO1模式
-        {-1  ,-1  ,0  ,27 ,27 ,6 ,280,35 ,0  ,60},//GPO2模式
+        {-1  ,1   ,2  ,3  ,4  ,-1 ,3 ,-1 ,-1,72,220,50,400},
+        {-1  ,-1  ,0  ,6 ,6 ,12,250,30 ,0  ,65 },//GO模式
+        {-1  ,-1  ,10  ,6  ,6,12 ,245,5 ,10  ,67},//GPO1模式//4环岛
+        {-1  ,-1  ,0  ,6.8 ,6.8 ,6 ,240,15 ,0  ,67},//GPO2模式
         {-1  ,-1  ,0  ,29 ,29 ,6 ,270,30 ,0  ,60 },//GPO3模式
         {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
 		{-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
         {-1  ,1.5   ,20 ,2  ,20 ,0.5 ,8 ,-5 ,25, 40,40},//速度策略参数gpo1
 		
-		{-1  ,30  ,300 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
-		{-1  ,32  ,320 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
-		{-1  ,33  ,330 ,6  ,1,6 ,1,-1 ,-1,-1 },//GPO2pid
+		{-1  ,33  ,330 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
+		{-1  ,34.5  ,345 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
+		{-1  ,36  ,360 ,13  ,3.5,13 ,3.5,-1 ,-1,-1 },//GPO2pid
 		{-1  ,34  ,340 ,6  ,1,6 ,1,-1 ,-1,-1 }};//GPO3pid
 
 unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],Page[2]，Page[3]，Page[4]，
@@ -20,6 +20,7 @@ unsigned char Page1_children[Page_Row_Number+1]={0, 8};
 unsigned char Page2_children[Page_Row_Number+1]={0, 9};
 unsigned char Page3_children[Page_Row_Number+1]={0, 10};
 unsigned char Page4_children[Page_Row_Number+1]={0, 11};
+
 
 /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
  *结构体第二行是   显示的数据
@@ -30,13 +31,13 @@ struct Menu Page[Struct_Number]={
     {   0,
             {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Valu2","ADC_F2"}},
     {   1,
-            {"back","PID","Mode","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
+            {"back","PID","Mode","L_PWM","R_PWM","J_time","C_time","D_Time","LorR","turn"}},
     {   2,
-            {"back","PID","Mode","R_PWM1","L_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
+            {"back","PID","Mode","L_PWM1","R_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
     {   3,
-            {"back","PID","Mode","R_PWM2","L_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
+            {"back","PID","Mode","L_PWM2","R_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
     {   4,
-            {"back","PID","Mode","R_PWM3","L_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
+            {"back","PID","Mode","L_PWM3","R_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
     {   5,
             {"back","PWM","Servo","S_Value","","","","",""}},
     {   6,

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   4                              }
    56   3                              case GO_Pararm3: 
    57   3                              {
-C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 2   
 
    58   4                                      GO_Function();
    59   4                                      break;
@@ -121,42 +121,43 @@ stmt  level    source
   108   1              
   109   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
   110   1              {
-  111   2                      if(Speed_Mode>5)
-  112   2                      {
-  113   3                      State_of_road();
-  114   3                      }
-  115   2                      else
-  116   2                      {
-  117   3                      Speed_Control();
-  118   3                      }
-  119   2              }
-  120   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
-  121   1              if(T>=4)
-  122   1              {
-  123   2                      T=0;
-C251 COMPILER V5.60.0,  main                                                               15/10/25  19:19:08  PAGE 3   
+  111   2                      Speed_diff((float)(dajiao)/100,0.8);
+  112   2                      if(Speed_Mode>5)
+  113   2                      {
+  114   3                              State_of_road();
+  115   3                      }
+  116   2                      else
+  117   2                      {
+  118   3                              Speed_Control();
+  119   3                      }
+  120   2              }
+  121   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
+  122   1              if(T>=4)
+  123   1              {
+C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 3   
 
-  124   2                      Protect();
-  125   2                      if(Key_Flag)//按键检测
-  126   2                      {
-  127   3                              Key_scaner();
-  128   3                      }
-  129   2                      if(ADC_Show_Flag)//ADC显示
-  130   2                      {
-  131   3                              Show_pararm();
-  132   3                      }
-  133   2              }
-  134   1      }
-  135          
-  136          //void pit_handler2(void)
-  137          //{
-  138          //      
-  139          //}
+  124   2                      T=0;
+  125   2                      Protect();
+  126   2                      if(Key_Flag)//按键检测
+  127   2                      {
+  128   3                              Key_scaner();
+  129   3                      }
+  130   2                      if(ADC_Show_Flag)//ADC显示
+  131   2                      {
+  132   3                              Show_pararm();
+  133   3                      }
+  134   2              }
+  135   1      }
+  136          
+  137          //void pit_handler2(void)
+  138          //{
+  139          //      
+  140          //}
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       352     ------
+  code size            =       383     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

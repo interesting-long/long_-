@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          15/10/25  21:32:39  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          18/10/25  20:36:30  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,18 +11,18 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,10 ,-1 ,-1,72,220,50,400},
-    4                  {-1  ,28  ,0  ,6 ,6 ,12,250,30 ,0  ,65 },//GO模式
-    5                  {-1  ,-1  ,0  ,6.2  ,6.2,12 ,250,30 ,0  ,65},//GPO1模式
-    6                  {-1  ,-1  ,0  ,27 ,27 ,6 ,280,35 ,0  ,60},//GPO2模式
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,3 ,-1 ,-1,72,220,50,400},
+    4                  {-1  ,-1  ,0  ,6 ,6 ,12,250,30 ,0  ,65 },//GO模式
+    5                  {-1  ,-1  ,10  ,6  ,6,12 ,245,5 ,10  ,67},//GPO1模式//4环岛
+    6                  {-1  ,-1  ,0  ,6.8 ,6.8 ,6 ,240,15 ,0  ,67},//GPO2模式
     7                  {-1  ,-1  ,0  ,29 ,29 ,6 ,270,30 ,0  ,60 },//GPO3模式
     8                  {-1  ,-1  ,-1 ,840,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
    10                  {-1  ,1.5   ,20 ,2  ,20 ,0.5 ,8 ,-5 ,25, 40,40},//速度策略参数gpo1
    11                          
-   12                          {-1  ,30  ,300 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
-   13                          {-1  ,32  ,320 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
-   14                          {-1  ,33  ,330 ,6  ,1,6 ,1,-1 ,-1,-1 },//GPO2pid
+   12                          {-1  ,33  ,330 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
+   13                          {-1  ,34.5  ,345 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
+   14                          {-1  ,36  ,360 ,13  ,3.5,13 ,3.5,-1 ,-1,-1 },//GPO2pid
    15                          {-1  ,34  ,340 ,6  ,1,6 ,1,-1 ,-1,-1 }};//GPO3pid
    16          
    17          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//子字节菜单,第二三四五行转到Page[1],
@@ -33,46 +33,47 @@ stmt  level    source
    21          unsigned char Page3_children[Page_Row_Number+1]={0, 10};
    22          unsigned char Page4_children[Page_Row_Number+1]={0, 11};
    23          
-   24          /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
-   25           *结构体第二行是   显示的数据
-   26           *结构体第三行是   父指针用(函数自动配置）
-   27           *结构体第四行是   子指针数组(位置对应行数)用函数配置
-   28           */
-   29          struct Menu Page[Struct_Number]={
-   30              {   0,
-   31                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Valu2","ADC_F2
+   24          
+   25          /*结构体第一行是   序列号————用于控制显示数据的逻辑(序列号是多少，就显示哪一数组的数据)
+   26           *结构体第二行是   显示的数据
+   27           *结构体第三行是   父指针用(函数自动配置）
+   28           *结构体第四行是   子指针数组(位置对应行数)用函数配置
+   29           */
+   30          struct Menu Page[Struct_Number]={
+   31              {   0,
+   32                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Valu2","ADC_F2
              -"}},
-   32              {   1,
-   33                      {"back","PID","Mode","R_PWM","L_PWM","J_time","C_time","D_Time","LorR","turn"}},
-   34              {   2,
-   35                      {"back","PID","Mode","R_PWM1","L_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
-   36              {   3,
-   37                      {"back","PID","Mode","R_PWM2","L_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
-   38              {   4,
-   39                      {"back","PID","Mode","R_PWM3","L_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
-   40              {   5,
-   41                      {"back","PWM","Servo","S_Value","","","","",""}},
-   42              {   6,
-   43                      {"back","LPWM","RPWM","","","","","",""}},
-   44                  {   7,
-   45                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_sped","Be_J_T","L_T_B_V","L_T_B_T","S_Val","B_Va
+   33              {   1,
+   34                      {"back","PID","Mode","L_PWM","R_PWM","J_time","C_time","D_Time","LorR","turn"}},
+   35              {   2,
+   36                      {"back","PID","Mode","L_PWM1","R_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
+   37              {   3,
+   38                      {"back","PID","Mode","L_PWM2","R_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
+   39              {   4,
+   40                      {"back","PID","Mode","L_PWM3","R_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
+   41              {   5,
+   42                      {"back","PWM","Servo","S_Value","","","","",""}},
+   43              {   6,
+   44                      {"back","LPWM","RPWM","","","","","",""}},
+   45                  {   7,
+   46                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_sped","Be_J_T","L_T_B_V","L_T_B_T","S_Val","B_Va
              -l"}},
-   46                  {   8,
-   47                      {"back","S_KP","S_KD","ML_KP","ML_KI","MR_KP","MR_KI","",""}},
-   48                  {   9,
-   49                      {"back","S_KP1","S_KD1","ML_KP1","ML_KI1","MR_KP1","MR_KI1","",""}},
-   50                  {   10,
-   51                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
-   52                  {   11,
-   53                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
-   54          };
-C251 COMPILER V5.60.0,  menu_font                                                          15/10/25  21:32:39  PAGE 2   
+   47                  {   8,
+   48                      {"back","S_KP","S_KD","ML_KP","ML_KI","MR_KP","MR_KI","",""}},
+   49                  {   9,
+   50                      {"back","S_KP1","S_KD1","ML_KP1","ML_KI1","MR_KP1","MR_KI1","",""}},
+   51                  {   10,
+   52                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
+   53                  {   11,
+   54                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
+C251 COMPILER V5.60.0,  menu_font                                                          18/10/25  20:36:30  PAGE 2   
 
-   55          
-   56          struct Menu *Pin=&Page[0];//灵活指针
-   57          
-   58          //ADC采样参数                                                           
-   59          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC采样值
+   55          };
+   56          
+   57          struct Menu *Pin=&Page[0];//灵活指针
+   58          
+   59          //ADC采样参数                                                           
+   60          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC采样值
 
 
 Module Information          Static   Overlayable

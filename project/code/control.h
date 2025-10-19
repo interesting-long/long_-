@@ -31,11 +31,12 @@ typedef enum
 	Seta_Servo
 }MODE;
 extern unsigned char CAR_Mode;
-
+extern float Left_Speed;
+extern float Right_Speed;
 float pid_control_tyre(float error);
 /*外部调用函数*/
 int Servo_turn_pid(float Current);
-void Motor_Update(char X);
+void Motor_Update(float X);
 void PID_Update();
 void Cycle_Update(void);
 //int Motor_left_pid(int point);
@@ -46,4 +47,5 @@ int Motor_Right_pi_control(int point);
 void MotorL_SetSpeed(int pwm);
 void MotorR_SetSpeed(int pwm);
 void Ser_Servo_Duty(int value);
+void Speed_diff(float value,float Pargarm);
 #endif

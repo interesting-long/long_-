@@ -354,42 +354,8 @@ void speed_control_ring(void)
 
 void Speed_Control(void)
 {
-	switch(CAR_Mode)
-	{
-		case GO:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control(ML*100));
-			MotorR_SetSpeed(Motor_Right_pi_control(MR*100));
-			break;
-		}	
-		case GO_Pararm1:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control(ML1*100));
-			MotorR_SetSpeed(Motor_Right_pi_control(MR1*100));
-			break;
-		}	
-		case GO_Pararm2:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control(ML2*100));
-			MotorR_SetSpeed(Motor_Right_pi_control(MR2*100));
-			break;
-		}	
-		case GO_Pararm3:
-		{
-			MotorL_SetSpeed(Motor_Left_pi_control(ML3*100));
-			MotorR_SetSpeed(Motor_Right_pi_control(MR3*100));
-			break;
-		}		
-		default:
-		{
-			MotorL_SetSpeed(0);
-			MotorR_SetSpeed(0);
-			M_left_pid.Last_Out=0;
-			M_Right_pid.Last_Out=0;
-			break;
-		}
-	
-	}
+	MotorL_SetSpeed(Motor_Left_pi_control(Left_Speed*100));
+	MotorR_SetSpeed(Motor_Right_pi_control(Right_Speed*100));
 }
 
 void Servo_Control(void)

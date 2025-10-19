@@ -103,68 +103,61 @@ int Help_turn()
 }
 void Help_turn2(int* temp, int value, int ADC_Flag)
 {
-    static int count_left = 0;   // 记录左侧条件满足的次数
-    static int count_right = 0;  // 记录右侧条件满足的次数
+    static int last_dir = 0;    // -1 左，+1 右，0 未定
+    static int first_double = 1; // 是否是第一次进入“双小”状态
+
     int left  = ADC_1 + ADC_2;
     int right = ADC_3 + ADC_4;
-    const int threshold = 15;
+    const int delta = 15;  // 左右接近的最小差值门限
 
     if (left < ADC_Flag && right < ADC_Flag)
     {
-        // 第一次判断时立即执行
-        if (count_left == 0 && count_right == 0)
+        if (first_double) // ★第一次双小
         {
             if (left < right)
             {
                 *temp = -value;   // 左
+                last_dir = -1;
             }
             else
             {
                 *temp = value;    // 右
+                last_dir = 1;
             }
+            first_double = 0; // 标记已经处理过第一次
         }
-        else
+        else // ★后续双小
         {
-            // 开始计次
-            if (left < right)
+            if (abs(left - right) < delta)
             {
-                count_left++;
-                count_right = 0;  // 清除右侧计数
-                // 计数达到阈值时才改变方向
-                if (count_left >= threshold)
-                {
-                    *temp = -value;   // 左
-                    count_left = 0;   // 重置计数器
-					
-                }
+                // 按照上次方向走
+                if (last_dir == -1) *temp = -value;
+                else if (last_dir == 1) *temp = value;
+                else *temp = value; // 默认
+            }
+            else if (left < right)
+            {
+                *temp = -value;
+                last_dir = -1;
             }
             else
             {
-                count_right++;
-                count_left = 0;  // 清除左侧计数
-                // 计数达到阈值时才改变方向
-                if (count_right >= threshold)
-                {
-                    *temp = value;    // 右
-                    count_right = 0;  // 重置计数器
-					
-                }
+                *temp = value;
+                last_dir = 1;
             }
         }
     }
     else if (left < ADC_Flag)
     {
-        // 不需要计次，立即执行左转
-        *temp = -value;   // 左
-        count_left = 0;    // 清除计数器
-		count_right = 0;
+        *temp = -value;
+        last_dir = -1;
+        first_double = 1; // 重置，下次再遇到“双小”时重新走第一次逻辑
     }
     else if (right < ADC_Flag)
     {
-        // 不需要计次，立即执行右转
-        *temp = value;    // 右
-        count_right = 0;   // 清除计数器
-		count_left = 0;
+        *temp = value;
+        last_dir = 1;
+        first_double = 1; // 同上
     }
 }
 
@@ -246,9 +239,10 @@ int State_of_road(void)
 				Bend_Time++;
 				if(Bend_Time>Bend_Judge_Time)
 				{
-					if(Accel_Time>200)//加速时间1.5s
+					if(Accel_Time>180)//加速时间1.5s
 					{
 						Road_Stat=Long_Bend;
+						SLOW_Time = 0;
 					}
 					else
 					{
