@@ -37,6 +37,8 @@ float pid_control_tyre(float error);
 /*外部调用函数*/
 int Servo_turn_pid(float Current);
 void Motor_Update(float X);
+void Motor_Update_Smooth(float target);
+
 void PID_Update();
 void Cycle_Update(void);
 //int Motor_left_pid(int point);

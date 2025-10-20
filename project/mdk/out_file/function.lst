@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 1   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE function
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          return (fast_sqrt(left_1) - fast_sqrt(right_1)) * (100.0f / he);
    55   1      }
    56          /*快速开方函数*/
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 2   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 2   
 
    57          float fast_sqrt(float number) 
    58          {
@@ -134,7 +134,7 @@ stmt  level    source
   120   1              
   121   1              
   122   1              ADC_GetInit();
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 3   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 3   
 
   123   1              tft180_init();
   124   1              system_delay_ms(100);
@@ -202,7 +202,7 @@ stmt  level    source
   186   3                              ADC_Show_Flag=0;
   187   3                              Key_Flag=0;
   188   3      //                      Key_Flag=1;
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 4   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 4   
 
   189   3                              Speed_Mode=M_Mod1;
   190   3                              Servo_Flag=1;
@@ -270,7 +270,7 @@ stmt  level    source
   252   3                              Key_Flag=1;
   253   3                              Servo_Flag=0;
   254   3                              show_test_info("Test for Seta_Servo");
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 5   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 5   
 
   255   3                              break;
   256   3                      }
@@ -338,7 +338,7 @@ stmt  level    source
   318   2                      {
   319   3                              tft180_show_string(0,0*16,"Value:");tft180_show_int16(5*8,0*16,S_Value);
   320   3                      }break;
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 6   
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 6   
 
   321   2              }
   322   1      
@@ -396,17 +396,17 @@ stmt  level    source
   372   3                      }
   373   2                      else
   374   2                      {
-  375   3                              Help_turn2(&dajiao,Help_Value,ADC_Falg);
-  376   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-  377   3      //                      pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
+  375   3      //                      Help_turn2(&dajiao,Help_Value,ADC_Falg);
+  376   3                              Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
+  377   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
   378   3                      }
   379   2              }
   380   1              else
   381   1              {
-  382   2                      Help_turn2(&dajiao,Help_Value,ADC_Falg);
-  383   2                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-  384   2      //              pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
-C251 COMPILER V5.60.0,  function                                                           17/10/25  22:13:09  PAGE 7   
+  382   2      //              Help_turn2(&dajiao,Help_Value,ADC_Falg);
+  383   2                      Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
+  384   2                      pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+C251 COMPILER V5.60.0,  function                                                           19/10/25  14:53:57  PAGE 7   
 
   385   2              }
   386   1      }
@@ -414,7 +414,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3151     ------
+  code size            =      3227     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

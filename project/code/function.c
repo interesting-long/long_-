@@ -372,15 +372,15 @@ void Servo_Control(void)
 		}
 		else
 		{
-			Help_turn2(&dajiao,Help_Value,ADC_Falg);
+//			Help_turn2(&dajiao,Help_Value,ADC_Falg);
+			Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
 			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-//			pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 		}
 	}
 	else
 	{
-		Help_turn2(&dajiao,Help_Value,ADC_Falg);
+//		Help_turn2(&dajiao,Help_Value,ADC_Falg);
+		Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
 		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
-//		pwm_set_duty(Servo_Pwm,Help_turn_Two(Servo_Mide+dajiao,Help_Value,Help_Value2,ADC_Falg,ADC_Falg2));
 	}
 }

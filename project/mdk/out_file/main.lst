@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   4                              }
    56   3                              case GO_Pararm3: 
    57   3                              {
-C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 2   
 
    58   4                                      GO_Function();
    59   4                                      break;
@@ -134,7 +134,7 @@ stmt  level    source
   121   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
   122   1              if(T>=4)
   123   1              {
-C251 COMPILER V5.60.0,  main                                                               17/10/25  22:13:09  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 3   
 
   124   2                      T=0;
   125   2                      Protect();

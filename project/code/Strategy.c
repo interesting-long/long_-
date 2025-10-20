@@ -161,6 +161,106 @@ void Help_turn2(int* temp, int value, int ADC_Flag)
     }
 }
 
+void Help_turn3(int* temp, int value, int value2,int ADC_Flag ,int ADC_Flag2)
+{
+	//value2>value1,ADC_Flag1>ADC_Flag2
+    static int last_dir = 0;    // -1 左，+1 右，0 未定
+    static int first_double = 1; // 是否是第一次进入“双小”状态
+    int left  = ADC_1 + ADC_2;
+    int right = ADC_3 + ADC_4;
+	float K = (float)(value2 - value) / (ADC_Flag - ADC_Flag2);
+    const int delta = 15;  // 左右接近的最小差值门限
+
+    if (left < ADC_Flag && right < ADC_Flag)
+    {
+		if (left < ADC_Flag2 && right < ADC_Flag2)
+		{
+			if (first_double) // ★第一次双小
+			{
+				if (left < right)
+				{
+					*temp = -value2;   // 左
+					last_dir = -1;
+				}
+				else
+				{
+					*temp = value2;    // 右
+					last_dir = 1;
+				}
+				first_double = 0; // 标记已经处理过第一次
+			}
+			else // ★后续双小
+			{
+				if (abs(left - right) < delta)
+				{
+					// 按照上次方向走
+					if (last_dir == -1) *temp = -value2;
+					else if (last_dir == 1) *temp = value2;
+					else *temp = value2; // 默认
+					    // 向左转
+      // 向右转
+				}
+				else if (left < right)
+				{
+					*temp = -value2;
+					last_dir = -1;
+				}
+				else
+				{
+					*temp = value2;
+					last_dir = 1;
+				}
+			}
+		}
+		else if(left < ADC_Flag2)
+		{
+			*temp = -value2;
+			last_dir = -1;
+			first_double = 1; 
+		}
+		else if(right < ADC_Flag2)
+		{
+			*temp = value2;
+			last_dir = 1;
+			first_double = 1; // 同上
+		}
+		else
+		{
+			if (abs(left - right) < delta)
+			{
+				// 按照上次方向走
+				if (last_dir == -1) *temp = -value;
+				else if (last_dir == 1) *temp = value;
+				else *temp = value; 
+			}
+//			else if (left < right)
+//			{
+//				*temp = -(value + (ADC_Flag - left) * K);
+//				last_dir = -1;
+//				first_double = 1; 
+//			}
+//			else
+//			{
+//				*temp = value + (ADC_Flag - right) * K;
+//				last_dir = 1;
+//				first_double = 1; 
+//			}
+		}
+    }
+    else if (left < ADC_Flag)
+    {
+        *temp = -(value + (ADC_Flag - left) * K);
+		last_dir = -1;
+		first_double = 1; 
+    }
+    else if (right < ADC_Flag)
+    {
+		*temp = value + (ADC_Flag - right) * K;
+		last_dir = 1;
+		first_double = 1; 
+    }
+}
+
 int Help_turn_Two(int temp, int value, int value2, int ADC_Flag, int ADC_Flag2)
 {
     int left  = ADC_1 + ADC_2;
@@ -204,7 +304,7 @@ int State_of_road(void)
 	{
 		case Short_Str:
 		{
-			Motor_Update(Short_add);
+			Motor_Update_Smooth(Short_add);
 			if(abs(dajiao)<Stright_Flag_Value)
 			{
 				Long_Time++;
@@ -232,7 +332,7 @@ int State_of_road(void)
 		}
 		case Long_Str:
 		{
-			Motor_Update(Long_add);
+			Motor_Update_Smooth(Long_add);
 			Accel_Time++;
 			if(abs(dajiao)>Bend_Flag_Value)
 			{
@@ -261,7 +361,7 @@ int State_of_road(void)
 		}
 		case Short_Bend:
 		{
-			Motor_Update(Bend_speed);
+			Motor_Update_Smooth(Bend_speed);
 			if(abs(dajiao)>Bend_Flag_Value)
 			{
 				Short_Time=0;
@@ -284,13 +384,13 @@ int State_of_road(void)
 			if(SLOW_Time>L_Turn_B_Slow_Time)
 			{
 				Buzzer_OFF();
-				Motor_Update(Bend_speed);//弯道速度
+				Motor_Update_Smooth(Bend_speed);//弯道速度
 			}
 			else
 			{
 				Buzzer_ON();
 				
-				Motor_Update(L_Turn_B_Slow_Value);//减速
+				Motor_Update_Smooth(L_Turn_B_Slow_Value);//减速
 			}
 			//检查是否回到了直道
 			if(abs(dajiao)<Bend_Flag_Value)
@@ -329,3 +429,5 @@ int State_of_road(void)
 	
 	}
 }
+
+

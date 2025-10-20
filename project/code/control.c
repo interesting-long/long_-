@@ -3,6 +3,8 @@
 unsigned char CAR_Mode=STOP;
 float Left_Speed=0;
 float Right_Speed=0;
+
+float Current_Speed = 0;   // 当前实际输出速度
 void Ser_Servo_Duty(int value)
 {
     pwm_set_duty(Servo_Pwm,value);
@@ -168,6 +170,22 @@ void Motor_Update(float X)
 //	}
 		MotorL_SetSpeed(Motor_Left_pi_control((Left_Speed+X)*100));
 		MotorR_SetSpeed(Motor_Right_pi_control((Right_Speed+X)*100));
+}
+// 每次调用时将 Current_Speed 缓慢逼近目标速度
+void Motor_Update_Smooth(float target)
+{
+    float step = 0.2;  // 每次变化的最大步长，可以调节平滑程度
+    if(Current_Speed < target)
+    {
+        Current_Speed += step;
+        if(Current_Speed > target) Current_Speed = target;
+    }
+    else if(Current_Speed > target)
+    {
+        Current_Speed -= step;
+        if(Current_Speed < target) Current_Speed = target;
+    }
+    Motor_Update(Current_Speed);  // 实际更新电机
 }
 void PID_Update()
 {  
