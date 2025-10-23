@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Device_Test                                                        19/10/25  14:22:52  PAGE 1   
+C251 COMPILER V5.60.0,  Device_Test                                                        23/10/25  21:28:05  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Device_Test
@@ -41,13 +41,13 @@ stmt  level    source
    30          
    31          void Set_Sevo(void)
    32          {
-   33   1              Ser_Servo_Duty(S_Value);
+   33   1              Ser_Servo_Duty(S_Value*10);
    34   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       154     ------
+  code size            =       163     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

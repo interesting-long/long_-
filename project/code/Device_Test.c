@@ -30,5 +30,5 @@ void PWM_Test(void)
 
 void Set_Sevo(void)
 {
-	Ser_Servo_Duty(S_Value);
+	Ser_Servo_Duty(S_Value*10);
 }

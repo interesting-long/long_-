@@ -51,7 +51,7 @@ float unification(void)
 
     int32_t he = left_2 + right_2;
     if (he < 10) return 0.0f;
-    return (fast_sqrt(left_1) - fast_sqrt(right_1)) * (100.0f / he);
+    return (fast_sqrt(left_1) - fast_sqrt(right_1)) * (1000.0f / he);
 }
 /*快速开方函数*/
 float fast_sqrt(float number) 
@@ -73,7 +73,7 @@ float fast_sqrt(float number)
 /*电机初始化*/
 void Motor_Init(void)
 {
-    pwm_init(Servo_Pwm,50,Servo_Mide);
+//    pwm_init(Servo_Pwm,50,Servo_Mide);
     pwm_init(MotorL_pwm2, 17000, 0);
     pwm_init(MotorL_pwm1, 17000, 0);
     pwm_init(MotorR_pwm2, 17000, 0);
@@ -83,7 +83,7 @@ void Motor_Init(void)
 
 void Servo_Init()
 {
-    pwm_init(Servo_Pwm,50,Servo_Mide);
+    pwm_init(Servo_Pwm,330,Servo_Mide);
 }
 void CAR_STOP()
 {
@@ -275,7 +275,7 @@ void Show_pararm()
 			tft180_show_string(0,1*16,"Enc2:");tft180_show_int16(5*8,1*16,encoder_data_dir_2);
 			tft180_show_string(0,2*16,"ML:");tft180_show_int16(5*8,2*16,Motor_Left_pi_control(ML*100));
 			tft180_show_string(0,3*16,"MR:");tft180_show_int16(5*8,3*16,Motor_Right_pi_control(MR*100));
-//			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
+			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
 //			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
 //			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
 //			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);
@@ -310,6 +310,8 @@ void Show_pararm()
 			tft180_show_string(0,1*16,"ADC2:");tft180_show_int16(5*8,1*16,ADC_2);
 			tft180_show_string(0,2*16,"ADC3:");tft180_show_int16(5*8,2*16,ADC_3);
 			tft180_show_string(0,3*16,"ADC4:");tft180_show_int16(5*8,3*16,ADC_4);
+			tft180_show_string(0,4*16,"Enc1:");tft180_show_int16(5*8,4*16,encoder_data_dir_1);
+			tft180_show_string(0,5*16,"Enc2:");tft180_show_int16(5*8,5*16,encoder_data_dir_2);
 //			tft180_show_string(0,4*16,"Help");tft180_show_int16(5*8,4*16,Help_turn());
 //			tft180_show_int16(5*8,5*16,encoder_data_dir_1);
 //			tft180_show_int16(5*8,6*16,encoder_data_dir_2);
@@ -372,15 +374,13 @@ void Servo_Control(void)
 		}
 		else
 		{
-//			Help_turn2(&dajiao,Help_Value,ADC_Falg);
-			Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
-			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+			Help_turn2(dajiao,Help_Value,ADC_Falg);
+//			pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
 		}
 	}
 	else
 	{
-//		Help_turn2(&dajiao,Help_Value,ADC_Falg);
-		Help_turn3(&dajiao, Help_Value2, Help_Value,ADC_Falg2 ,ADC_Falg);
-		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
+		Help_turn2(dajiao,Help_Value,ADC_Falg);
+//		pwm_set_duty(Servo_Pwm,Servo_Mide+dajiao);
 	}
 }

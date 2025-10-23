@@ -5,6 +5,7 @@ float Left_Speed=0;
 float Right_Speed=0;
 
 float Current_Speed = 0;   // 当前实际输出速度
+float Current_dajiao = 0;  
 void Ser_Servo_Duty(int value)
 {
     pwm_set_duty(Servo_Pwm,value);
@@ -174,7 +175,7 @@ void Motor_Update(float X)
 // 每次调用时将 Current_Speed 缓慢逼近目标速度
 void Motor_Update_Smooth(float target)
 {
-    float step = 0.2;  // 每次变化的最大步长，可以调节平滑程度
+    float step = 0.15;  // 每次变化的最大步长，可以调节平滑程度
     if(Current_Speed < target)
     {
         Current_Speed += step;
@@ -352,4 +353,19 @@ void Speed_diff(float value,float Pargarm)
 			M_Right_pid.Last_Out=0;
 		}
 	}
+}
+
+void Svero_Update_Smooth(float target)
+{
+    float step = 2;  // 每次变化的最大步长，可以调节平滑程度
+    if(Current_dajiao < target)
+    {
+        Current_dajiao += step;
+        if(Current_dajiao > target) Current_dajiao = target;
+    }
+    else if(Current_dajiao > target)
+    {
+        Current_dajiao -= step;
+        if(Current_dajiao < target) Current_dajiao = target;
+    }
 }

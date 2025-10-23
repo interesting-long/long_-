@@ -108,7 +108,7 @@ void pit_handler1(void)
 	
 	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//ËÙ¶È²ßÂÔ
 	{
-		Speed_diff((float)(dajiao)/100,0.8);
+		Speed_diff((float)(dajiao)/100,0.2);
 		if(Speed_Mode>5)
 		{
 			State_of_road();

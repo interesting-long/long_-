@@ -32,18 +32,18 @@ unsigned char Key_Number(void)
 //    if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
 //    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
 	
-//	if(gpio_get_level(IO_P45)==0){KeyNumber=1;}//下
-//    if(gpio_get_level(IO_P26)==0){KeyNumber=2;}//右
-//    if(gpio_get_level(IO_P46)==0){KeyNumber=3;}//左
-//    if(gpio_get_level(IO_P07)==0){KeyNumber=4;}//上
-//	if(gpio_get_level(IO_P52)==0){KeyNumber=5;}//中46,45,07
+	if(gpio_get_level(IO_P45)==0){KeyNumber=1;}//下
+    if(gpio_get_level(IO_P26)==0){KeyNumber=2;}//右
+    if(gpio_get_level(IO_P46)==0){KeyNumber=3;}//左
+    if(gpio_get_level(IO_P07)==0){KeyNumber=4;}//上
+	if(gpio_get_level(IO_P52)==0){KeyNumber=5;}//中46,45,07
 	
-	
-	if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
-    if(gpio_get_level(IO_P33)==0){KeyNumber=2;}//右
-    if(gpio_get_level(IO_P53)==0){KeyNumber=3;}//左
-    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
-	if(gpio_get_level(IO_P07)==0){KeyNumber=5;}//中46,45,07
+//	
+//	if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
+//    if(gpio_get_level(IO_P33)==0){KeyNumber=2;}//右
+//    if(gpio_get_level(IO_P53)==0){KeyNumber=3;}//左
+//    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
+//	if(gpio_get_level(IO_P07)==0){KeyNumber=5;}//中46,45,07
     return KeyNumber;
 }
 void Turn_mode(void)

@@ -38,7 +38,8 @@ float pid_control_tyre(float error);
 int Servo_turn_pid(float Current);
 void Motor_Update(float X);
 void Motor_Update_Smooth(float target);
-
+void Svero_Update_Smooth(float target);
+	
 void PID_Update();
 void Cycle_Update(void);
 //int Motor_left_pid(int point);

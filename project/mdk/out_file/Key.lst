@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Key                                                                19/10/25  14:22:51  PAGE 1   
+C251 COMPILER V5.60.0,  Key                                                                23/10/25  21:28:05  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Key
@@ -43,18 +43,18 @@ stmt  level    source
    32   1      //    if(gpio_get_level(IO_P45)==0){KeyNumber=3;}//左
    33   1      //    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
    34   1              
-   35   1      //      if(gpio_get_level(IO_P45)==0){KeyNumber=1;}//下
-   36   1      //    if(gpio_get_level(IO_P26)==0){KeyNumber=2;}//右
-   37   1      //    if(gpio_get_level(IO_P46)==0){KeyNumber=3;}//左
-   38   1      //    if(gpio_get_level(IO_P07)==0){KeyNumber=4;}//上
-   39   1      //      if(gpio_get_level(IO_P52)==0){KeyNumber=5;}//中46,45,07
+   35   1              if(gpio_get_level(IO_P45)==0){KeyNumber=1;}//下
+   36   1          if(gpio_get_level(IO_P26)==0){KeyNumber=2;}//右
+   37   1          if(gpio_get_level(IO_P46)==0){KeyNumber=3;}//左
+   38   1          if(gpio_get_level(IO_P07)==0){KeyNumber=4;}//上
+   39   1              if(gpio_get_level(IO_P52)==0){KeyNumber=5;}//中46,45,07
    40   1              
-   41   1              
-   42   1              if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
-   43   1          if(gpio_get_level(IO_P33)==0){KeyNumber=2;}//右
-   44   1          if(gpio_get_level(IO_P53)==0){KeyNumber=3;}//左
-   45   1          if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
-   46   1              if(gpio_get_level(IO_P07)==0){KeyNumber=5;}//中46,45,07
+   41   1      //      
+   42   1      //      if(gpio_get_level(IO_P26)==0){KeyNumber=1;}//下
+   43   1      //    if(gpio_get_level(IO_P33)==0){KeyNumber=2;}//右
+   44   1      //    if(gpio_get_level(IO_P53)==0){KeyNumber=3;}//左
+   45   1      //    if(gpio_get_level(IO_P46)==0){KeyNumber=4;}//上
+   46   1      //      if(gpio_get_level(IO_P07)==0){KeyNumber=5;}//中46,45,07
    47   1          return KeyNumber;
    48   1      }
    49          void Turn_mode(void)
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                  // 如果是任意项匹配 或 具体项匹配
    56   3                  if(mode_map[i].item_index == ANY_ITEM || Flag == mode_map[i].item_index) {
    57   4                      CAR_Mode = (CAR_Mode == mode_map[i].Mod) ? STOP : mode_map[i].Mod;
-C251 COMPILER V5.60.0,  Key                                                                19/10/25  14:22:51  PAGE 2   
+C251 COMPILER V5.60.0,  Key                                                                23/10/25  21:28:05  PAGE 2   
 
    58   4                      Init_Flag = 1;
    59   4                      return;
@@ -134,7 +134,7 @@ stmt  level    source
   121   6                                                      Key=keynumber;
   122   6                                                      //多次触发的操作
   123   6                                              }
-C251 COMPILER V5.60.0,  Key                                                                19/10/25  14:22:51  PAGE 3   
+C251 COMPILER V5.60.0,  Key                                                                23/10/25  21:28:05  PAGE 3   
 
   124   5                                      }
   125   4                              }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               23/10/25  21:28:04  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55   4                              }
    56   3                              case GO_Pararm3: 
    57   3                              {
-C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               23/10/25  21:28:04  PAGE 2   
 
    58   4                                      GO_Function();
    59   4                                      break;
@@ -121,7 +121,7 @@ stmt  level    source
   108   1              
   109   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//ËÙ¶È²ßÂÔ
   110   1              {
-  111   2                      Speed_diff((float)(dajiao)/100,0.8);
+  111   2                      Speed_diff((float)(dajiao)/100,0.2);
   112   2                      if(Speed_Mode>5)
   113   2                      {
   114   3                              State_of_road();
@@ -134,7 +134,7 @@ stmt  level    source
   121   1      //      printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
   122   1              if(T>=4)
   123   1              {
-C251 COMPILER V5.60.0,  main                                                               19/10/25  14:22:51  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               23/10/25  21:28:04  PAGE 3   
 
   124   2                      T=0;
   125   2                      Protect();

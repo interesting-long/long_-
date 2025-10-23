@@ -3,9 +3,9 @@
 
 #include "zf_common_headfile.h"
 /*********************运动参数常量设置********************/
-#define Servo_Mide (907)		//大约的舵机中值818
-#define Servo_max	 (85)		//舵机的最大值
-#define Servo_min  (-77)		//舵机的最小值		 	
+#define Servo_Mide (5840)		//大约的舵机中值5840
+#define Servo_max	 (620)		//舵机的最大值6460
+#define Servo_min  (-600)		//舵机的最小值5240		 	
 /*********************显示常量设置***********************/
 /***基础设置*******/
 #define Struct_Number 12         //菜单的页数
@@ -15,7 +15,7 @@
 /*****数据设置******/
 
 #define num_float_decimal  2    //数据的小数点位数
-#define num_float_int      3    //数据整数部分的位数
+#define num_float_int      4    //数据整数部分的位数
 
 /******显示位置设置*******/
 #define Page_Row_Number 13       //一级菜单的最大行数
@@ -24,7 +24,7 @@
 
 #define Show_arrow_x  60        //开始显示箭头<的x坐标
 #define Show_bujin_x  110        //开始显示步进值的x
-#define Show_Num_x  102          //开始显示数据的x值
+#define Show_Num_x  92          //开始显示数据的x值
 #define Show_String_x  0        //开始显示字符串的x
 
 extern float Num[Num_Col][Page_Row_Number];
