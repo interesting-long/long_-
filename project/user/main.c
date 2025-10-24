@@ -97,6 +97,7 @@ void main()
 void pit_handler1(void)
 {
 	T++;
+
 	ADC_SampleAndFilter();//ADC采样
 	dajiao=Servo_turn_pid(unification());//转向值计算
 	if_Cycle();//环岛检测
@@ -108,7 +109,7 @@ void pit_handler1(void)
 	
 	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
 	{
-		Speed_diff((float)(dajiao)/100,0.2);
+		Speed_diff((float)(dajiao)/100,0.15);
 		if(Speed_Mode>5)
 		{
 			State_of_road();
@@ -118,7 +119,6 @@ void pit_handler1(void)
 			Speed_Control();
 		}
 	}
-//	printf("%d,%d\n",encoder_data_dir_1,(int)((ML+delta_Speed)*100));
 	if(T>=4)
 	{
 		T=0;
@@ -131,10 +131,6 @@ void pit_handler1(void)
 		{
 			Show_pararm();
 		}
+			imu963ra_get_gyro();
 	}
 }
-
-//void pit_handler2(void)
-//{
-//	
-//}

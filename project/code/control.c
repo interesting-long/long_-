@@ -175,7 +175,7 @@ void Motor_Update(float X)
 // 每次调用时将 Current_Speed 缓慢逼近目标速度
 void Motor_Update_Smooth(float target)
 {
-    float step = 0.15;  // 每次变化的最大步长，可以调节平滑程度
+    float step = 0.1;  // 每次变化的最大步长，可以调节平滑程度
     if(Current_Speed < target)
     {
         Current_Speed += step;
@@ -244,7 +244,7 @@ void Cycle_Update(void)
 		{
 			Entern_Flag_Time	=Entern_Flag_Time0		;
 			Entern_Delay_Time	=Entern_Delay_Time0		;
-			Entern_Continue_Time=Entern_Continue_Time0	;
+			Entern_Continue_Time			=Entern_Continue_Time0	;
 			Mode_Flag			=Mode_Flag0				;
 			turn_Value 			=turn_Value0			;
 		}break;
@@ -252,7 +252,7 @@ void Cycle_Update(void)
 		{
 			Entern_Flag_Time	=Entern_Flag_Time1		;
 			Entern_Delay_Time	=Entern_Delay_Time1		;
-			Entern_Continue_Time=Entern_Continue_Time1	;
+			Entern_Continue_Time			=Entern_Continue_Time1	;
 			Mode_Flag			=Mode_Flag1				;
 			turn_Value 			=turn_Value1			;
 		}break;
@@ -260,7 +260,7 @@ void Cycle_Update(void)
 		{
 			Entern_Flag_Time	=Entern_Flag_Time2		;
 			Entern_Delay_Time	=Entern_Delay_Time2		;
-			Entern_Continue_Time=Entern_Continue_Time2	;
+			Entern_Continue_Time			=Entern_Continue_Time2	;
 			Mode_Flag			=Mode_Flag2				;
 			turn_Value 			=turn_Value2			;
 		}break;
@@ -268,7 +268,7 @@ void Cycle_Update(void)
 		{
 			Entern_Flag_Time	=Entern_Flag_Time3		;
 			Entern_Delay_Time	=Entern_Delay_Time3		;
-			Entern_Continue_Time=Entern_Continue_Time3	;
+			Entern_Continue_Time			=Entern_Continue_Time3	;
 			Mode_Flag			=Mode_Flag3				;
 			turn_Value 			=turn_Value3			;
 		}break;

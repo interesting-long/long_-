@@ -29,6 +29,7 @@ extern unsigned int Entern_Delay_Time;
 extern unsigned int Entern_Continue_Time;
 extern int turn_Value;
 extern int Mode_Flag;
+extern int angle;
 void if_Cycle(void);
 int Help_turn();
 void Help_turn2(int temp, int value, int ADC_Flag);

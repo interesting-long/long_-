@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 1   
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Strategy
@@ -32,7 +32,7 @@ stmt  level    source
    21          int turn_Value=0;
    22          int Mode_Flag=0;
    23          
-   24          
+   24          int angle = 0;
    25          //环岛判断
    26          void if_Cycle(void)
    27          {
@@ -47,7 +47,7 @@ stmt  level    source
    36   2                      {
    37   3                              case EXIT:
    38   3                              {
-   39   4                                      
+   39   4                                      Buzzer_OFF();
    40   4                                      if(ADC_2==1023 || ADC_3==1023 )
    41   4                                      {
    42   5                                              if_time++;
@@ -66,438 +66,439 @@ stmt  level    source
    55   3                              case APPROACH:
    56   3                              {
    57   4                                              if2_time++;
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 2   
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 2   
 
    58   4                                              if(if2_time>Entern_Delay_Time)
    59   4                                              {
    60   5                                                      Cycle_Stat=Left_ENTER;
-   61   5                                                      if2_time=0;
-   62   5                                              }
-   63   4                                      break;
-   64   4                              }
-   65   3                              case Left_ENTER:
-   66   3                              {
-   67   4                                      Enter_Flag_Left=1;
-   68   4                                      Buzzer_ON();
-   69   4                                      Continue_Time++;
-   70   4                                      if(Continue_Time>Entern_Continue_Time)
-   71   4                                      {
-   72   5                                              Cycle_Stat=EXIT;
-   73   5                                              Wait_Time = 200;
-   74   5                                              Continue_Time = 0;  //
-   75   5                                              Enter_Flag_Left = 0;     //
-   76   5                                              Buzzer_OFF();
-   77   5                                      }
-   78   4                                      break;
-   79   4                              }
-   80   3                              default :
-   81   3                              {
-   82   4                                      CAR_STOP();
-   83   4                                      break;
-   84   4                              }
-   85   3                      }
-   86   2              }
-   87   1      
-   88   1      }
-   89          //切弯补丁
-   90          int Help_turn()
-   91          {
-   92   1              int left  = ADC_1 + ADC_2;
-   93   1              int right = ADC_3 + ADC_4;
-   94   1              if (left < 200 && right < 200)
-   95   1              {
-   96   2                      // 同时满足，取较小一侧优先
-   97   2                      if (left < right)
-   98   2                              return -50;   // 左
-   99   2                      else
-  100   2                              return 50;    // 右
-  101   2              }
-  102   1              else if (left < 200)
-  103   1              {
-  104   2                      return -50;   // 左
-  105   2              }
-  106   1              else if (right < 200)
-  107   1              {
-  108   2                      return 50;    // 右
-  109   2              }
-  110   1              else
-  111   1              {
-  112   2                      return 0;     // 不转
-  113   2              }
-  114   1      }
-  115          void Help_turn2(int temp, int value, int ADC_Flag)
-  116          {
-  117   1          static int last_dir = 0;    // -1 左，+1 右，0 未定
-  118   1          static int first_double = 1; // 是否是第一次进入“双小”状态
-  119   1      
-  120   1          int left  = ADC_1 + ADC_2;
-  121   1          int right = ADC_3 + ADC_4;
-  122   1              int target=0;
-  123   1              
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 3   
+   61   5                                                      angle=0;
+   62   5                                                      if2_time=0;
+   63   5                                              }
+   64   4                                      break;
+   65   4                              }
+   66   3                              case Left_ENTER:
+   67   3                              {
+   68   4                                      Enter_Flag_Left=1;
+   69   4                                      Buzzer_ON();
+   70   4                                      Continue_Time++;
+   71   4      //                              angle+=imu963ra_gyro_y/100;
+   72   4                                      if(Continue_Time>Entern_Continue_Time)//abs(angle)>Turn_Angle*10
+   73   4                                      {
+   74   5                                              Cycle_Stat=EXIT;
+   75   5                                              Wait_Time = 200;
+   76   5                                              Continue_Time = 0;  //
+   77   5                                              Enter_Flag_Left = 0;     //
+   78   5                                      }
+   79   4                                      break;
+   80   4                              }
+   81   3                              default :
+   82   3                              {
+   83   4                                      CAR_STOP();
+   84   4                                      break;
+   85   4                              }
+   86   3                      }
+   87   2              }
+   88   1      
+   89   1      }
+   90          //切弯补丁
+   91          int Help_turn()
+   92          {
+   93   1              int left  = ADC_1 + ADC_2;
+   94   1              int right = ADC_3 + ADC_4;
+   95   1              if (left < 200 && right < 200)
+   96   1              {
+   97   2                      // 同时满足，取较小一侧优先
+   98   2                      if (left < right)
+   99   2                              return -50;   // 左
+  100   2                      else
+  101   2                              return 50;    // 右
+  102   2              }
+  103   1              else if (left < 200)
+  104   1              {
+  105   2                      return -50;   // 左
+  106   2              }
+  107   1              else if (right < 200)
+  108   1              {
+  109   2                      return 50;    // 右
+  110   2              }
+  111   1              else
+  112   1              {
+  113   2                      return 0;     // 不转
+  114   2              }
+  115   1      }
+  116          void Help_turn2(int temp, int value, int ADC_Flag)
+  117          {
+  118   1          static int last_dir = 0;    // -1 左，+1 右，0 未定
+  119   1          static int first_double = 1; // 是否是第一次进入“双小”状态
+  120   1      
+  121   1          int left  = ADC_1 + ADC_2;
+  122   1          int right = ADC_3 + ADC_4;
+  123   1              int target=0;
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 3   
 
-  124   1              static float smooth_temp = 0;
-  125   1          const int delta = 30;  // 左右接近的最小差值门限
-  126   1              const float smooth=0.3;
-  127   1              if(left < ADC_Flag || right < ADC_Flag)
-  128   1              {
-  129   2                      if (left < ADC_Flag && right < ADC_Flag)
-  130   2                      {
-  131   3                              if (first_double) // ★第一次双小
-  132   3                              {
-  133   4                                      if (left < right)
-  134   4                                      {
-  135   5                                              target = -value;   // 左
-  136   5                                              last_dir = -1;
-  137   5                                      }
-  138   4                                      else
-  139   4                                      {
-  140   5                                              target = value;    // 右
-  141   5                                              last_dir = 1;
-  142   5                                      }
-  143   4                                      first_double = 0; // 标记已经处理过第一次
-  144   4                              }
-  145   3                              else // ★后续双小
-  146   3                              {
-  147   4                                      if (abs(left - right) < delta)
-  148   4                                      {
-  149   5                                              // 按照上次方向走
-  150   5                                              if (last_dir == -1) target = -value;
-  151   5                                              else if (last_dir == 1) target = value;
-  152   5                                              else target = value; // 默认
-  153   5                                      }
-  154   4                                      else if (left < right)
-  155   4                                      {
-  156   5                                              target = -value;
-  157   5                                              last_dir = -1;
-  158   5                                      }
-  159   4                                      else
-  160   4                                      {
-  161   5                                              target = value;
-  162   5                                              last_dir = 1;
-  163   5                                      }
-  164   4                              }
-  165   3                      }
-  166   2                      else if (left < ADC_Flag)
-  167   2                      {
-  168   3                              target = -value;
-  169   3                              last_dir = -1;
-  170   3                              first_double = 1; // 重置，下次再遇到“双小”时重新走第一次逻辑
-  171   3                      }
-  172   2                      else
-  173   2                      {
-  174   3                              target = value;
-  175   3                              last_dir = 1;
-  176   3                              first_double = 1; // 同上
-  177   3                      }
-  178   2                      smooth_temp = smooth_temp * (1 - smooth) + target * smooth;
-  179   2                      pwm_set_duty(Servo_Pwm,Servo_Mide+smooth_temp);
-  180   2              }
-  181   1              else 
-  182   1              {
-  183   2                      if(abs(smooth_temp-temp)<200)
-  184   2                      {
-  185   3                              smooth_temp = temp;
-  186   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+temp);
-  187   3                      }
-  188   2                      else
-  189   2                      {
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 4   
+  124   1              
+  125   1              static float smooth_temp = 0;
+  126   1          const int delta = 30;  // 左右接近的最小差值门限
+  127   1              const float smooth=0.4;
+  128   1              if(left < ADC_Flag || right < ADC_Flag)
+  129   1              {
+  130   2                      if (left < ADC_Flag && right < ADC_Flag)
+  131   2                      {
+  132   3                              if (first_double) // ★第一次双小
+  133   3                              {
+  134   4                                      if (left < right)
+  135   4                                      {
+  136   5                                              target = -value;   // 左
+  137   5                                              last_dir = -1;
+  138   5                                      }
+  139   4                                      else
+  140   4                                      {
+  141   5                                              target = value;    // 右
+  142   5                                              last_dir = 1;
+  143   5                                      }
+  144   4                                      first_double = 0; // 标记已经处理过第一次
+  145   4                              }
+  146   3                              else // ★后续双小
+  147   3                              {
+  148   4                                      if (abs(left - right) < delta)
+  149   4                                      {
+  150   5                                              // 按照上次方向走
+  151   5                                              if (last_dir == -1) target = -value;
+  152   5                                              else if (last_dir == 1) target = value;
+  153   5                                              else target = value; // 默认
+  154   5                                      }
+  155   4                                      else if (left < right)
+  156   4                                      {
+  157   5                                              target = -value;
+  158   5                                              last_dir = -1;
+  159   5                                      }
+  160   4                                      else
+  161   4                                      {
+  162   5                                              target = value;
+  163   5                                              last_dir = 1;
+  164   5                                      }
+  165   4                              }
+  166   3                      }
+  167   2                      else if (left < ADC_Flag)
+  168   2                      {
+  169   3                              target = -value;
+  170   3                              last_dir = -1;
+  171   3                              first_double = 1; // 重置，下次再遇到“双小”时重新走第一次逻辑
+  172   3                      }
+  173   2                      else
+  174   2                      {
+  175   3                              target = value;
+  176   3                              last_dir = 1;
+  177   3                              first_double = 1; // 同上
+  178   3                      }
+  179   2                      smooth_temp = smooth_temp * (1 - smooth) + target * smooth;
+  180   2                      pwm_set_duty(Servo_Pwm,Servo_Mide+smooth_temp);
+  181   2              }
+  182   1              else 
+  183   1              {
+  184   2                      if(abs(smooth_temp-temp)<200)
+  185   2                      {
+  186   3                              smooth_temp = temp;
+  187   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+temp);
+  188   3                      }
+  189   2                      else
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 4   
 
-  190   3                              smooth_temp = smooth_temp * (1 - smooth) + temp * smooth;
-  191   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+smooth_temp);
-  192   3                      }
-  193   2              }
-  194   1      }
-  195          
-  196          void Help_turn3(int* temp, int value, int value2,int ADC_Flag ,int ADC_Flag2)
-  197          {
-  198   1              //value2>value1,ADC_Flag1>ADC_Flag2
-  199   1          static int last_dir = 0;    // -1 左，+1 右，0 未定
-  200   1          static int first_double = 1; // 是否是第一次进入“双小”状态
-  201   1          int left  = ADC_1 + ADC_2;
-  202   1          int right = ADC_3 + ADC_4;
-  203   1              float K = (float)(value2 - value) / (ADC_Flag - ADC_Flag2);
-  204   1          const int delta = 30;  // 左右接近的最小差值门限
-  205   1      
-  206   1          if (left < ADC_Flag && right < ADC_Flag)
-  207   1          {
-  208   2                      if (left < ADC_Flag2 && right < ADC_Flag2)
-  209   2                      {
-  210   3                              if (first_double) // ★第一次双小
-  211   3                              {
-  212   4                                      if (left < right)
-  213   4                                      {
-  214   5                                              *temp = -value2;   // 左
-  215   5                                              last_dir = -1;
-  216   5                                      }
-  217   4                                      else
-  218   4                                      {
-  219   5                                              *temp = value2;    // 右
-  220   5                                              last_dir = 1;
-  221   5                                      }
-  222   4                                      first_double = 0; // 标记已经处理过第一次
-  223   4                              }
-  224   3                              else // ★后续双小
-  225   3                              {
-  226   4                                      if (abs(left - right) < delta)
-  227   4                                      {
-  228   5                                              // 按照上次方向走
-  229   5                                              if (last_dir == -1) *temp = -value2;
-  230   5                                              else if (last_dir == 1) *temp = value2;
-  231   5                                              else *temp = value2; // 默认
-  232   5                                                  // 向左转
-  233   5            // 向右转
-  234   5                                      }
-  235   4                                      else if (left < right)
-  236   4                                      {
-  237   5                                              *temp = -value2;
-  238   5                                              last_dir = -1;
-  239   5                                      }
-  240   4                                      else
-  241   4                                      {
-  242   5                                              *temp = value2;
-  243   5                                              last_dir = 1;
-  244   5                                      }
-  245   4                              }
-  246   3                      }
-  247   2                      else if(left < ADC_Flag2)
-  248   2                      {
-  249   3                              *temp = -value2;
-  250   3                              last_dir = -1;
-  251   3                              first_double = 1; 
-  252   3                      }
-  253   2                      else if(right < ADC_Flag2)
-  254   2                      {
-  255   3                              *temp = value2;
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 5   
+  190   2                      {
+  191   3                              smooth_temp = smooth_temp * (1 - smooth) + temp * smooth;
+  192   3                              pwm_set_duty(Servo_Pwm,Servo_Mide+smooth_temp);
+  193   3                      }
+  194   2              }
+  195   1      }
+  196          
+  197          void Help_turn3(int* temp, int value, int value2,int ADC_Flag ,int ADC_Flag2)
+  198          {
+  199   1              //value2>value1,ADC_Flag1>ADC_Flag2
+  200   1          static int last_dir = 0;    // -1 左，+1 右，0 未定
+  201   1          static int first_double = 1; // 是否是第一次进入“双小”状态
+  202   1          int left  = ADC_1 + ADC_2;
+  203   1          int right = ADC_3 + ADC_4;
+  204   1              float K = (float)(value2 - value) / (ADC_Flag - ADC_Flag2);
+  205   1          const int delta = 30;  // 左右接近的最小差值门限
+  206   1      
+  207   1          if (left < ADC_Flag && right < ADC_Flag)
+  208   1          {
+  209   2                      if (left < ADC_Flag2 && right < ADC_Flag2)
+  210   2                      {
+  211   3                              if (first_double) // ★第一次双小
+  212   3                              {
+  213   4                                      if (left < right)
+  214   4                                      {
+  215   5                                              *temp = -value2;   // 左
+  216   5                                              last_dir = -1;
+  217   5                                      }
+  218   4                                      else
+  219   4                                      {
+  220   5                                              *temp = value2;    // 右
+  221   5                                              last_dir = 1;
+  222   5                                      }
+  223   4                                      first_double = 0; // 标记已经处理过第一次
+  224   4                              }
+  225   3                              else // ★后续双小
+  226   3                              {
+  227   4                                      if (abs(left - right) < delta)
+  228   4                                      {
+  229   5                                              // 按照上次方向走
+  230   5                                              if (last_dir == -1) *temp = -value2;
+  231   5                                              else if (last_dir == 1) *temp = value2;
+  232   5                                              else *temp = value2; // 默认
+  233   5                                                  // 向左转
+  234   5            // 向右转
+  235   5                                      }
+  236   4                                      else if (left < right)
+  237   4                                      {
+  238   5                                              *temp = -value2;
+  239   5                                              last_dir = -1;
+  240   5                                      }
+  241   4                                      else
+  242   4                                      {
+  243   5                                              *temp = value2;
+  244   5                                              last_dir = 1;
+  245   5                                      }
+  246   4                              }
+  247   3                      }
+  248   2                      else if(left < ADC_Flag2)
+  249   2                      {
+  250   3                              *temp = -value2;
+  251   3                              last_dir = -1;
+  252   3                              first_double = 1; 
+  253   3                      }
+  254   2                      else if(right < ADC_Flag2)
+  255   2                      {
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 5   
 
-  256   3                              last_dir = 1;
-  257   3                              first_double = 1; // 同上
-  258   3                      }
-  259   2                      else
-  260   2                      {
-  261   3                              if (abs(left - right) < delta)
-  262   3                              {
-  263   4                                      // 按照上次方向走
-  264   4                                      if (last_dir == -1) *temp = -value;
-  265   4                                      else if (last_dir == 1) *temp = value;
-  266   4                                      else *temp = value; 
-  267   4                              }
-  268   3      //                      else if (left < right)
-  269   3      //                      {
-  270   3      //                              *temp = -(value + (ADC_Flag - left) * K);
-  271   3      //                              last_dir = -1;
-  272   3      //                              first_double = 1; 
-  273   3      //                      }
-  274   3      //                      else
-  275   3      //                      {
-  276   3      //                              *temp = value + (ADC_Flag - right) * K;
-  277   3      //                              last_dir = 1;
-  278   3      //                              first_double = 1; 
-  279   3      //                      }
-  280   3                      }
-  281   2          }
-  282   1          else if (left < ADC_Flag)
-  283   1          {
-  284   2              *temp = -(value + (ADC_Flag - left) * K);
-  285   2                      last_dir = -1;
-  286   2                      first_double = 1; 
-  287   2          }
-  288   1          else if (right < ADC_Flag)
-  289   1          {
-  290   2                      *temp = value + (ADC_Flag - right) * K;
-  291   2                      last_dir = 1;
-  292   2                      first_double = 1; 
-  293   2          }
-  294   1      }
-  295          
-  296          int Help_turn_Two(int temp, int value, int value2, int ADC_Flag, int ADC_Flag2)
-  297          {
-  298   1          int left  = ADC_1 + ADC_2;
-  299   1          int right = ADC_3 + ADC_4;
-  300   1      
-  301   1          // -------- 第一组阈值判断 --------
-  302   1          if (left < ADC_Flag && right < ADC_Flag)
-  303   1          {
-  304   2              return (left < right) ? (Servo_Mide - value) : (Servo_Mide + value);
-  305   2          }
-  306   1          else if (left < ADC_Flag)
-  307   1          {
-  308   2              return Servo_Mide - value;
-  309   2          }
-  310   1          else if (right < ADC_Flag)
-  311   1          {
-  312   2              return Servo_Mide + value;
-  313   2          }
-  314   1      
-  315   1          // -------- 第二组阈值判断 --------
-  316   1          if (left < ADC_Flag2 && right < ADC_Flag2)
-  317   1          {
-  318   2              return (left < right) ? (Servo_Mide - value2) : (Servo_Mide + value2);
-  319   2          }
-  320   1          else if (left < ADC_Flag2)
-  321   1          {
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 6   
+  256   3                              *temp = value2;
+  257   3                              last_dir = 1;
+  258   3                              first_double = 1; // 同上
+  259   3                      }
+  260   2                      else
+  261   2                      {
+  262   3                              if (abs(left - right) < delta)
+  263   3                              {
+  264   4                                      // 按照上次方向走
+  265   4                                      if (last_dir == -1) *temp = -value;
+  266   4                                      else if (last_dir == 1) *temp = value;
+  267   4                                      else *temp = value; 
+  268   4                              }
+  269   3      //                      else if (left < right)
+  270   3      //                      {
+  271   3      //                              *temp = -(value + (ADC_Flag - left) * K);
+  272   3      //                              last_dir = -1;
+  273   3      //                              first_double = 1; 
+  274   3      //                      }
+  275   3      //                      else
+  276   3      //                      {
+  277   3      //                              *temp = value + (ADC_Flag - right) * K;
+  278   3      //                              last_dir = 1;
+  279   3      //                              first_double = 1; 
+  280   3      //                      }
+  281   3                      }
+  282   2          }
+  283   1          else if (left < ADC_Flag)
+  284   1          {
+  285   2              *temp = -(value + (ADC_Flag - left) * K);
+  286   2                      last_dir = -1;
+  287   2                      first_double = 1; 
+  288   2          }
+  289   1          else if (right < ADC_Flag)
+  290   1          {
+  291   2                      *temp = value + (ADC_Flag - right) * K;
+  292   2                      last_dir = 1;
+  293   2                      first_double = 1; 
+  294   2          }
+  295   1      }
+  296          
+  297          int Help_turn_Two(int temp, int value, int value2, int ADC_Flag, int ADC_Flag2)
+  298          {
+  299   1          int left  = ADC_1 + ADC_2;
+  300   1          int right = ADC_3 + ADC_4;
+  301   1      
+  302   1          // -------- 第一组阈值判断 --------
+  303   1          if (left < ADC_Flag && right < ADC_Flag)
+  304   1          {
+  305   2              return (left < right) ? (Servo_Mide - value) : (Servo_Mide + value);
+  306   2          }
+  307   1          else if (left < ADC_Flag)
+  308   1          {
+  309   2              return Servo_Mide - value;
+  310   2          }
+  311   1          else if (right < ADC_Flag)
+  312   1          {
+  313   2              return Servo_Mide + value;
+  314   2          }
+  315   1      
+  316   1          // -------- 第二组阈值判断 --------
+  317   1          if (left < ADC_Flag2 && right < ADC_Flag2)
+  318   1          {
+  319   2              return (left < right) ? (Servo_Mide - value2) : (Servo_Mide + value2);
+  320   2          }
+  321   1          else if (left < ADC_Flag2)
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 6   
 
-  322   2              return Servo_Mide - value2;
-  323   2          }
-  324   1          else if (right < ADC_Flag2)
-  325   1          {
-  326   2              return Servo_Mide + value2;
-  327   2          }
-  328   1      
-  329   1          // -------- 都不满足，返回原值 --------
-  330   1          return temp;
-  331   1      }
-  332          
-  333          int State_of_road(void)
-  334          {
-  335   1              switch(Road_Stat)
-  336   1              {
-  337   2                      case Short_Str:
-  338   2                      {
-  339   3                              Motor_Update_Smooth(Short_add);
-  340   3                              if(abs(dajiao)<Stright_Flag_Value)
-  341   3                              {
-  342   4                                      Long_Time++;
-  343   4                                      Bend_Time=0;
-  344   4                                      if(Long_Time>Long_Judge_Time)
-  345   4                                      {
-  346   5                                              Long_Time=0;
-  347   5                                              Road_Stat=Long_Str;
-  348   5                                      }
-  349   4                              }
-  350   3                              else
-  351   3                              {
-  352   4                                      Long_Time=0;
-  353   4                                      Bend_Time++;
-  354   4                                      {
-  355   5                                              if(Bend_Time>Bend_Judge_Time)
-  356   5                                              {
-  357   6                                                      Bend_Time=0;
-  358   6                                                      Road_Stat=Short_Bend;
-  359   6                                              }
-  360   5                                      }
-  361   4                              }
-  362   3                              return Short_add;
-  363   3                              break;
-  364   3                      }
-  365   2                      case Long_Str:
-  366   2                      {
-  367   3                              Motor_Update_Smooth(Long_add);
-  368   3                              Accel_Time++;
-  369   3                              if(abs(dajiao)>Bend_Flag_Value)
-  370   3                              {
-  371   4                                      Bend_Time++;
-  372   4                                      if(Bend_Time>Bend_Judge_Time)
-  373   4                                      {
-  374   5                                              if(Accel_Time>150)//加速时间1.5s
-  375   5                                              {
-  376   6                                                      Road_Stat=Long_Bend;
-  377   6                                                      SLOW_Time = 0;
-  378   6                                              }
-  379   5                                              else
-  380   5                                              {
-  381   6                                                      Road_Stat=Short_Bend;
-  382   6                                              }
-  383   5                                              Bend_Time=0;
-  384   5                                              Accel_Time=0;
-  385   5                                      }
-  386   4                              }
-  387   3                              else
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 7   
+  322   1          {
+  323   2              return Servo_Mide - value2;
+  324   2          }
+  325   1          else if (right < ADC_Flag2)
+  326   1          {
+  327   2              return Servo_Mide + value2;
+  328   2          }
+  329   1      
+  330   1          // -------- 都不满足，返回原值 --------
+  331   1          return temp;
+  332   1      }
+  333          
+  334          int State_of_road(void)
+  335          {
+  336   1              switch(Road_Stat)
+  337   1              {
+  338   2                      case Short_Str:
+  339   2                      {
+  340   3                              Motor_Update_Smooth(Short_add);
+  341   3                              if(abs(dajiao)<Stright_Flag_Value)
+  342   3                              {
+  343   4                                      Long_Time++;
+  344   4                                      Bend_Time=0;
+  345   4                                      if(Long_Time>Long_Judge_Time)
+  346   4                                      {
+  347   5                                              Long_Time=0;
+  348   5                                              Road_Stat=Long_Str;
+  349   5                                      }
+  350   4                              }
+  351   3                              else
+  352   3                              {
+  353   4                                      Long_Time=0;
+  354   4                                      Bend_Time++;
+  355   4                                      {
+  356   5                                              if(Bend_Time>Bend_Judge_Time)
+  357   5                                              {
+  358   6                                                      Bend_Time=0;
+  359   6                                                      Road_Stat=Short_Bend;
+  360   6                                              }
+  361   5                                      }
+  362   4                              }
+  363   3                              return Short_add;
+  364   3                              break;
+  365   3                      }
+  366   2                      case Long_Str:
+  367   2                      {
+  368   3                              Motor_Update_Smooth(Long_add);
+  369   3                              Accel_Time++;
+  370   3                              if(abs(dajiao)>Bend_Flag_Value)
+  371   3                              {
+  372   4                                      Bend_Time++;
+  373   4                                      if(Bend_Time>Bend_Judge_Time)
+  374   4                                      {
+  375   5                                              if(Accel_Time>150)//加速时间1.5s
+  376   5                                              {
+  377   6                                                      Road_Stat=Long_Bend;
+  378   6                                                      SLOW_Time = 0;
+  379   6                                              }
+  380   5                                              else
+  381   5                                              {
+  382   6                                                      Road_Stat=Short_Bend;
+  383   6                                              }
+  384   5                                              Bend_Time=0;
+  385   5                                              Accel_Time=0;
+  386   5                                      }
+  387   4                              }
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 7   
 
-  388   3                              {
-  389   4                                      Bend_Time=0;
-  390   4                              }
-  391   3                              return Long_add;
-  392   3                              break;
-  393   3                      }
-  394   2                      case Short_Bend:
-  395   2                      {
-  396   3                              Motor_Update_Smooth(Bend_speed);
-  397   3                              if(abs(dajiao)>Bend_Flag_Value)
-  398   3                              {
-  399   4                                      Short_Time=0;
-  400   4                              }
-  401   3                              else
-  402   3                              {
-  403   4                                      Short_Time++;
-  404   4                                      if(Short_Time>Short_Judge_Time)
-  405   4                                      {
-  406   5                                              Short_Time=0;
-  407   5                                              Road_Stat=Short_Str;
-  408   5                                      }
-  409   4                              }
-  410   3                              return Bend_speed;
-  411   3                              break;
-  412   3                      }
-  413   2                      case Long_Bend:
-  414   2                      {
-  415   3                              SLOW_Time++;
-  416   3                              if(SLOW_Time>L_Turn_B_Slow_Time)
-  417   3                              {
-  418   4                                      Buzzer_OFF();
-  419   4                                      Motor_Update_Smooth(Bend_speed);//弯道速度
-  420   4                              }
-  421   3                              else
-  422   3                              {
-  423   4                                      Buzzer_ON();
-  424   4                                      
-  425   4                                      Motor_Update_Smooth(L_Turn_B_Slow_Value);//减速
-  426   4                              }
-  427   3                              //检查是否回到了直道
-  428   3                              if(abs(dajiao)<Bend_Flag_Value)
-  429   3                              {
-  430   4                                      Short_Time++;
-  431   4                                      if(Short_Time>Short_Judge_Time)
-  432   4                                      {
-  433   5                                              Buzzer_OFF();
-  434   5                                              Short_Time=0;
-  435   5                                              SLOW_Time=0;
-  436   5                                              Road_Stat=Short_Str;
-  437   5                                      }
-  438   4                                      
-  439   4                              }
-  440   3                              else
-  441   3                              {
-  442   4                                      Short_Time=0;
-  443   4                              }
-  444   3                              if(SLOW_Time>L_Turn_B_Slow_Time)
-  445   3                              {
-  446   4                                      return Bend_speed;
-  447   4                              }
-  448   3                              else
-  449   3                              {
-  450   4                                      return L_Turn_B_Slow_Value;
-  451   4                              }
-  452   3                              
-  453   3                              break;
-C251 COMPILER V5.60.0,  Strategy                                                           23/10/25  22:10:40  PAGE 8   
+  388   3                              else
+  389   3                              {
+  390   4                                      Bend_Time=0;
+  391   4                              }
+  392   3                              return Long_add;
+  393   3                              break;
+  394   3                      }
+  395   2                      case Short_Bend:
+  396   2                      {
+  397   3                              Motor_Update_Smooth(Bend_speed);
+  398   3                              if(abs(dajiao)>Bend_Flag_Value)
+  399   3                              {
+  400   4                                      Short_Time=0;
+  401   4                              }
+  402   3                              else
+  403   3                              {
+  404   4                                      Short_Time++;
+  405   4                                      if(Short_Time>Short_Judge_Time)
+  406   4                                      {
+  407   5                                              Short_Time=0;
+  408   5                                              Road_Stat=Short_Str;
+  409   5                                      }
+  410   4                              }
+  411   3                              return Bend_speed;
+  412   3                              break;
+  413   3                      }
+  414   2                      case Long_Bend:
+  415   2                      {
+  416   3                              SLOW_Time++;
+  417   3                              if(SLOW_Time>L_Turn_B_Slow_Time)
+  418   3                              {
+  419   4                                      Buzzer_OFF();
+  420   4                                      Motor_Update_Smooth(Bend_speed);//弯道速度
+  421   4                              }
+  422   3                              else
+  423   3                              {
+  424   4                                      Buzzer_ON();
+  425   4                                      
+  426   4                                      Motor_Update_Smooth(L_Turn_B_Slow_Value);//减速
+  427   4                              }
+  428   3                              //检查是否回到了直道
+  429   3                              if(abs(dajiao)<Bend_Flag_Value)
+  430   3                              {
+  431   4                                      Short_Time++;
+  432   4                                      if(Short_Time>Short_Judge_Time)
+  433   4                                      {
+  434   5                                              Buzzer_OFF();
+  435   5                                              Short_Time=0;
+  436   5                                              SLOW_Time=0;
+  437   5                                              Road_Stat=Short_Str;
+  438   5                                      }
+  439   4                                      
+  440   4                              }
+  441   3                              else
+  442   3                              {
+  443   4                                      Short_Time=0;
+  444   4                              }
+  445   3                              if(SLOW_Time>L_Turn_B_Slow_Time)
+  446   3                              {
+  447   4                                      return Bend_speed;
+  448   4                              }
+  449   3                              else
+  450   3                              {
+  451   4                                      return L_Turn_B_Slow_Value;
+  452   4                              }
+  453   3                              
+C251 COMPILER V5.60.0,  Strategy                                                           24/10/25  20:12:29  PAGE 8   
 
-  454   3                      }
-  455   2                      default :
-  456   2                      {
-  457   3                              CAR_STOP();
-  458   3                              return 0;
-  459   3                              break;
-  460   3                      }
-  461   2              
-  462   2              }
-  463   1      }
-  464          
+  454   3                              break;
+  455   3                      }
+  456   2                      default :
+  457   2                      {
+  458   3                              CAR_STOP();
+  459   3                              return 0;
+  460   3                              break;
+  461   3                      }
+  462   2              
+  463   2              }
+  464   1      }
   465          
+  466          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2498     ------
+  code size            =      2507     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        43         10
+  xdata size           =        45         10
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -507,7 +508,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =       153     ------
+  hconst size          =       160     ------
 End of Module Information.
 
 

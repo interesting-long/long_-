@@ -21,7 +21,7 @@ unsigned int Entern_Continue_Time=0;
 int turn_Value=0;
 int Mode_Flag=0;
 
-
+int angle = 0;
 //环岛判断
 void if_Cycle(void)
 {
@@ -36,7 +36,7 @@ void if_Cycle(void)
 		{
 			case EXIT:
 			{
-				
+				Buzzer_OFF();
 				if(ADC_2==1023 || ADC_3==1023 )
 				{
 					if_time++;
@@ -58,6 +58,7 @@ void if_Cycle(void)
 					if(if2_time>Entern_Delay_Time)
 					{
 						Cycle_Stat=Left_ENTER;
+						angle=0;
 						if2_time=0;
 					}
 				break;
@@ -67,13 +68,13 @@ void if_Cycle(void)
 				Enter_Flag_Left=1;
 				Buzzer_ON();
 				Continue_Time++;
-				if(Continue_Time>Entern_Continue_Time)
+//				angle+=imu963ra_gyro_y/100;
+				if(Continue_Time>Entern_Continue_Time)//abs(angle)>Turn_Angle*10
 				{
 					Cycle_Stat=EXIT;
 					Wait_Time = 200;
 					Continue_Time = 0;  //
 					Enter_Flag_Left = 0;     //
-					Buzzer_OFF();
 				}
 				break;
 			}
@@ -123,7 +124,7 @@ void Help_turn2(int temp, int value, int ADC_Flag)
 	
 	static float smooth_temp = 0;
     const int delta = 30;  // 左右接近的最小差值门限
-	const float smooth=0.3;
+	const float smooth=0.4;
 	if(left < ADC_Flag || right < ADC_Flag)
 	{
 		if (left < ADC_Flag && right < ADC_Flag)
