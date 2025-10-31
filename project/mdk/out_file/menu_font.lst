@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          24/10/25  21:07:46  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          31/10/25  00:26:10  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,10 +11,10 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,3 ,-1 ,-1,620,180,600,200},
-    4                  {-1  ,-1  ,0  ,7.2 ,7.2 ,12,230,12 ,-10  ,500 },//GOģʽ
-    5                  {-1  ,-1  ,0  ,6.5  ,6.5,12 ,250,15 ,-10  ,500},//GPO1ģʽ
-    6                  {-1  ,-1  ,10  ,6.3 ,6.3 ,12 ,230,2 ,-10  ,500},//GPO2ģʽ
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,30 ,-1 ,-1,620,180,0,250},
+    4                  {-1  ,-1  ,0  ,7.2 ,7.2 ,12,230,12 ,-10  ,470 },//GOģʽ
+    5                  {-1  ,-1  ,0  ,6.3  ,6.3,12 ,250,15 ,-10  ,470},//GPO1ģʽ
+    6                  {-1  ,-1  ,10  ,6.3 ,6.3 ,12 ,230,15 ,-10  ,470},//GPO2ģʽ
     7                  {-1  ,-1  ,0  ,0 ,0 ,6 ,270,30 ,0  ,60 },//GPO3ģʽ
     8                  {-1  ,-1  ,-1 ,585,-1 ,-1,-1 ,-1 ,-1,-1 },
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
@@ -41,8 +41,8 @@ stmt  level    source
    29           */
    30          struct Menu Page[Struct_Number]={
    31              {   0,
-   32                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Valu2","ADC_F2
-             -"}},
+   32                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Intial","IN_Va
+             -l"}},
    33              {   1,
    34                      {"back","PID","Mode","L_PWM","R_PWM","J_time","Angle","D_Time","LorR","turn"}},
    35              {   2,
@@ -66,7 +66,7 @@ stmt  level    source
    52                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
    53                  {   11,
    54                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
-C251 COMPILER V5.60.0,  menu_font                                                          24/10/25  21:07:46  PAGE 2   
+C251 COMPILER V5.60.0,  menu_font                                                          31/10/25  00:26:10  PAGE 2   
 
    55          };
    56          

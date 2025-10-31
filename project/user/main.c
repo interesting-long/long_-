@@ -34,13 +34,6 @@ void main()
 			case GO:
 			{
 				GO_Function();
-				if(Key)
-				{
-//					EA=0;
-//					menu_handle_key(Key);
-//					Key=0;
-//					EA=1;
-				}
 				break;
 			}
 			case GO_Pararm1: 
@@ -97,22 +90,36 @@ void main()
 void pit_handler1(void)
 {
 	T++;
-
 	ADC_SampleAndFilter();//ADC采样
+	Last_dajiao=dajiao;
 	dajiao=Servo_turn_pid(unification());//转向值计算
-	if_Cycle();//环岛检测
+	speed_control_ring();//读取编码器
+//	if_Cycle();//环岛检测
 	if(Servo_Flag)//舵机控制
 	{
 		Servo_Control();
+		if(Intial>5)
+		{
+			Inertial_Navigation(IN_Val);//
+		}
 	}
-	speed_control_ring();//读取编码器
-	
 	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
 	{
 		Speed_diff((float)(dajiao)/100,0.15);
-		if(Speed_Mode>5)
+		imu963ra_get_gyro();
+		angle+=imu963ra_gyro_y/100;
+		if(Intial<5 &&Intial>-5)
 		{
-			State_of_road();
+		printf("%d\n",angle);
+		}
+//		if(Speed_Mode>5)
+//		{
+////			State_of_road();
+//			
+//		}
+		if(Intial<-5)
+		{
+			Half_State_of_road(IN_Val);
 		}
 		else
 		{
@@ -131,6 +138,5 @@ void pit_handler1(void)
 		{
 			Show_pararm();
 		}
-			imu963ra_get_gyro();
 	}
 }

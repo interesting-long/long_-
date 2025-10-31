@@ -6,6 +6,7 @@ PID servo_pid;
 PID M_left_pid;
 PID M_Right_pid;
 int dajiao=0;
+int Last_dajiao=0;
 unsigned char Protect_flag= 0;
 unsigned char Servo_Flag=0;
 
@@ -107,7 +108,7 @@ void Protect()
 void init_all()
 {
 	EA=0;
-//	wireless_uart_init();
+	wireless_uart_init();//无线串口
 	system_delay_ms(10);
 	Motor_Init();
 	Servo_Init();
@@ -165,6 +166,23 @@ void Turn_mode_Init(void)
 			GO_PID_Control1=0;
 			GO_PID_Control2=0;
 			GO_PID_Control3=0;
+			/*****惯导参数初始化*****/
+					/*记录参数*/
+			angle=0;
+			Inertial_Time=0;
+			Last_stact=str_data;
+			Type_road = str_data;
+			Str_Data=0;
+			Bend_Data=0;
+				/*速测参数*/
+			Road_Stat=Long_Str;
+			State_Data_Str=0;
+			State_Data_Bend=0;
+			current_angle_time=0;
+			Long_road_Time=0;
+			ACC_Flag=0;
+			finsh_Flag=0;
+			angle_buffer1=0;
 			break;
 		}
 		case GO:

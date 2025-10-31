@@ -6,6 +6,8 @@ float Right_Speed=0;
 
 float Current_Speed = 0;   // 当前实际输出速度
 float Current_dajiao = 0;  
+
+float d_range = 0.2;
 void Ser_Servo_Duty(int value)
 {
     pwm_set_duty(Servo_Pwm,value);
@@ -24,10 +26,12 @@ int Servo_turn_pid(float Current)
     float kd = servo_pid.Kd;
     float last_error = servo_pid.LastError;
     float error = Current;
-	float temp ;
-    
-    float out = kp * error + kd * (error - last_error);
-    
+	float temp;
+    float out = kp * error + kd * (error - last_error);	
+//    if(abs(error)<d_range)
+//    {
+//        return 0;
+//    }
     servo_pid.LastError = error;
     
     temp = func_limit_ab(out, Servo_min, Servo_max);
@@ -175,15 +179,16 @@ void Motor_Update(float X)
 // 每次调用时将 Current_Speed 缓慢逼近目标速度
 void Motor_Update_Smooth(float target)
 {
-    float step = 0.1;  // 每次变化的最大步长，可以调节平滑程度
+    float step1 = 0.06;  // 每次变化的最大步长，可以调节平滑程度
+	float step2 = 0.15;
     if(Current_Speed < target)
     {
-        Current_Speed += step;
+        Current_Speed += step1;
         if(Current_Speed > target) Current_Speed = target;
     }
     else if(Current_Speed > target)
     {
-        Current_Speed -= step;
+        Current_Speed -= step2;
         if(Current_Speed < target) Current_Speed = target;
     }
     Motor_Update(Current_Speed);  // 实际更新电机

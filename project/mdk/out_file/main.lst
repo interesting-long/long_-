@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               24/10/25  20:12:28  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               31/10/25  00:26:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -45,115 +45,121 @@ stmt  level    source
    34   3                              case GO:
    35   3                              {
    36   4                                      GO_Function();
-   37   4                                      if(Key)
-   38   4                                      {
-   39   5      //                                      EA=0;
-   40   5      //                                      menu_handle_key(Key);
-   41   5      //                                      Key=0;
-   42   5      //                                      EA=1;
-   43   5                                      }
-   44   4                                      break;
-   45   4                              }
-   46   3                              case GO_Pararm1: 
-   47   3                              {
-   48   4                                      GO_Function();
-   49   4                                      break;
-   50   4                              }
-   51   3                              case GO_Pararm2: 
-   52   3                              {
-   53   4                                      GO_Function();
-   54   4                                      break;
-   55   4                              }
-   56   3                              case GO_Pararm3: 
-   57   3                              {
-C251 COMPILER V5.60.0,  main                                                               24/10/25  20:12:28  PAGE 2   
+   37   4                                      break;
+   38   4                              }
+   39   3                              case GO_Pararm1: 
+   40   3                              {
+   41   4                                      GO_Function();
+   42   4                                      break;
+   43   4                              }
+   44   3                              case GO_Pararm2: 
+   45   3                              {
+   46   4                                      GO_Function();
+   47   4                                      break;
+   48   4                              }
+   49   3                              case GO_Pararm3: 
+   50   3                              {
+   51   4                                      GO_Function();
+   52   4                                      break;
+   53   4                              }
+   54   3                              case TEST_PWM: 
+   55   3                              {
+   56   4                                      GO_Function();
+   57   4                                      PWM_Test();
+C251 COMPILER V5.60.0,  main                                                               31/10/25  00:26:09  PAGE 2   
 
-   58   4                                      GO_Function();
-   59   4                                      break;
-   60   4                              }
-   61   3                              case TEST_PWM: 
-   62   3                              {
-   63   4                                      GO_Function();
-   64   4                                      PWM_Test();
-   65   4                                      break;
-   66   4                              }
-   67   3                              case TEST_SERVO: 
-   68   3                              {
-   69   4                                      GO_Function();
-   70   4                                      Serve_Test();
-   71   4                                      break;
-   72   4                              }
-   73   3                              case ADC_Show:
-   74   3                              {
-   75   4                                      GO_Function();
-   76   4                                      break;
-   77   4                              }
-   78   3                              case Seta_Servo:
-   79   3                              {
-   80   4                                      GO_Function();
-   81   4                                      Set_Sevo();
-   82   4                                      break;
-   83   4                              }
-   84   3                      }
-   85   2                      if(Protect_flag)
-   86   2                      {
-   87   3                              Protect_flag=0;
-   88   3                              CAR_Mode=STOP;
-   89   3                              Turn_mode_Init();
-   90   3                      }
-   91   2      
-   92   2                      
-   93   2         }
-   94   1      }
-   95          
-   96          
-   97          void pit_handler1(void)
-   98          {
-   99   1              T++;
-  100   1      
-  101   1              ADC_SampleAndFilter();//ADC采样
-  102   1              dajiao=Servo_turn_pid(unification());//转向值计算
-  103   1              if_Cycle();//环岛检测
-  104   1              if(Servo_Flag)//舵机控制
-  105   1              {
-  106   2                      Servo_Control();
-  107   2              }
-  108   1              speed_control_ring();//读取编码器
-  109   1              
-  110   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
-  111   1              {
-  112   2                      Speed_diff((float)(dajiao)/100,0.15);
-  113   2                      if(Speed_Mode>5)
-  114   2                      {
-  115   3                              State_of_road();
-  116   3                      }
-  117   2                      else
-  118   2                      {
-  119   3                              Speed_Control();
-  120   3                      }
-  121   2              }
-  122   1              if(T>=4)
-  123   1              {
-C251 COMPILER V5.60.0,  main                                                               24/10/25  20:12:28  PAGE 3   
+   58   4                                      break;
+   59   4                              }
+   60   3                              case TEST_SERVO: 
+   61   3                              {
+   62   4                                      GO_Function();
+   63   4                                      Serve_Test();
+   64   4                                      break;
+   65   4                              }
+   66   3                              case ADC_Show:
+   67   3                              {
+   68   4                                      GO_Function();
+   69   4                                      break;
+   70   4                              }
+   71   3                              case Seta_Servo:
+   72   3                              {
+   73   4                                      GO_Function();
+   74   4                                      Set_Sevo();
+   75   4                                      break;
+   76   4                              }
+   77   3                      }
+   78   2                      if(Protect_flag)
+   79   2                      {
+   80   3                              Protect_flag=0;
+   81   3                              CAR_Mode=STOP;
+   82   3                              Turn_mode_Init();
+   83   3                      }
+   84   2      
+   85   2                      
+   86   2         }
+   87   1      }
+   88          
+   89          
+   90          void pit_handler1(void)
+   91          {
+   92   1              T++;
+   93   1              ADC_SampleAndFilter();//ADC采样
+   94   1              Last_dajiao=dajiao;
+   95   1              dajiao=Servo_turn_pid(unification());//转向值计算
+   96   1              speed_control_ring();//读取编码器
+   97   1      //      if_Cycle();//环岛检测
+   98   1              if(Servo_Flag)//舵机控制
+   99   1              {
+  100   2                      Servo_Control();
+  101   2                      if(Intial>5)
+  102   2                      {
+  103   3                              Inertial_Navigation(IN_Val);//
+  104   3                      }
+  105   2              }
+  106   1              if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)//速度策略
+  107   1              {
+  108   2                      Speed_diff((float)(dajiao)/100,0.15);
+  109   2                      imu963ra_get_gyro();
+  110   2                      angle+=imu963ra_gyro_y/100;
+  111   2                      if(Intial<5 &&Intial>-5)
+  112   2                      {
+  113   3                      printf("%d\n",angle);
+  114   3                      }
+  115   2      //              if(Speed_Mode>5)
+  116   2      //              {
+  117   2      ////                    State_of_road();
+  118   2      //                      
+  119   2      //              }
+  120   2                      if(Intial<-5)
+  121   2                      {
+  122   3                              Half_State_of_road(IN_Val);
+  123   3                      }
+C251 COMPILER V5.60.0,  main                                                               31/10/25  00:26:09  PAGE 3   
 
-  124   2                      T=0;
-  125   2                      Protect();
-  126   2                      if(Key_Flag)//按键检测
-  127   2                      {
-  128   3                              Key_scaner();
-  129   3                      }
-  130   2                      if(ADC_Show_Flag)//ADC显示
-  131   2                      {
-  132   3                              Show_pararm();
-  133   3                      }
-  134   2                              imu963ra_get_gyro();
-  135   2              }
-  136   1      }
+  124   2                      else
+  125   2                      {
+  126   3                              Speed_Control();
+  127   3                      }
+  128   2              }
+  129   1              if(T>=4)
+  130   1              {
+  131   2                      T=0;
+  132   2                      Protect();
+  133   2                      if(Key_Flag)//按键检测
+  134   2                      {
+  135   3                              Key_scaner();
+  136   3                      }
+  137   2                      if(ADC_Show_Flag)//ADC显示
+  138   2                      {
+  139   3                              Show_pararm();
+  140   3                      }
+  141   2              }
+  142   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       386     ------
+  code size            =       539     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -168,7 +174,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        29     ------
+  hconst size          =        33     ------
 End of Module Information.
 
 

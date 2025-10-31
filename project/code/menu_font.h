@@ -59,8 +59,8 @@ extern unsigned int ADC_4;
 #define Pro 					Num[0][6]
 #define Help_Value 				Num[0][9]
 #define ADC_Falg 				Num[0][10]
-#define Help_Value2 			Num[0][11]
-#define ADC_Falg2 				Num[0][12]
+#define Intial 			Num[0][11]
+#define IN_Val 				Num[0][12]
 
 #define M_Mod 					Num[1][2]
 #define ML 						Num[1][3]

@@ -69,4 +69,5 @@ extern unsigned char Servo_Flag;
 extern unsigned char Key_Flag;
 extern unsigned char ADC_Show_Flag;
 extern int dajiao;
+extern int Last_dajiao;
 #endif
