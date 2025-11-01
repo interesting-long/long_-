@@ -30,12 +30,14 @@ extern int turn_Value;
 extern int Mode_Flag;
 
 /*****惯导速策****/
-extern int angle;
+extern float angle;
+extern float delta_angle;
 extern int Inertial_Time;
 extern int current_angle_time;
 extern float angle_buffer1;
 extern unsigned char ACC_Flag;
 extern unsigned char finsh_Flag;
+extern unsigned char Show_Init;
 
 /******记录赛道****/
 extern Type_road;
@@ -47,6 +49,7 @@ extern float Str_Data;
 extern float Bend_Data;
 extern float State_Data_Str;
 extern float State_Data_Bend;
+
 
 
 void if_Cycle(void);
@@ -65,5 +68,5 @@ typedef enum
 
 void Inertial_Navigation(int value);
 void Half_State_of_road(int value);
-void angle_Get(int value,unsigned char Count);
+void angle_Get(int value,int Count);
 #endif

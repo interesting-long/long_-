@@ -8,8 +8,8 @@
 #define Servo_min  (-600)		//舵机的最小值5240		 	
 /*********************显示常量设置***********************/
 /***基础设置*******/
-#define Struct_Number 12         //菜单的页数
-#define Num_Col 12               //有数据的行数   最大12！！Flash限制
+#define Struct_Number 13         //菜单的页数
+#define Num_Col 13               //有数据的行数  
 #define max_OLED_ROW 7          //16*8字体在屏幕当中最多显示的行数
 
 /*****数据设置******/
@@ -59,8 +59,7 @@ extern unsigned int ADC_4;
 #define Pro 					Num[0][6]
 #define Help_Value 				Num[0][9]
 #define ADC_Falg 				Num[0][10]
-#define Intial 			Num[0][11]
-#define IN_Val 				Num[0][12]
+#define Intial 					Num[0][11]
 
 #define M_Mod 					Num[1][2]
 #define ML 						Num[1][3]
@@ -141,4 +140,12 @@ extern unsigned int ADC_4;
 #define ML_KI3 					Num[11][4]
 #define MR_KP3 					Num[11][5]
 #define MR_KI3 					Num[11][6]
+
+#define tuoluo 					Num[12][1]
+#define long_Str_yuzhi			Num[12][2]
+#define Iner_Acc_Value 			Num[12][3]
+#define Panduan_Time 			Num[12][4]
+#define cha_angle 				Num[12][5]
+#define IN_Val 					Num[12][6]
+#define Iner_Slo_Value 			Num[12][7]
 #endif 

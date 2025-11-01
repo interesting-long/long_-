@@ -179,7 +179,7 @@ void Motor_Update(float X)
 // 每次调用时将 Current_Speed 缓慢逼近目标速度
 void Motor_Update_Smooth(float target)
 {
-    float step1 = 0.06;  // 每次变化的最大步长，可以调节平滑程度
+    float step1 = 0.15;  // 每次变化的最大步长，可以调节平滑程度
 	float step2 = 0.15;
     if(Current_Speed < target)
     {

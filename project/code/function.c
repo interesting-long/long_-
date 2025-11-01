@@ -108,7 +108,7 @@ void Protect()
 void init_all()
 {
 	EA=0;
-	wireless_uart_init();//无线串口
+//	wireless_uart_init();//无线串口
 	system_delay_ms(10);
 	Motor_Init();
 	Servo_Init();
@@ -183,6 +183,7 @@ void Turn_mode_Init(void)
 			ACC_Flag=0;
 			finsh_Flag=0;
 			angle_buffer1=0;
+			Show_Init = 1;
 			break;
 		}
 		case GO:

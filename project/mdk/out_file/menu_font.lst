@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu_font                                                          31/10/25  00:26:10  PAGE 1   
+C251 COMPILER V5.60.0,  menu_font                                                          01/11/25  17:41:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu_font
@@ -11,69 +11,72 @@ stmt  level    source
 
     1          #include "menu_font.h"
     2          float Num[Num_Col][Page_Row_Number]={
-    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,30 ,-1 ,-1,620,180,0,250},
-    4                  {-1  ,-1  ,0  ,7.2 ,7.2 ,12,230,12 ,-10  ,470 },//GOÄ£Ê½
-    5                  {-1  ,-1  ,0  ,6.3  ,6.3,12 ,250,15 ,-10  ,470},//GPO1Ä£Ê½
-    6                  {-1  ,-1  ,10  ,6.3 ,6.3 ,12 ,230,15 ,-10  ,470},//GPO2Ä£Ê½
+    3                  {-1  ,1   ,2  ,3  ,4  ,-1 ,30 ,-1 ,-1,620,180,10,0},//                  0
+    4                  {-1  ,-1  ,0  ,6.2 ,6.2 ,12,230,12 ,-10  ,470 },//GOÄ£Ê½
+    5                  {-1  ,-1  ,0  ,6.5  ,6.5,12 ,250,15 ,-10  ,470},//GPO1Ä£Ê½
+    6                  {-1  ,-1  ,0  ,6.8 ,6.8 ,12 ,230,15 ,-10  ,470},//GPO2Ä£Ê½
     7                  {-1  ,-1  ,0  ,0 ,0 ,6 ,270,30 ,0  ,60 },//GPO3Ä£Ê½
-    8                  {-1  ,-1  ,-1 ,585,-1 ,-1,-1 ,-1 ,-1,-1 },
+    8                  {-1  ,-1  ,-1 ,585,-1 ,-1,-1 ,-1 ,-1,-1 },//                                    5
     9                          {-1  ,20  ,20 ,3  ,-1 ,-1,-1 ,-1 ,-1,-1 },
    10                  {-1  ,1.5   ,30 ,2  ,30 ,0.5 ,10 ,-5 ,20, 300,300},//ËÙ¶È²ßÂÔ²ÎÊýgpo1
    11                          
-   12                          {-1  ,25  ,250 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
-   13                          {-1  ,25  ,250 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
-   14                          {-1  ,27  ,270 ,13  ,3.5,13 ,3.5,-1 ,-1,-1 },//GPO2pid
-   15                          {-1  ,0  ,0 ,6  ,1,6 ,1,-1 ,-1,-1 }};//GPO3pid
-   16          
-   17          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýËÄÎåÐÐ×ªµ½Page[1],
-             -Page[2]£¬Page[3]£¬Page[4]£¬
-   18          unsigned char Page5_children[Page_Row_Number+1]={0, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×ªµ½Page[5],Page[6]
-   19          unsigned char Page1_children[Page_Row_Number+1]={0, 8};
-   20          unsigned char Page2_children[Page_Row_Number+1]={0, 9};
-   21          unsigned char Page3_children[Page_Row_Number+1]={0, 10};
-   22          unsigned char Page4_children[Page_Row_Number+1]={0, 11};
-   23          
+   12                          {-1  ,29  ,275 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GOpid
+   13                          {-1  ,27.5  ,275 ,13  ,3.5,13 ,3.5 ,-1 ,-1,-1 },//GPO1pid
+   14                          {-1  ,27  ,270 ,13  ,3.5,13 ,3.5,-1 ,-1,-1 },//GPO2pid                  10
+   15                          {-1  ,0  ,0 ,6  ,1,6 ,1,-1 ,-1,-1 },
+   16                          {-1  ,0.4,100,3.5,30 ,15 ,160,-0.5 ,-1,-1 }};//GPO3pid
+   17          
+   18          unsigned char Page0_children[Page_Row_Number+1]={0,1,2,3,4,7,0,0,5,0,0,0,12};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýËÄÎåÐÐ×ªµ
+             -½Page[1],Page[2]£¬Page[3]£¬Page[4]£¬
+   19          unsigned char Page5_children[Page_Row_Number+1]={0, 6};//×Ó×Ö½Ú²Ëµ¥,µÚ¶þÈýÐÐ×ªµ½Page[5],Page[6]
+   20          unsigned char Page1_children[Page_Row_Number+1]={0, 8};
+   21          unsigned char Page2_children[Page_Row_Number+1]={0, 9};
+   22          unsigned char Page3_children[Page_Row_Number+1]={0, 10};
+   23          unsigned char Page4_children[Page_Row_Number+1]={0, 11};
    24          
-   25          /*½á¹¹ÌåµÚÒ»ÐÐÊÇ   ÐòÁÐºÅ¡ª¡ª¡ª¡ªÓÃÓÚ¿ØÖÆÏÔÊ¾Êý¾ÝµÄÂß¼­(ÐòÁÐºÅÊÇ¶àÉÙ£¬¾ÍÏÔÊ¾ÄÄÒ»Êý×éµÄÊý¾Ý)
-   26           *½á¹¹ÌåµÚ¶þÐÐÊÇ   ÏÔÊ¾µÄÊý¾Ý
-   27           *½á¹¹ÌåµÚÈýÐÐÊÇ   ¸¸Ö¸ÕëÓÃ(º¯Êý×Ô¶¯ÅäÖÃ£©
-   28           *½á¹¹ÌåµÚËÄÐÐÊÇ   ×ÓÖ¸ÕëÊý×é(Î»ÖÃ¶ÔÓ¦ÐÐÊý)ÓÃº¯ÊýÅäÖÃ
-   29           */
-   30          struct Menu Page[Struct_Number]={
-   31              {   0,
-   32                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Intial","IN_Va
+   25          
+   26          /*½á¹¹ÌåµÚÒ»ÐÐÊÇ   ÐòÁÐºÅ¡ª¡ª¡ª¡ªÓÃÓÚ¿ØÖÆÏÔÊ¾Êý¾ÝµÄÂß¼­(ÐòÁÐºÅÊÇ¶àÉÙ£¬¾ÍÏÔÊ¾ÄÄÒ»Êý×éµÄÊý¾Ý)
+   27           *½á¹¹ÌåµÚ¶þÐÐÊÇ   ÏÔÊ¾µÄÊý¾Ý
+   28           *½á¹¹ÌåµÚÈýÐÐÊÇ   ¸¸Ö¸ÕëÓÃ(º¯Êý×Ô¶¯ÅäÖÃ£©
+   29           *½á¹¹ÌåµÚËÄÐÐÊÇ   ×ÓÖ¸ÕëÊý×é(Î»ÖÃ¶ÔÓ¦ÐÐÊý)ÓÃº¯ÊýÅäÖÃ
+   30           */
+   31          struct Menu Page[Struct_Number]={
+   32              {   0,
+   33                      {"back","GOP","GOP1","GOP2","GOP3","Time","Pro","ADC","Test","Valu1","ADC_F1","Intial","IN_Va
              -l"}},
-   33              {   1,
-   34                      {"back","PID","Mode","L_PWM","R_PWM","J_time","Angle","D_Time","LorR","turn"}},
-   35              {   2,
-   36                      {"back","PID","Mode","L_PWM1","R_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
-   37              {   3,
-   38                      {"back","PID","Mode","L_PWM2","R_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
-   39              {   4,
-   40                      {"back","PID","Mode","L_PWM3","R_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
-   41              {   5,
-   42                      {"back","PWM","Servo","S_Value","","","","",""}},
-   43              {   6,
-   44                      {"back","LPWM","RPWM","","","","","",""}},
-   45                  {   7,
-   46                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_sped","Be_J_T","L_T_B_V","L_T_B_T","S_Val","B_Va
+   34              {   1,
+   35                      {"back","PID","Mode","L_PWM","R_PWM","J_time","Angle","D_Time","LorR","turn"}},
+   36              {   2,
+   37                      {"back","PID","Mode","L_PWM1","R_PWM1","J_time1","C_time1","D_Time1","LorR1","turn1"}},
+   38              {   3,
+   39                      {"back","PID","Mode","L_PWM2","R_PWM2","J_time2","C_time2","D_Time2","LorR2","turn2"}},
+   40              {   4,
+   41                      {"back","PID","Mode","L_PWM3","R_PWM3","J_time3","C_time3","D_Time3","LorR3","turn3"}},
+   42              {   5,
+   43                      {"back","PWM","Servo","S_Value","","","","",""}},
+   44              {   6,
+   45                      {"back","LPWM","RPWM","","","","","",""}},
+   46                  {   7,
+   47                      {"back","S_add","S_J_Ti","L_add","L_J_Ti","B_sped","Be_J_T","L_T_B_V","L_T_B_T","S_Val","B_Va
              -l"}},
-   47                  {   8,
-   48                      {"back","S_KP","S_KD","ML_KP","ML_KI","MR_KP","MR_KI","",""}},
-   49                  {   9,
-   50                      {"back","S_KP1","S_KD1","ML_KP1","ML_KI1","MR_KP1","MR_KI1","",""}},
-   51                  {   10,
-   52                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
-   53                  {   11,
-   54                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
-C251 COMPILER V5.60.0,  menu_font                                                          31/10/25  00:26:10  PAGE 2   
+   48                  {   8,
+   49                      {"back","S_KP","S_KD","ML_KP","ML_KI","MR_KP","MR_KI","",""}},
+   50                  {   9,
+   51                      {"back","S_KP1","S_KD1","ML_KP1","ML_KI1","MR_KP1","MR_KI1","",""}},
+   52                  {   10,
+   53                      {"back","S_KP2","S_KD2","ML_KP2","ML_KI2","MR_KP2","MR_KI2","",""}},
+   54                  {   11,
+C251 COMPILER V5.60.0,  menu_font                                                          01/11/25  17:41:50  PAGE 2   
 
-   55          };
-   56          
-   57          struct Menu *Pin=&Page[0];//Áé»îÖ¸Õë
-   58          
-   59          //ADC²ÉÑù²ÎÊý                                                           
-   60          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC²ÉÑùÖµ
+   55                      {"back","S_KP3","S_KD3","ML_KP3","ML_KI3","MR_KP3","MR_KI3","",""}},
+   56                  {   12,
+   57                      {"back","dta_tuo","l_Value","Acc_Val","Pan_T","dta_an","IN_Val","Slo_Val",""}},
+   58          };
+   59          
+   60          struct Menu *Pin=&Page[0];//Áé»îÖ¸Õë
+   61          
+   62          //ADC²ÉÑù²ÎÊý                                                           
+   63          unsigned int ADC_1 = 0, ADC_2 = 0, ADC_3 = 0, ADC_4 = 0,ADC_5 = 0, ADC_6 = 0, ADC_8 = 0;                        //ADC²ÉÑùÖµ
 
 
 Module Information          Static   Overlayable
@@ -83,7 +86,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =      2658     ------
+  xdata size           =      2871     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -93,7 +96,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =      2738     ------
+  hconst size          =      2951     ------
 End of Module Information.
 
 
