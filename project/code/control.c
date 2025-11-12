@@ -24,6 +24,7 @@ int Servo_turn_pid(float Current)
 {
     float kp = servo_pid.Kp;           
     float kd = servo_pid.Kd;
+	
     float last_error = servo_pid.LastError;
     float error = Current;
 	float temp;
@@ -138,41 +139,6 @@ void MotorR_SetSpeed(int pwm)
  */
 void Motor_Update(float X)
 { 
-//	switch(CAR_Mode)
-//	{
-//		case GO:
-//		{
-//			MotorL_SetSpeed(Motor_Left_pi_control((ML+X)*100));
-//			MotorR_SetSpeed(Motor_Right_pi_control((MR+X)*100));
-
-//			break;
-//		}	
-//		case GO_Pararm1:
-//		{
-//			MotorL_SetSpeed(Motor_Left_pi_control((ML1+X)*100));
-//			MotorR_SetSpeed(Motor_Right_pi_control((MR1+X)*100));
-//			break;
-//		}	
-//		case GO_Pararm2:
-//		{
-//			MotorL_SetSpeed(Motor_Left_pi_control((ML2+X)*100));
-//			MotorR_SetSpeed(Motor_Right_pi_control((MR2+X)*100));
-//			break;
-//		}	
-//		case GO_Pararm3:
-//		{
-//			MotorL_SetSpeed(Motor_Left_pi_control((ML3+X)*100));
-//			MotorR_SetSpeed(Motor_Right_pi_control((MR3+X)*100));
-//			break;
-//		}		
-//		default:
-//		{
-//			MotorL_SetSpeed(0);
-//			MotorR_SetSpeed(0);
-//			break;
-//		}
-//	
-//	}
 		MotorL_SetSpeed(Motor_Left_pi_control((Left_Speed+X)*100));
 		MotorR_SetSpeed(Motor_Right_pi_control((Right_Speed+X)*100));
 }
@@ -180,7 +146,7 @@ void Motor_Update(float X)
 void Motor_Update_Smooth(float target)
 {
     float step1 = 0.15;  // 每次变化的最大步长，可以调节平滑程度
-	float step2 = 0.15;
+	float step2 = 0.35;
     if(Current_Speed < target)
     {
         Current_Speed += step1;

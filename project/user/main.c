@@ -33,6 +33,11 @@ void main()
 					Key=0;
 					EA=1;
 				}
+				if(Guan_Dao_Show_Item<Max_Item && Intial>5)
+				{
+					printf("Item:%d,All_road_Data:%ld,All_angle_Data:%f\n",Guan_Dao_Show_Item,All_road_Data[Guan_Dao_Show_Item],All_angle_Data[Guan_Dao_Show_Item]);
+					Guan_Dao_Show_Item++;
+				}
 				break;
 			}
 			case GO:
@@ -84,6 +89,7 @@ void main()
 			Protect_flag=0;
 			CAR_Mode=STOP;
 			Turn_mode_Init();
+			
 		}
 
 		
@@ -98,19 +104,20 @@ void pit_handler1(void)
 	Last_dajiao=dajiao;
 	dajiao=Servo_turn_pid(unification());//转向值计算
 	speed_control_ring();//读取编码器
+	
 	if_Cycle();//环岛检测
 	if(Servo_Flag)//舵机控制
 	{
 		Servo_Control();
-
 	}
 	if(GO_PID_Control+GO_PID_Control1+GO_PID_Control2+GO_PID_Control3==1)
 	{
-		Speed_diff((float)(dajiao)/100,0.15);
+		
+		Speed_diff((float)(dajiao)/100,0.1);
 		if(Intial>5)
 		{
 			imu963ra_get_gyro();
-			delta_angle=imu963ra_gyro_transition(imu963ra_gyro_y)/200+0.000077;
+			delta_angle=imu963ra_gyro_transition(imu963ra_gyro_y)/200+0.000079;
 			angle+=delta_angle;
 			Inertial_Navigation(IN_Val);//
 			Speed_Control();
@@ -125,9 +132,10 @@ void pit_handler1(void)
 		else if(Intial<-5)
 		{
 			imu963ra_get_gyro();
-			delta_angle=imu963ra_gyro_transition(imu963ra_gyro_y)/200+0.000077;
+			delta_angle=imu963ra_gyro_transition(imu963ra_gyro_y)/200+0.000079;
 			angle+=delta_angle;
 			Half_State_of_road(IN_Val);
+			
 		}
 		else if(Speed_Mode>5)
 		{
@@ -141,7 +149,10 @@ void pit_handler1(void)
 	if(T>=4)
 	{
 		T=0;
-		Protect();
+		if(Protect_Flag_Cycle)
+		{
+			Protect();
+		}
 		if(Key_Flag)//按键检测
 		{
 			Key_scaner();

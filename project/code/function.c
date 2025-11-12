@@ -168,22 +168,15 @@ void Turn_mode_Init(void)
 			GO_PID_Control3=0;
 			/*****惯导参数初始化*****/
 					/*记录参数*/
+			all_road=0;
 			angle=0;
-			Inertial_Time=0;
-			Last_stact=str_data;
-			Type_road = str_data;
-			Str_Data=0;
-			Bend_Data=0;
+			Now_Item=0;
+			Str_Data_Buffer=0;
+			Guan_Dao_Show_Item=0;
+			Now_State_Road=Stright;
+			Last_State_Road=Stright;
 				/*速测参数*/
-			Road_Stat=Long_Str;
-			State_Data_Str=0;
-			State_Data_Bend=0;
-			current_angle_time=0;
-			Long_road_Time=0;
-			ACC_Flag=0;
-			finsh_Flag=0;
-			angle_buffer1=0;
-			Show_Init = 1;
+			
 			break;
 		}
 		case GO:
@@ -296,7 +289,7 @@ void Show_pararm()
 //			tft180_show_string(0,2*16,"ML:");tft180_show_int16(5*8,2*16,Motor_Left_pi_control(ML*100));
 //			tft180_show_string(0,3*16,"MR:");tft180_show_int16(5*8,3*16,Motor_Right_pi_control(MR*100));
 //			tft180_show_string(0,2*16,"err:");  tft180_show_float(5*8,2*16,unification(),2,2);
-			tft180_show_string(0,5*16,"Angl:");tft180_show_int16(5*8,5*16,angle);
+//			tft180_show_string(0,5*16,"Angl:");tft180_show_int16(5*8,5*16,angle);
 //			tft180_show_string(0,4*16,"KP:");  tft180_show_float(5*8,4*16,KP,2,2);
 //			tft180_show_string(0,5*16,"KD:");  tft180_show_float(5*8,5*16,KD,2,2);
 //			tft180_show_string(0,3*16,"TIME:");  tft180_show_float(5*8,3*16,Set_T,3,0);

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  30/10/25  21:44:17  PAGE 1   
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  01/11/25  21:30:17  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_ble6a20
@@ -66,7 +66,7 @@ stmt  level    source
    50          #include "zf_common_debug.h"
    51          #include "zf_common_fifo.h"
    52          #include "zf_driver_delay.h"
-C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  30/10/25  21:44:17  PAGE 2   
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  01/11/25  21:30:17  PAGE 2   
 
    53          #include "zf_driver_gpio.h"
    54          #include "zf_driver_uart.h"
@@ -134,7 +134,7 @@ stmt  level    source
   112   3                  len -= send_len;
   113   3                  time_cnt = 0;        // 重置超时计数
   114   3              }
-C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  30/10/25  21:44:17  PAGE 3   
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  01/11/25  21:30:17  PAGE 3   
 
   115   2                      else    // RTS高电平，模块忙
   116   2                      {
@@ -202,7 +202,7 @@ stmt  level    source
   172          //-------------------------------------------------------------------------------------------------------
              -------------
   173          // 函数简介     蓝牙转串口模块 初始化
-C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  30/10/25  21:44:17  PAGE 4   
+C251 COMPILER V5.60.0,  zf_device_ble6a20                                                  01/11/25  21:30:17  PAGE 4   
 
   174          // 参数说明     void
   175          // 返回参数     void
